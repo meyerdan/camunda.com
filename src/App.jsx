@@ -869,9 +869,9 @@ export default function App() {
       <Hero />
       <WhyNow />
       <Spectrum />
+      <AgenticStack />
       <AudiencePaths />
       <SocialProof />
-      <AgenticStack />
       <WhyCamunda />
       <Industries />
       <GetStarted />
