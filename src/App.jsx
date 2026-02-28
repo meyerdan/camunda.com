@@ -111,17 +111,17 @@ function HeroBackground() {
       <div className="absolute inset-0 bg-gradient-to-b from-dark-base via-dark-base to-dark-surface" />
 
       {/* SVG flowing lines */}
-      <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-            <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+            <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0" />
+            <stop offset="50%" stopColor="#FC5D0D" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="line-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0" />
-            <stop offset="50%" stopColor="#10b981" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
+            <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -152,17 +152,17 @@ function HeroBackground() {
           { cx: 300, cy: 730 }, { cx: 1150, cy: 220 }, { cx: 450, cy: 150 },
         ].map((node, i) => (
           <g key={i}>
-            <circle cx={node.cx} cy={node.cy} r="3" fill="#3b82f6" opacity="0.6"
+            <circle cx={node.cx} cy={node.cy} r="3" fill={i % 3 === 0 ? '#FC5D0D' : '#3b82f6'} opacity="0.5"
               style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.4}s` }} />
-            <circle cx={node.cx} cy={node.cy} r="8" fill="none" stroke="#3b82f6" strokeWidth="0.5" opacity="0.3"
+            <circle cx={node.cx} cy={node.cy} r="8" fill="none" stroke={i % 3 === 0 ? '#FC5D0D' : '#3b82f6'} strokeWidth="0.5" opacity="0.25"
               style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.4}s` }} />
           </g>
         ))}
       </svg>
 
       {/* Radial glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[700px] bg-accent/[0.07] rounded-full blur-3xl" />
-      <div className="absolute top-2/3 left-1/3 -translate-x-1/2 w-[400px] h-[400px] bg-mint/[0.03] rounded-full blur-3xl" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[700px] bg-accent/[0.06] rounded-full blur-3xl" />
+      <div className="absolute top-2/3 left-1/3 -translate-x-1/2 w-[400px] h-[400px] bg-[#3b82f6]/[0.03] rounded-full blur-3xl" />
     </div>
   )
 }
@@ -175,7 +175,7 @@ function Hero() {
       <div ref={ref} className="reveal relative z-10 max-w-5xl mx-auto px-8 text-center">
         <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-bold tracking-tight leading-[1.1] mb-7">
           The enterprise platform<br className="hidden sm:block" /> for{' '}
-          <span className="bg-gradient-to-r from-accent to-[#60a5fa] bg-clip-text text-transparent">agentic orchestration</span>
+          <span className="bg-gradient-to-r from-accent to-[#ff8a4c] bg-clip-text text-transparent">agentic orchestration</span>
         </h1>
         <p className="text-lg sm:text-xl text-light-dim max-w-2xl mx-auto mb-10 leading-relaxed">
           Orchestrate AI agents, processes, and people on one platform.
@@ -186,7 +186,7 @@ function Hero() {
           <a href="#" className="px-9 py-4 text-base font-semibold bg-accent hover:bg-accent-hover text-white rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-accent/25 hover:-translate-y-0.5">
             Try Free
           </a>
-          <a href="#" className="px-9 py-4 text-base font-medium border border-dark-border/80 text-light hover:border-light-dim/50 hover:bg-light/5 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+          <a href="#" className="px-9 py-4 text-base font-medium border border-dark-border text-light hover:border-light-dim/50 hover:bg-dark-surface rounded-xl transition-all duration-300 hover:-translate-y-0.5">
             See how it works
           </a>
         </div>
@@ -238,11 +238,11 @@ function CoordinationGraphic() {
         <p className="text-sm font-medium text-accent mb-6 uppercase tracking-wider relative z-10">With orchestration</p>
         <svg viewBox="0 0 320 200" className="w-full h-auto relative z-10" fill="none">
           {/* Orchestrated flow lines */}
-          <path d="M40,100 C80,60 120,60 160,100 S240,140 280,100" stroke="#3b82f6" strokeWidth="2" opacity="0.4"
+          <path d="M40,100 C80,60 120,60 160,100 S240,140 280,100" stroke="#3b82f6" strokeWidth="2" opacity="0.5"
             strokeDasharray="8 4" style={{ animation: 'coordinated-flow 2s linear infinite' }} />
-          <path d="M40,60 L100,60 L160,40 L220,60 L280,60" stroke="#3b82f6" strokeWidth="1.5" opacity="0.3"
+          <path d="M40,60 L100,60 L160,40 L220,60 L280,60" stroke="#3b82f6" strokeWidth="1.5" opacity="0.4"
             strokeDasharray="8 4" style={{ animation: 'coordinated-flow 3s linear infinite' }} />
-          <path d="M40,150 L100,140 L160,160 L220,140 L280,150" stroke="#10b981" strokeWidth="1.5" opacity="0.3"
+          <path d="M40,150 L100,140 L160,160 L220,140 L280,150" stroke="#10b981" strokeWidth="1.5" opacity="0.4"
             strokeDasharray="8 4" style={{ animation: 'coordinated-flow 2.5s linear infinite' }} />
 
           {/* Connected nodes */}
@@ -252,13 +252,13 @@ function CoordinationGraphic() {
             { x: 100, y: 140 }, { x: 160, y: 40 }, { x: 220, y: 140 },
           ].map((n, i) => (
             <g key={i}>
-              <circle cx={n.x} cy={n.y} r="10" fill="#3b82f6" opacity="0.1" />
-              <circle cx={n.x} cy={n.y} r="5" fill="#3b82f6" opacity="0.6" />
+              <circle cx={n.x} cy={n.y} r="10" fill="#3b82f6" opacity="0.15" />
+              <circle cx={n.x} cy={n.y} r="5" fill="#3b82f6" opacity="0.7" />
             </g>
           ))}
           {/* Governance checkpoints */}
-          <rect x="152" y="92" width="16" height="16" rx="3" stroke="#10b981" strokeWidth="1.5" fill="none" opacity="0.6" />
-          <path d="M156 100 L159 103 L164 97" stroke="#10b981" strokeWidth="1.5" opacity="0.6" />
+          <rect x="152" y="92" width="16" height="16" rx="3" stroke="#10b981" strokeWidth="1.5" fill="none" opacity="0.7" />
+          <path d="M156 100 L159 103 L164 97" stroke="#10b981" strokeWidth="1.5" opacity="0.7" />
         </svg>
       </div>
     </div>
@@ -353,8 +353,8 @@ function Spectrum() {
               <span className="text-mint font-medium font-display">Agentic workflows</span>
             </div>
             <div className="relative h-2 rounded-full overflow-hidden"
-              style={{ background: 'linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%)' }}>
-              <div className="absolute inset-0 bg-dark-base/40" />
+              style={{ background: 'linear-gradient(90deg, #FC5D0D 0%, #8b5cf6 50%, #10b981 100%)' }}>
+              <div className="absolute inset-0 bg-dark-base/10" />
             </div>
             <div className="flex justify-between mt-2 text-xs text-light-dim/50">
               <span className="max-w-[280px]">Automate end-to-end processes that run millions of times with zero drift.</span>
@@ -466,7 +466,7 @@ function LogoMarquee() {
 
       <div className="marquee-track flex items-center gap-16 whitespace-nowrap">
         {doubled.map((name, i) => (
-          <span key={i} className="text-lg font-display font-semibold text-light-dim/30 tracking-wide select-none flex-shrink-0">
+          <span key={i} className="text-lg font-display font-semibold text-light-dim/50 tracking-wide select-none flex-shrink-0">
             {name}
           </span>
         ))}
@@ -477,10 +477,10 @@ function LogoMarquee() {
 
 function SocialProof() {
   const stories = [
-    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-400 bg-emerald-400/10', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', metric: '60% faster order processing' },
-    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-400 bg-blue-400/10', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', metric: '12M+ transactions orchestrated daily' },
-    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-400 bg-purple-400/10', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', metric: '40% reduction in claims processing time' },
-    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-400 bg-amber-400/10', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', metric: '99.7% order accuracy' },
+    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-100', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', metric: '60% faster order processing' },
+    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-100', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', metric: '12M+ transactions orchestrated daily' },
+    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-100', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', metric: '40% reduction in claims processing time' },
+    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-100', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', metric: '99.7% order accuracy' },
   ]
 
   return (
@@ -570,7 +570,7 @@ function AgenticStack() {
                   key={i}
                   onClick={() => setActiveLayer(i)}
                   className={`w-full text-left rounded-2xl border bg-gradient-to-r transition-all duration-500 overflow-hidden cursor-pointer ${layer.style} ${
-                    layer.isCamunda ? 'shadow-[0_0_30px_rgba(59,130,246,0.1)]' : ''
+                    layer.isCamunda ? 'shadow-[0_0_30px_rgba(252,93,13,0.08)]' : ''
                   } ${layer.isCamunda && !isActive ? 'animate-[layer-pulse_4s_ease-in-out_infinite]' : ''}`}
                   style={{ minHeight: isActive ? '180px' : '72px' }}
                 >
@@ -795,13 +795,13 @@ function GetStarted() {
       <div className="absolute inset-0 bg-gradient-to-t from-dark-base via-transparent to-dark-base" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-accent/5 rounded-full blur-3xl" />
 
-      <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice">
+      <svg className="absolute inset-0 w-full h-full opacity-[0.07]" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice">
         {[
           'M-100,200 C200,180 400,280 720,240 S1100,180 1540,220',
           'M-100,350 C300,320 500,400 720,370 S1000,310 1540,350',
           'M-100,500 C250,480 450,540 720,510 S1050,470 1540,500',
         ].map((d, i) => (
-          <path key={i} d={d} stroke="#3b82f6" strokeWidth="1" fill="none" strokeDasharray="10 6"
+          <path key={i} d={d} stroke="#FC5D0D" strokeWidth="1" fill="none" strokeDasharray="10 6"
             style={{ animation: `flow-line 10s linear infinite`, animationDelay: `${i * 2}s` }} />
         ))}
       </svg>

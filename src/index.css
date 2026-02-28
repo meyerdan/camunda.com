@@ -3,24 +3,24 @@
 @theme {
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
-  --color-dark-base: #0a0a0f;
-  --color-dark-surface: #111118;
-  --color-dark-elevated: #1a1a24;
-  --color-dark-border: #2a2a3a;
-  --color-light: #e8e8ed;
-  --color-light-dim: #9898a8;
-  --color-accent: #3b82f6;
-  --color-accent-hover: #60a5fa;
-  --color-accent-glow: rgba(59, 130, 246, 0.15);
-  --color-accent-subtle: rgba(59, 130, 246, 0.08);
+  --color-dark-base: #ffffff;
+  --color-dark-surface: #f5f6f8;
+  --color-dark-elevated: #ebedf2;
+  --color-dark-border: #d4d7e0;
+  --color-light: #1a1a2e;
+  --color-light-dim: #64748b;
+  --color-accent: #FC5D0D;
+  --color-accent-hover: #e04d08;
+  --color-accent-glow: rgba(252, 93, 13, 0.12);
+  --color-accent-subtle: rgba(252, 93, 13, 0.06);
   --color-mint: #10b981;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: #0a0a0f;
-    color: #e8e8ed;
+    background-color: #ffffff;
+    color: #1a1a2e;
   }
 
   body {
@@ -31,7 +31,7 @@
   }
 
   ::selection {
-    background-color: rgba(59, 130, 246, 0.3);
+    background-color: rgba(252, 93, 13, 0.25);
     color: #fff;
   }
 }
@@ -57,7 +57,7 @@
 /* Subtle section divider */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.15) 30%, rgba(59, 130, 246, 0.15) 70%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(252, 93, 13, 0.12) 30%, rgba(252, 93, 13, 0.12) 70%, transparent);
 }
 
 /* Logo marquee */
@@ -101,8 +101,8 @@
 
 /* Camunda layer glow */
 @keyframes layer-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.1), inset 0 0 20px rgba(59, 130, 246, 0.05); }
-  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.2), inset 0 0 30px rgba(59, 130, 246, 0.08); }
+  0%, 100% { box-shadow: 0 0 20px rgba(252, 93, 13, 0.08), inset 0 0 20px rgba(252, 93, 13, 0.03); }
+  50% { box-shadow: 0 0 40px rgba(252, 93, 13, 0.15), inset 0 0 30px rgba(252, 93, 13, 0.05); }
 }
 
 /* Chaos animation for "without orchestration" */
