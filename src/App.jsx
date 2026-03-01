@@ -195,7 +195,7 @@ function Hero() {
           One platform to orchestrate AI agents, processes, and people.
         </p>
         <p className="text-sm sm:text-base text-slate-light max-w-2xl mx-auto mb-9">
-          The production-grade framework for building and orchestrating multi-agent systems.
+          The most advanced framework for building production-grade multi-agent systems.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="#" className="px-9 py-4 text-base font-semibold bg-accent hover:bg-accent-hover text-white rounded-xl transition-all duration-300 shadow-[0_2px_8px_rgba(252,93,13,0.25)] hover:shadow-[0_4px_16px_rgba(252,93,13,0.35)] hover:-translate-y-0.5">
