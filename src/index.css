@@ -186,23 +186,64 @@
   50% { box-shadow: 0 0 40px rgba(252, 93, 13, 0.15), inset 0 0 30px rgba(252, 93, 13, 0.05); }
 }
 
-/* Chaos animation for "without orchestration" */
-@keyframes erratic-1 {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(8px, -12px); }
-  40% { transform: translate(-15px, 5px); }
-  60% { transform: translate(10px, 10px); }
-  80% { transform: translate(-8px, -8px); }
-}
+/* ── Chaos diagram: "Without orchestration" ── */
 
-@keyframes erratic-2 {
+/* Nodes drift apart slowly — growing isolation */
+@keyframes chaos-drift {
   0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(-10px, 8px); }
-  50% { transform: translate(12px, -6px); }
-  75% { transform: translate(-5px, 12px); }
+  15% { transform: translate(6px, -8px); }
+  35% { transform: translate(-10px, 4px); }
+  55% { transform: translate(8px, 7px); }
+  75% { transform: translate(-6px, -5px); }
 }
+.chaos-node { animation: chaos-drift 4s ease-in-out infinite; }
 
-@keyframes coordinated-flow {
-  0% { stroke-dashoffset: 20; }
-  100% { stroke-dashoffset: 0; }
+/* Connection lines flicker and snap */
+@keyframes chaos-flicker {
+  0%, 18% { opacity: 0.2; }
+  20%, 24% { opacity: 0; }
+  26%, 58% { opacity: 0.18; }
+  60%, 62% { opacity: 0; }
+  64%, 100% { opacity: 0.15; }
 }
+.chaos-line { animation: chaos-flicker 7s ease-in-out infinite; }
+
+/* Failure markers (X, ?) pulse in / out */
+@keyframes chaos-fail-pulse {
+  0%, 15% { opacity: 0; }
+  20%, 40% { opacity: 0.6; }
+  45%, 100% { opacity: 0; }
+}
+.chaos-fail { opacity: 0; animation: chaos-fail-pulse 6s ease-in-out infinite; }
+
+/* Warning icons fade in briefly */
+@keyframes chaos-warn-pulse {
+  0%, 25% { opacity: 0; }
+  30%, 40% { opacity: 0.5; }
+  50%, 100% { opacity: 0; }
+}
+.chaos-warn { opacity: 0; animation: chaos-warn-pulse 8s ease-in-out infinite; }
+
+/* ── Flow diagram: "With orchestration" ── */
+
+/* Nodes gently pulse when work passes through */
+@keyframes flow-node-pulse {
+  0%, 100% { opacity: 0.6; r: 5; }
+  50% { opacity: 0.9; r: 6; }
+}
+.flow-node { animation: flow-node-pulse 3s ease-in-out infinite; }
+
+/* Completion checkmarks flash */
+@keyframes flow-check {
+  0%, 60% { opacity: 0; }
+  65%, 80% { opacity: 0.8; }
+  85%, 100% { opacity: 0; }
+}
+.flow-complete { opacity: 0; animation: flow-check 4s ease-in-out infinite; }
+
+/* Central orchestrator hub gently pulses */
+@keyframes orch-hub-pulse {
+  0%, 100% { stroke-opacity: 0.7; fill-opacity: 0.06; }
+  50% { stroke-opacity: 1; fill-opacity: 0.12; }
+}
+.orch-hub { animation: orch-hub-pulse 2.5s ease-in-out infinite; }

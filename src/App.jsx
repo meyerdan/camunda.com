@@ -305,55 +305,130 @@ function OutcomesBar() {
 
 /* ───────────────────────────── Section 2: Why Now ───────────────────────────── */
 function CoordinationGraphic() {
+  /* ── Left diagram: nodes & connections ── */
+  const chaosNodes = [
+    { x: 60, y: 40 }, { x: 180, y: 30 }, { x: 260, y: 60 },
+    { x: 40, y: 120 }, { x: 150, y: 100 }, { x: 240, y: 130 },
+    { x: 100, y: 170 }, { x: 200, y: 170 },
+  ]
+  const chaosLines = [
+    { x1: 64, y1: 42, x2: 180, y2: 30 },
+    { x1: 180, y1: 30, x2: 260, y2: 60 },
+    { x1: 40, y1: 120, x2: 150, y2: 100 },
+    { x1: 150, y1: 100, x2: 240, y2: 130 },
+    { x1: 60, y1: 40, x2: 40, y2: 120 },
+    { x1: 100, y1: 170, x2: 200, y2: 170 },
+    { x1: 240, y1: 130, x2: 200, y2: 170 },
+  ]
+
+  /* ── Right diagram: paths & nodes ── */
+  const flowPaths = [
+    { id: 'path-top', d: 'M30,60 L100,60 L160,40 L220,60 L290,60', color: '#3b82f6', width: 1.5 },
+    { id: 'path-mid', d: 'M30,110 C80,70 120,70 160,110 S240,150 290,110', color: '#3b82f6', width: 2 },
+    { id: 'path-bot', d: 'M30,160 L100,150 L160,170 L220,150 L290,160', color: '#10b981', width: 1.5 },
+  ]
+  const flowNodes = [
+    { x: 30, y: 60 }, { x: 100, y: 60 }, { x: 160, y: 40 }, { x: 220, y: 60 }, { x: 290, y: 60 },
+    { x: 30, y: 110 }, { x: 160, y: 110 }, { x: 290, y: 110 },
+    { x: 30, y: 160 }, { x: 100, y: 150 }, { x: 160, y: 170 }, { x: 220, y: 150 }, { x: 290, y: 160 },
+  ]
+
   return (
     <div className="grid md:grid-cols-2 gap-6 mt-12">
-      {/* Without orchestration */}
-      <div className="relative bg-cool-surface border border-cool-border/60 rounded-2xl p-8 overflow-hidden">
-        <p className="font-mono text-xs font-medium text-red-500/70 mb-6 uppercase tracking-wider">Without orchestration</p>
-        <svg viewBox="0 0 320 200" className="w-full h-auto" fill="none">
-          {[
-            { x: 60, y: 40, delay: 0 }, { x: 180, y: 30, delay: 0.3 }, { x: 260, y: 60, delay: 0.6 },
-            { x: 40, y: 120, delay: 0.2 }, { x: 150, y: 100, delay: 0.5 }, { x: 240, y: 130, delay: 0.4 },
-            { x: 100, y: 170, delay: 0.1 }, { x: 200, y: 170, delay: 0.7 },
-          ].map((n, i) => (
-            <g key={i} style={{ animation: `erratic-${(i % 2) + 1} ${2 + i * 0.3}s ease-in-out infinite`, animationDelay: `${n.delay}s` }}>
-              <circle cx={n.x} cy={n.y} r="8" fill="#ef4444" opacity="0.12" />
-              <circle cx={n.x} cy={n.y} r="4" fill="#ef4444" opacity="0.5" />
-            </g>
-          ))}
-          <line x1="64" y1="42" x2="120" y2="70" stroke="#ef4444" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
-          <line x1="155" y1="102" x2="240" y2="130" stroke="#ef4444" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
-          <line x1="43" y1="122" x2="100" y2="168" stroke="#ef4444" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
-          <text x="120" y="75" fill="#ef4444" fontSize="14" opacity="0.5">✕</text>
-          <text x="190" y="85" fill="#ef4444" fontSize="14" opacity="0.5">✕</text>
-          <text x="80" y="145" fill="#ef4444" fontSize="14" opacity="0.5">?</text>
-        </svg>
+      {/* ────── Without orchestration ────── */}
+      <div>
+        <div className="relative bg-cool-surface border border-cool-border/60 rounded-2xl p-8 overflow-hidden">
+          <p className="font-mono text-xs font-medium text-red-500/70 mb-6 uppercase tracking-wider">Without orchestration</p>
+          <svg viewBox="0 0 320 210" className="w-full h-auto" fill="none">
+            {/* Connections — flicker and snap */}
+            {chaosLines.map((l, i) => (
+              <line key={`cl-${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
+                stroke="#ef4444" strokeWidth="1" strokeDasharray="4 4"
+                className="chaos-line" style={{ animationDelay: `${i * 1.1}s` }} />
+            ))}
+
+            {/* Nodes — drift apart */}
+            {chaosNodes.map((n, i) => (
+              <g key={`cn-${i}`} className="chaos-node" style={{ animationDelay: `${i * 0.4}s`, animationDuration: `${3 + i * 0.5}s` }}>
+                <circle cx={n.x} cy={n.y} r="8" fill="#ef4444" opacity="0.10" />
+                <circle cx={n.x} cy={n.y} r="4" fill="#ef4444" opacity="0.5" />
+              </g>
+            ))}
+
+            {/* Failure markers — pulse in/out staggered */}
+            <text x="118" y="74" fill="#ef4444" fontSize="14" className="chaos-fail" style={{ animationDelay: '0s' }}>✕</text>
+            <text x="195" y="82" fill="#ef4444" fontSize="14" className="chaos-fail" style={{ animationDelay: '2.5s' }}>✕</text>
+            <text x="75" y="148" fill="#ef4444" fontSize="12" className="chaos-fail" style={{ animationDelay: '4.5s' }}>?</text>
+            <text x="225" y="98" fill="#ef4444" fontSize="12" className="chaos-fail" style={{ animationDelay: '1.8s' }}>!</text>
+            <text x="148" y="178" fill="#ef4444" fontSize="14" className="chaos-fail" style={{ animationDelay: '3.5s' }}>✕</text>
+            {/* Warning triangles */}
+            <text x="88" y="55" fill="#ef4444" fontSize="11" className="chaos-warn" style={{ animationDelay: '1s' }}>⚠</text>
+            <text x="210" y="155" fill="#ef4444" fontSize="11" className="chaos-warn" style={{ animationDelay: '5s' }}>⚠</text>
+          </svg>
+        </div>
+        <p className="text-xs text-slate-light mt-3 leading-relaxed px-2">
+          Agents, systems, and people working in isolation. Value is capped. Each new automation adds complexity — and can make things worse.
+        </p>
       </div>
 
-      {/* With orchestration */}
-      <div className="relative bg-cool-surface border border-accent/20 rounded-2xl p-8 overflow-hidden">
-        <div className="absolute inset-0 bg-accent/[0.02]" />
-        <p className="font-mono text-xs font-medium text-accent mb-6 uppercase tracking-wider relative z-10">With orchestration</p>
-        <svg viewBox="0 0 320 200" className="w-full h-auto relative z-10" fill="none">
-          <path d="M40,100 C80,60 120,60 160,100 S240,140 280,100" stroke="#3b82f6" strokeWidth="2" opacity="0.5"
-            strokeDasharray="8 4" style={{ animation: 'coordinated-flow 2s linear infinite' }} />
-          <path d="M40,60 L100,60 L160,40 L220,60 L280,60" stroke="#3b82f6" strokeWidth="1.5" opacity="0.4"
-            strokeDasharray="8 4" style={{ animation: 'coordinated-flow 3s linear infinite' }} />
-          <path d="M40,150 L100,140 L160,160 L220,140 L280,150" stroke="#10b981" strokeWidth="1.5" opacity="0.4"
-            strokeDasharray="8 4" style={{ animation: 'coordinated-flow 2.5s linear infinite' }} />
-          {[
-            { x: 40, y: 100 }, { x: 100, y: 60 }, { x: 160, y: 100 },
-            { x: 220, y: 60 }, { x: 280, y: 100 },
-            { x: 100, y: 140 }, { x: 160, y: 40 }, { x: 220, y: 140 },
-          ].map((n, i) => (
-            <g key={i}>
-              <circle cx={n.x} cy={n.y} r="10" fill="#3b82f6" opacity="0.12" />
-              <circle cx={n.x} cy={n.y} r="5" fill="#3b82f6" opacity="0.7" />
-            </g>
-          ))}
-          <rect x="152" y="92" width="16" height="16" rx="3" stroke="#10b981" strokeWidth="1.5" fill="none" opacity="0.7" />
-          <path d="M156 100 L159 103 L164 97" stroke="#10b981" strokeWidth="1.5" opacity="0.7" />
-        </svg>
+      {/* ────── With orchestration ────── */}
+      <div>
+        <div className="relative bg-cool-surface border border-accent/20 rounded-2xl p-8 overflow-hidden">
+          <div className="absolute inset-0 bg-accent/[0.02]" />
+          <p className="font-mono text-xs font-medium text-accent mb-6 uppercase tracking-wider relative z-10">With orchestration</p>
+          <svg viewBox="0 0 320 210" className="w-full h-auto relative z-10" fill="none">
+            <defs>
+              <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+              <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+
+            {/* Connection paths (static track lines) */}
+            {flowPaths.map(p => (
+              <path key={p.id} id={p.id} d={p.d} stroke={p.color} strokeWidth={p.width}
+                opacity="0.2" strokeDasharray="6 4" />
+            ))}
+
+            {/* Flowing pulses — 2 per path, staggered */}
+            {flowPaths.map((p, pi) => (
+              [0, 1].map(dup => (
+                <circle key={`pulse-${pi}-${dup}`} r="3.5" fill={p.color} opacity="0.9" filter="url(#glow-blue)">
+                  <animateMotion dur={`${3 + pi * 0.5}s`} begin={`${dup * (1.5 + pi * 0.25)}s`} repeatCount="indefinite" fill="freeze">
+                    <mpath href={`#${p.id}`} />
+                  </animateMotion>
+                  <animate attributeName="opacity" values="0;0.9;0.9;0" dur={`${3 + pi * 0.5}s`} begin={`${dup * (1.5 + pi * 0.25)}s`} repeatCount="indefinite" />
+                </circle>
+              ))
+            ))}
+
+            {/* Nodes — static with hover glow */}
+            {flowNodes.map((n, i) => (
+              <g key={`fn-${i}`}>
+                <circle cx={n.x} cy={n.y} r="10" fill="#3b82f6" opacity="0.08" />
+                <circle cx={n.x} cy={n.y} r="5" fill="#3b82f6" opacity="0.6" className="flow-node" style={{ animationDelay: `${i * 0.3}s` }} />
+              </g>
+            ))}
+
+            {/* Completion flashes at end nodes */}
+            {[{ x: 290, y: 60 }, { x: 290, y: 110 }, { x: 290, y: 160 }].map((n, i) => (
+              <g key={`check-${i}`} className="flow-complete" style={{ animationDelay: `${2.5 + i * 0.8}s` }}>
+                <circle cx={n.x} cy={n.y} r="8" fill="#10b981" opacity="0.15" />
+                <path d={`M${n.x - 3} ${n.y} L${n.x - 1} ${n.y + 2.5} L${n.x + 3.5} ${n.y - 2.5}`} stroke="#10b981" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </g>
+            ))}
+
+            {/* Central orchestrator — pulsing hub */}
+            <rect x="150" y="100" width="20" height="20" rx="4" stroke="#10b981" strokeWidth="1.5" fill="#10b981" fillOpacity="0.06"
+              className="orch-hub" filter="url(#glow-green)" />
+            <path d="M155 110 L158 113 L165 106" stroke="#10b981" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <p className="text-xs text-slate-light mt-3 leading-relaxed px-2">
+          Work flows end to end — across agents, systems, and people. AI automates steps and guides decisions. Orchestration resolves the fragmentation.
+        </p>
       </div>
     </div>
   )
