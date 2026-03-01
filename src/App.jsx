@@ -773,8 +773,8 @@ function AgenticStack() {
               </div>
               <div className={`grid transition-all duration-500 ${activeLayer === 0 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                 <div className="overflow-hidden">
-                  <div className="border-l-2 border-slate-light/40 pl-4 py-1">
-                    <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[0]}</p>
+                  <div className="border-t border-cool-border/50 pt-3">
+                    <p className="text-sm text-slate leading-relaxed">{layerDetails[0]}</p>
                   </div>
                 </div>
               </div>
@@ -826,8 +826,8 @@ function AgenticStack() {
 
                 <div className={`grid transition-all duration-500 ${activeLayer === 1 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                   <div className="overflow-hidden">
-                    <div className="border-l-2 border-accent/30 pl-4 py-1">
-                      <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[1]}</p>
+                    <div className="border-t border-accent/15 pt-3">
+                      <p className="text-sm text-slate leading-relaxed">{layerDetails[1]}</p>
                     </div>
                   </div>
                 </div>
@@ -866,8 +866,8 @@ function AgenticStack() {
               </div>
               <div className={`grid transition-all duration-500 ${activeLayer === 2 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                 <div className="overflow-hidden">
-                  <div className="border-l-2 border-slate-light/40 pl-4 py-1">
-                    <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[2]}</p>
+                  <div className="border-t border-cool-border/50 pt-3">
+                    <p className="text-sm text-slate leading-relaxed">{layerDetails[2]}</p>
                   </div>
                 </div>
               </div>
