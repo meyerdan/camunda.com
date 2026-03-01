@@ -182,17 +182,20 @@ function HeroBackground() {
 function Hero() {
   const ref = useReveal()
   return (
-    <section className="relative min-h-screen flex items-center justify-center">
+    <section className="relative pt-28 pb-20 sm:pt-32 sm:pb-24 flex items-center justify-center">
       <HeroBackground />
       <div ref={ref} className="reveal relative z-10 max-w-5xl mx-auto px-8 text-center">
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.03em] leading-[1.08] mb-7">
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.03em] leading-[1.08] mb-5">
           The enterprise platform<br className="hidden sm:block" /> for{' '}
           <span className="bg-gradient-to-r from-accent to-[#ff8a4c] bg-clip-text text-transparent">agentic orchestration</span>
         </h1>
-        <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-3 leading-relaxed">
           Orchestrate AI agents, processes, and people on one platform.
           <br className="hidden sm:block" />
           Turn isolated automation into coordinated enterprise intelligence.
+        </p>
+        <p className="text-sm sm:text-base text-slate-light max-w-2xl mx-auto mb-9">
+          The production-grade framework for building and orchestrating multi-agent systems.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="#" className="px-9 py-4 text-base font-semibold bg-accent hover:bg-accent-hover text-white rounded-xl transition-all duration-300 shadow-[0_2px_8px_rgba(252,93,13,0.25)] hover:shadow-[0_4px_16px_rgba(252,93,13,0.35)] hover:-translate-y-0.5">
@@ -202,12 +205,95 @@ function Hero() {
             See how it works
           </a>
         </div>
+        <div className="mt-6">
+          <a href="#" className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover transition-colors duration-200">
+            Build your first orchestrated agent in 5 minutes
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </a>
+        </div>
       </div>
+    </section>
+  )
+}
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-        <div className="w-5 h-8 border border-slate-light/40 rounded-full flex items-start justify-center p-1.5">
-          <div className="w-1 h-2 bg-slate-light/60 rounded-full" style={{ animation: 'float-slow 2s ease-in-out infinite' }} />
+/* ───────────────────────────── Outcomes Bar ───────────────────────────── */
+function MiniLineDown() {
+  return (
+    <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
+      <polyline points="2,6 12,8 22,12 32,16 42,22 52,28 58,30" fill="none" stroke="#FC5D0D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <linearGradient id="fill-down" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
+        <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+      </linearGradient>
+      <path d="M2,6 L12,8 L22,12 L32,16 L42,22 L52,28 L58,30 L58,32 L2,32 Z" fill="url(#fill-down)" className="sparkline-area" />
+    </svg>
+  )
+}
+
+function MiniBarGrow() {
+  return (
+    <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
+      {[
+        { x: 2, h: 8 }, { x: 11, h: 14 }, { x: 20, h: 18 }, { x: 29, h: 22 },
+        { x: 38, h: 26 }, { x: 47, h: 30 },
+      ].map((bar, i) => (
+        <rect key={i} x={bar.x} y={32 - bar.h} width="7" height={bar.h} rx="1.5" fill="#FC5D0D"
+          opacity="0.7" className="bar-grow" style={{ animationDelay: `${i * 0.1}s` }} />
+      ))}
+    </svg>
+  )
+}
+
+function MiniGauge() {
+  return (
+    <svg viewBox="0 0 40 40" className="w-[36px] h-[36px]">
+      <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e8f0" strokeWidth="3" />
+      <circle cx="20" cy="20" r="16" fill="none" stroke="#FC5D0D" strokeWidth="3"
+        strokeDasharray="96 100.5" strokeDashoffset="0" strokeLinecap="round"
+        transform="rotate(-90 20 20)" className="gauge-fill" />
+      <text x="20" y="23" textAnchor="middle" fill="#FC5D0D" fontSize="9" fontWeight="600" fontFamily="'JetBrains Mono', monospace">99%</text>
+    </svg>
+  )
+}
+
+function MiniLineUp() {
+  return (
+    <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
+      <polyline points="2,28 12,24 22,22 32,18 42,12 52,8 58,4" fill="none" stroke="#FC5D0D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <linearGradient id="fill-up" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
+        <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+      </linearGradient>
+      <path d="M2,28 L12,24 L22,22 L32,18 L42,12 L52,8 L58,4 L58,32 L2,32 Z" fill="url(#fill-up)" className="sparkline-area" />
+    </svg>
+  )
+}
+
+function OutcomesBar() {
+  const tiles = [
+    { chart: <MiniLineDown />, number: '60%', label: 'faster processing' },
+    { chart: <MiniBarGrow />, number: '12M+', label: 'daily orchestrations' },
+    { chart: <MiniGauge />, number: '99.7%', label: 'accuracy at scale' },
+    { chart: <MiniLineUp />, number: '500+', label: 'enterprises' },
+  ]
+
+  return (
+    <section className="py-10 bg-white border-y border-cool-border/40">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {tiles.map((tile, i) => (
+            <Reveal key={i} delay={i + 1}>
+              <div className="flex items-center gap-4 group">
+                <div className="flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                  {tile.chart}
+                </div>
+                <div>
+                  <p className="font-mono text-2xl sm:text-3xl font-bold text-light leading-none">{tile.number}</p>
+                  <p className="text-sm text-slate mt-0.5">{tile.label}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -281,25 +367,34 @@ function WhyNow() {
           <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-8">The coordination gap</h2>
         </Reveal>
         <Reveal delay={2}>
+          <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 mb-4 max-w-3xl">
+            <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
+              By 2028, <span className="font-mono">33%</span> of enterprise software applications will include agentic AI — up from less than <span className="font-mono">1%</span> in 2024.
+              <span className="text-sm font-normal text-slate ml-2">— Gartner</span>
+            </p>
+          </div>
+        </Reveal>
+        <Reveal delay={2}>
           <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 mb-10 max-w-3xl">
             <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
-              By 2028, <span className="font-mono">33%</span> of enterprise applications will include agentic AI — up from less than <span className="font-mono">1%</span> today.
+              Yet over <span className="font-mono">40%</span> of agentic AI projects will be canceled by end of 2027 — due to escalating costs, unclear value, or inadequate risk controls.
+              <span className="text-sm font-normal text-slate ml-2">— Gartner</span>
             </p>
           </div>
         </Reveal>
         <Reveal delay={3}>
           <div className="max-w-3xl space-y-5 text-slate leading-relaxed">
             <p>
-              Most enterprises have no plan for how those agents work together — or how to build agents they can actually trust.
+              Enterprises are building multi-agent systems — but most have no plan for how those agents coordinate, share state, or recover from failures. And no way to build agents they can actually trust.
             </p>
             <p>
-              Agents operate in silos — making conflicting decisions, duplicating work, with no audit trail and no way to handle exceptions. The result isn't transformation. It's expensive chaos.
+              Agents operate in silos — making conflicting decisions, duplicating work, with no audit trail and no way to handle exceptions. When one agent fails, nothing catches it. When ten agents touch the same customer journey, nobody coordinates them. The result isn't transformation. It's expensive chaos.
             </p>
             <p>
               The enterprises pulling ahead are doing two things differently. They're building agents on an orchestration foundation — where every agent is durable, governed, and stateful by design. And they're coordinating those agents with processes and people through a single platform that compounds value over time.
             </p>
             <p className="text-light font-semibold">
-              That foundation is agentic orchestration.
+              That foundation is agentic orchestration — the production-grade way to build, coordinate, and govern multi-agent systems.
             </p>
           </div>
         </Reveal>
@@ -362,8 +457,8 @@ function Spectrum() {
               style={{ background: 'linear-gradient(90deg, #FC5D0D 0%, #8b5cf6 50%, #10b981 100%)' }}>
             </div>
             <div className="flex justify-between mt-2 text-xs text-slate-light">
-              <span className="max-w-[280px]">Automate end-to-end processes that run millions of times with zero drift.</span>
-              <span className="max-w-[300px] text-right">Orchestrate AI agents, people, and systems through workflows that adapt.</span>
+              <span className="max-w-[340px]">Automate end-to-end processes that run millions of times with zero drift. The proven foundation hundreds of enterprises already run on.</span>
+              <span className="max-w-[340px] text-right">Build and orchestrate multi-agent systems, people, and processes through workflows that adapt — with durable coordination and governance built in.</span>
             </div>
           </div>
         </Reveal>
@@ -446,7 +541,7 @@ function AgenticStack() {
     {
       label: 'Agentic Orchestration & Automation',
       subtitle: 'Camunda',
-      details: 'The coordination engine. Orchestrate AI agents, automate processes, govern decisions, manage business objects. Build, compose, and deploy — from straight-through processing to fully adaptive agentic workflows.',
+      details: 'The coordination engine — and the most powerful multi-agent framework in the market. Build agents that orchestrate other agents via MCP and A2A. Coordinate through handoff or supervisor patterns. Wait durably for agent responses across minutes or months. Govern every decision with a complete audit trail.',
       borderClass: 'border-accent/40 border-2',
       bgClass: 'bg-gradient-to-r from-accent/[0.06] via-accent/[0.03] to-accent/[0.06]',
       labelColor: 'text-accent',
@@ -535,6 +630,11 @@ function AgenticStack() {
             Because every process execution generates data, the platform learns over time — optimizing routing, surfacing bottlenecks, improving agent performance. <span className="text-light font-semibold">Your orchestration gets smarter the more you use it.</span>
           </p>
         </Reveal>
+        <Reveal delay={4}>
+          <p className="font-mono text-sm text-slate-light text-center mt-6 max-w-2xl mx-auto">
+            Works with any AI provider, any agent framework, any LLM. Connect via MCP, A2A, REST, or any protocol. No lock-in.
+          </p>
+        </Reveal>
       </div>
     </section>
   )
@@ -544,8 +644,8 @@ function AgenticStack() {
 function AudiencePaths() {
   const paths = [
     { icon: Icons.architect, label: 'Enterprise Architect / CIO', hook: 'See the platform', description: 'Explore architecture, integration, governance, and enterprise-grade security.', cta: 'Explore the platform' },
-    { icon: Icons.developer, label: 'Developer', hook: 'Start building', description: 'SDKs, quickstart guides, APIs, and a free trial to get orchestrating in minutes.', cta: 'Start building' },
-    { icon: Icons.business, label: 'Business / LOB Leader', hook: 'See solutions for your domain', description: 'Discover how orchestration transforms operations in your industry and function.', cta: 'See solutions' },
+    { icon: Icons.developer, label: 'Developer', hook: 'Start building', description: 'Build and orchestrate multi-agent systems with Java SDKs, REST APIs, and a free trial. From first agent to production in days.', cta: 'Start building' },
+    { icon: Icons.business, label: 'Business / LOB Leader', hook: 'See solutions for your domain', description: 'See how enterprises cut processing time by 60%, eliminate manual exceptions, and scale operations — in your industry.', cta: 'See solutions' },
     { icon: Icons.customer, label: 'Existing Customer', hook: "What's new", description: "Agentic orchestration capabilities, migration paths, and what's coming next.", cta: "See what's new" },
   ]
 
@@ -606,12 +706,61 @@ function LogoMarquee() {
   )
 }
 
+/* Sparkline SVGs for social proof cards */
+function SparklineDown() {
+  return (
+    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
+      <defs>
+        <linearGradient id="sp-down-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d="M0,4 L13,6 L26,10 L40,14 L53,18 L66,22 L80,26 L80,28 L0,28 Z" fill="url(#sp-down-fill)" />
+      <polyline points="0,4 13,6 26,10 40,14 53,18 66,22 80,26" fill="none" stroke="#FC5D0D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+function SparklineVolume() {
+  return (
+    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
+      {[{x:0,h:6},{x:10,h:10},{x:20,h:14},{x:30,h:12},{x:40,h:18},{x:50,h:22},{x:60,h:20},{x:70,h:26}].map((b,i)=>(
+        <rect key={i} x={b.x} y={28-b.h} width="8" height={b.h} rx="1.5" fill="#FC5D0D" opacity={0.15 + i * 0.08} />
+      ))}
+    </svg>
+  )
+}
+function SparklineBeforeAfter() {
+  return (
+    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
+      <rect x="8" y="4" width="24" height="24" rx="3" fill="#FC5D0D" opacity="0.2" />
+      <rect x="48" y="14" width="24" height="14" rx="3" fill="#FC5D0D" opacity="0.45" />
+      <text x="20" y="20" textAnchor="middle" fill="#FC5D0D" fontSize="7" fontWeight="600" fontFamily="'JetBrains Mono', monospace">Before</text>
+      <text x="60" y="24" textAnchor="middle" fill="#FC5D0D" fontSize="7" fontWeight="600" fontFamily="'JetBrains Mono', monospace">After</text>
+    </svg>
+  )
+}
+function SparklineFlat() {
+  return (
+    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
+      <defs>
+        <linearGradient id="sp-flat-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#10b981" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d="M0,6 L13,5 L26,6 L40,5 L53,6 L66,5 L80,5 L80,28 L0,28 Z" fill="url(#sp-flat-fill)" />
+      <polyline points="0,6 13,5 26,6 40,5 53,6 66,5 80,5" fill="none" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function SocialProof() {
   const stories = [
-    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', metric: '60% faster order processing' },
-    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', metric: '12M+ transactions orchestrated daily' },
-    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', metric: '40% reduction in claims processing time' },
-    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', metric: '99.7% order accuracy' },
+    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', metric: '60% faster order processing', sparkline: <SparklineDown /> },
+    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', metric: '12M+ transactions orchestrated daily', sparkline: <SparklineVolume /> },
+    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', metric: '40% reduction in claims processing time', sparkline: <SparklineBeforeAfter /> },
+    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', metric: '99.7% order accuracy', sparkline: <SparklineFlat /> },
   ]
 
   return (
@@ -639,6 +788,7 @@ function SocialProof() {
                 </span>
                 <h3 className="font-display font-bold text-light mb-3">{story.company}</h3>
                 <p className="text-sm text-slate leading-relaxed mb-5">{story.description}</p>
+                <div className="mb-2">{story.sparkline}</div>
                 <p className="font-mono text-lg font-bold text-accent">{story.metric}</p>
               </div>
             </Reveal>
@@ -670,7 +820,7 @@ function WhyCamunda() {
       lead: "Safe isn't enough if it can't handle the hard stuff. Camunda runs the world's most advanced orchestration engine — built for the complexity real enterprises face.",
       sections: [
         { title: 'Deterministic and dynamic in one engine', text: 'Some work follows strict rules. Some needs AI to decide the next step. Most real processes need both. Camunda handles the full range in a single workflow.' },
-        { title: 'Durable and long-running', text: "Processes that run for minutes or months, across system outages and version changes. Orchestration that doesn't lose state, doesn't drop work, doesn't break when things take time." },
+        { title: 'Durable multi-agent coordination', text: "Orchestrator agents kick off work to other agents and wait — for minutes, hours, or days — without losing state. Support both handoff and supervisor patterns natively. Correlate messages between agents that don't know about each other. Wait for updates from multiple agents simultaneously with timeout, retry, and human escalation. No other framework can do this." },
         { title: 'Evolve without disruption', text: 'Deploy new versions while current ones are running. Migrate in-flight work at runtime. Run multiple versions side by side and compare results. Upgrade continuously without ever stopping.' },
         { title: 'Scale without compromise', text: 'Horizontally scalable, low latency, event-driven. Handles millions of concurrent process instances without degradation.' },
       ],
@@ -682,7 +832,7 @@ function WhyCamunda() {
       sections: [
         { title: 'Business teams move fast', text: 'LOB leaders and business users model processes, compose workflows from pre-built building blocks, and deploy solutions using visual tools and an AI copilot. No code required to get started.' },
         { title: 'IT stays in control', text: 'Developers build the building blocks, define guardrails, set governance policies. Everything the business creates runs within the architecture IT designed. Full visibility, full compliance.' },
-        { title: 'They meet in the middle', text: 'Business teams prove value quickly. When something needs to scale or integrate deeply, IT is already there — same platform, same governance. No handoff, no rebuild.' },
+        { title: 'They meet in the middle', text: 'Business teams prove value quickly. When something needs to scale or integrate deeply, IT is already there — same platform, same governance model. No handoff, no rebuild. A business analyst models a process visually. IT packages the connectors and guardrails as reusable building blocks. The AI copilot helps both sides work faster. Progressive from prototype to production.' },
       ],
     },
   ]
@@ -895,6 +1045,7 @@ export default function App() {
     <div className="bg-white text-light font-body min-h-screen">
       <Navbar />
       <Hero />
+      <OutcomesBar />
       <WhyNow />
       <Spectrum />
       <AgenticStack />

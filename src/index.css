@@ -93,6 +93,48 @@
   100% { transform: translateY(-48px); opacity: 0; }
 }
 
+/* Sparkline draw animation */
+@keyframes sparkline-draw {
+  0% { stroke-dashoffset: 200; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.sparkline-draw {
+  stroke-dasharray: 200;
+  animation: sparkline-draw 1.5s ease-out forwards;
+}
+
+.sparkline-area {
+  opacity: 0;
+  animation: fade-in 0.8s ease-out 0.5s forwards;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Bar grow animation */
+@keyframes bar-grow {
+  0% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+
+.bar-grow {
+  transform-origin: bottom;
+  animation: bar-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Gauge fill animation */
+@keyframes gauge-fill {
+  0% { stroke-dasharray: 0 100.5; }
+  100% { stroke-dasharray: 96 100.5; }
+}
+
+.gauge-fill {
+  animation: gauge-fill 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Subtle section divider */
 .section-divider {
   height: 1px;
