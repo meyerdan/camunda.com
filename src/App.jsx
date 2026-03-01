@@ -750,13 +750,16 @@ function AgenticStack() {
 
             {/* ── Top layer: Engagement Channels ── */}
             <button onClick={() => setActiveLayer(activeLayer === 0 ? null : 0)}
-              className="w-full text-left bg-cool-surface border border-cool-border/60 rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] cursor-pointer hover:border-slate-light transition-all duration-300">
+              className={`w-full text-left bg-cool-surface border rounded-2xl p-6 cursor-pointer transition-all duration-300 ${activeLayer === 0 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-display text-base font-bold text-light">Agentic Engagement</h3>
                   <p className="text-xs text-slate mt-0.5">Where employees and customers interact</p>
                 </div>
-                <svg className={`w-4 h-4 text-slate-light transition-transform duration-300 ${activeLayer === 0 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded-full transition-all duration-300 ${activeLayer === 0 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
+                  {activeLayer === 0 ? 'Close' : 'Explore'}
+                  <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 0 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </span>
               </div>
               <div className="flex flex-wrap gap-3 justify-center">
                 {topTiles.map((t, i) => (
@@ -768,8 +771,12 @@ function AgenticStack() {
                   </div>
                 ))}
               </div>
-              <div className={`transition-all duration-500 overflow-hidden ${activeLayer === 0 ? 'max-h-24 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[0]}</p>
+              <div className={`grid transition-all duration-500 ${activeLayer === 0 ? 'grid-rows-[1fr] opacity-100 mt-5' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <div className="border-l-2 border-slate-light/40 pl-4 py-1">
+                    <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[0]}</p>
+                  </div>
+                </div>
               </div>
             </button>
 
@@ -782,7 +789,7 @@ function AgenticStack() {
 
             {/* ── Middle layer: Camunda (THE HERO) ── */}
             <button onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
-              className="w-full text-left border-2 border-accent/30 rounded-2xl overflow-hidden cursor-pointer hover:border-accent/50 transition-all duration-300 shadow-[0_0_40px_rgba(252,93,13,0.06)] animate-[layer-pulse_4s_ease-in-out_infinite]">
+              className={`w-full text-left border-2 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 shadow-[0_0_40px_rgba(252,93,13,0.06)] animate-[layer-pulse_4s_ease-in-out_infinite] ${activeLayer === 1 ? 'border-accent/50' : 'border-accent/30 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(252,93,13,0.10)]'}`}>
               <div className="bg-gradient-to-br from-accent/[0.06] via-white to-accent/[0.04] p-6">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -794,7 +801,10 @@ function AgenticStack() {
                       <p className="text-xs text-accent/60 font-mono font-medium mt-0.5">Camunda</p>
                     </div>
                   </div>
-                  <svg className={`w-4 h-4 text-accent/40 transition-transform duration-300 ${activeLayer === 1 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded-full transition-all duration-300 ${activeLayer === 1 ? 'bg-accent/10 text-accent' : 'bg-accent/[0.07] text-accent/60'}`}>
+                    {activeLayer === 1 ? 'Close' : 'Explore'}
+                    <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 1 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </span>
                 </div>
 
                 {/* Living network — always visible */}
@@ -814,8 +824,12 @@ function AgenticStack() {
                   ))}
                 </div>
 
-                <div className={`transition-all duration-500 overflow-hidden ${activeLayer === 1 ? 'max-h-32 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                  <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[1]}</p>
+                <div className={`grid transition-all duration-500 ${activeLayer === 1 ? 'grid-rows-[1fr] opacity-100 mt-5' : 'grid-rows-[0fr] opacity-0'}`}>
+                  <div className="overflow-hidden">
+                    <div className="border-l-2 border-accent/30 pl-4 py-1">
+                      <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[1]}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </button>
@@ -829,13 +843,16 @@ function AgenticStack() {
 
             {/* ── Bottom layer: Core Systems ── */}
             <button onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
-              className="w-full text-left bg-dark-elevated/60 border border-cool-border/60 rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] cursor-pointer hover:border-slate-light transition-all duration-300">
+              className={`w-full text-left bg-dark-elevated/60 border rounded-2xl p-6 cursor-pointer transition-all duration-300 ${activeLayer === 2 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-display text-base font-bold text-light">Core Systems & Data</h3>
                   <p className="text-xs text-slate mt-0.5">Your existing technology investments</p>
                 </div>
-                <svg className={`w-4 h-4 text-slate-light transition-transform duration-300 ${activeLayer === 2 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded-full transition-all duration-300 ${activeLayer === 2 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
+                  {activeLayer === 2 ? 'Close' : 'Explore'}
+                  <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 2 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </span>
               </div>
               <div className="flex flex-wrap gap-3 justify-center">
                 {bottomTiles.map((t, i) => (
@@ -847,8 +864,12 @@ function AgenticStack() {
                   </div>
                 ))}
               </div>
-              <div className={`transition-all duration-500 overflow-hidden ${activeLayer === 2 ? 'max-h-24 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[2]}</p>
+              <div className={`grid transition-all duration-500 ${activeLayer === 2 ? 'grid-rows-[1fr] opacity-100 mt-5' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <div className="border-l-2 border-slate-light/40 pl-4 py-1">
+                    <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[2]}</p>
+                  </div>
+                </div>
               </div>
             </button>
           </div>
