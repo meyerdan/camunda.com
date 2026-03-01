@@ -16,7 +16,6 @@ function useReveal() {
   return ref
 }
 
-/* Small helper — apply reveal to arbitrary elements */
 function Reveal({ children, className = '', delay = 0 }) {
   const ref = useReveal()
   return (
@@ -85,17 +84,17 @@ function Navbar() {
   }, [])
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-dark-base/90 backdrop-blur-xl border-b border-dark-border/50' : ''}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)]' : ''}`}>
       <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-10">
-          <a href="#" className="font-display text-xl font-bold tracking-tight text-light">Camunda</a>
+          <a href="#" className="font-display text-xl font-extrabold tracking-tight text-light">Camunda</a>
           <div className="hidden md:flex items-center gap-7">
             {['Platform', 'Solutions', 'Developers', 'Customers', 'Pricing'].map(item => (
-              <a key={item} href="#" className="text-sm text-light-dim hover:text-light transition-colors duration-200">{item}</a>
+              <a key={item} href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">{item}</a>
             ))}
           </div>
         </div>
-        <a href="#" className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-medium bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors duration-200">
+        <a href="#" className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold bg-accent hover:bg-accent-hover text-white rounded-lg transition-all duration-200 shadow-[0_1px_2px_rgba(252,93,13,0.3)]">
           Try Free
         </a>
       </div>
@@ -108,30 +107,41 @@ function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Gradient base */}
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-base via-dark-base to-dark-surface" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-cool-surface" />
 
-      {/* SVG flowing lines */}
-      <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      {/* Subtle dot grid */}
+      <div
+        className="absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #c7cdd8 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      {/* SVG flowing lines — more visible */}
+      <svg className="absolute inset-0 w-full h-full opacity-[0.28]" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0" />
-            <stop offset="50%" stopColor="#FC5D0D" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#FC5D0D" stopOpacity="0.7" />
             <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="line-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-            <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+            <stop offset="0%" stopColor="#475569" stopOpacity="0" />
+            <stop offset="50%" stopColor="#475569" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#475569" stopOpacity="0" />
           </linearGradient>
         </defs>
 
-        {/* Flowing curves */}
+        {/* Flowing curves — more lines for density */}
         {[
-          { d: 'M-100,300 C200,280 400,400 720,350 S1100,250 1540,320', delay: '0s', grad: 'url(#line-grad)' },
-          { d: 'M-100,450 C300,420 500,520 720,480 S1000,400 1540,460', delay: '2s', grad: 'url(#line-grad)' },
-          { d: 'M-100,600 C250,580 450,650 720,610 S1050,560 1540,600', delay: '4s', grad: 'url(#line-grad-2)' },
-          { d: 'M-100,200 C350,220 550,150 800,200 S1150,280 1540,220', delay: '1s', grad: 'url(#line-grad-2)' },
-          { d: 'M-100,750 C200,720 500,780 750,740 S1100,700 1540,750', delay: '3s', grad: 'url(#line-grad)' },
+          { d: 'M-100,250 C200,230 400,350 720,300 S1100,200 1540,270', delay: '0s', grad: 'url(#line-grad)' },
+          { d: 'M-100,380 C300,350 500,450 720,410 S1000,330 1540,390', delay: '2s', grad: 'url(#line-grad-2)' },
+          { d: 'M-100,520 C250,500 450,570 720,530 S1050,480 1540,520', delay: '4s', grad: 'url(#line-grad)' },
+          { d: 'M-100,160 C350,180 550,110 800,160 S1150,240 1540,180', delay: '1s', grad: 'url(#line-grad-2)' },
+          { d: 'M-100,660 C200,640 500,700 750,660 S1100,620 1540,660', delay: '3s', grad: 'url(#line-grad)' },
+          { d: 'M-100,800 C300,770 600,830 900,790 S1200,750 1540,800', delay: '5s', grad: 'url(#line-grad-2)' },
+          { d: 'M-100,100 C200,120 500,60 800,100 S1100,140 1540,100', delay: '1.5s', grad: 'url(#line-grad)' },
         ].map((line, i) => (
           <path
             key={i}
@@ -144,25 +154,27 @@ function HeroBackground() {
           />
         ))}
 
-        {/* Connecting nodes */}
+        {/* Larger, more visible nodes */}
         {[
-          { cx: 200, cy: 290 }, { cx: 500, cy: 410 }, { cx: 720, cy: 350 },
-          { cx: 900, cy: 280 }, { cx: 1100, cy: 460 }, { cx: 350, cy: 580 },
-          { cx: 600, cy: 200 }, { cx: 1000, cy: 600 }, { cx: 800, cy: 740 },
-          { cx: 300, cy: 730 }, { cx: 1150, cy: 220 }, { cx: 450, cy: 150 },
+          { cx: 180, cy: 240 }, { cx: 460, cy: 370 }, { cx: 720, cy: 300 },
+          { cx: 920, cy: 230 }, { cx: 1100, cy: 400 }, { cx: 320, cy: 510 },
+          { cx: 580, cy: 160 }, { cx: 1000, cy: 530 }, { cx: 800, cy: 660 },
+          { cx: 260, cy: 650 }, { cx: 1150, cy: 180 }, { cx: 420, cy: 110 },
+          { cx: 650, cy: 470 }, { cx: 1050, cy: 320 }, { cx: 140, cy: 400 },
+          { cx: 860, cy: 130 }, { cx: 540, cy: 620 }, { cx: 1200, cy: 570 },
         ].map((node, i) => (
           <g key={i}>
-            <circle cx={node.cx} cy={node.cy} r="3" fill={i % 3 === 0 ? '#FC5D0D' : '#3b82f6'} opacity="0.5"
-              style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.4}s` }} />
-            <circle cx={node.cx} cy={node.cy} r="8" fill="none" stroke={i % 3 === 0 ? '#FC5D0D' : '#3b82f6'} strokeWidth="0.5" opacity="0.25"
-              style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.4}s` }} />
+            <circle cx={node.cx} cy={node.cy} r="4" fill={i % 4 === 0 ? '#FC5D0D' : '#94a3b8'} opacity="0.5"
+              style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.35}s` }} />
+            <circle cx={node.cx} cy={node.cy} r="10" fill="none" stroke={i % 4 === 0 ? '#FC5D0D' : '#94a3b8'} strokeWidth="0.5" opacity="0.2"
+              style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.35}s` }} />
           </g>
         ))}
       </svg>
 
-      {/* Radial glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[700px] bg-accent/[0.06] rounded-full blur-3xl" />
-      <div className="absolute top-2/3 left-1/3 -translate-x-1/2 w-[400px] h-[400px] bg-[#3b82f6]/[0.03] rounded-full blur-3xl" />
+      {/* Radial glows */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-accent/[0.04] rounded-full blur-3xl" />
+      <div className="absolute top-2/3 right-1/4 w-[500px] h-[500px] bg-[#475569]/[0.03] rounded-full blur-3xl" />
     </div>
   )
 }
@@ -173,20 +185,20 @@ function Hero() {
     <section className="relative min-h-screen flex items-center justify-center">
       <HeroBackground />
       <div ref={ref} className="reveal relative z-10 max-w-5xl mx-auto px-8 text-center">
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-bold tracking-tight leading-[1.1] mb-7">
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.03em] leading-[1.08] mb-7">
           The enterprise platform<br className="hidden sm:block" /> for{' '}
           <span className="bg-gradient-to-r from-accent to-[#ff8a4c] bg-clip-text text-transparent">agentic orchestration</span>
         </h1>
-        <p className="text-lg sm:text-xl text-light-dim max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-10 leading-relaxed">
           Orchestrate AI agents, processes, and people on one platform.
           <br className="hidden sm:block" />
           Turn isolated automation into coordinated enterprise intelligence.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#" className="px-9 py-4 text-base font-semibold bg-accent hover:bg-accent-hover text-white rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-accent/25 hover:-translate-y-0.5">
+          <a href="#" className="px-9 py-4 text-base font-semibold bg-accent hover:bg-accent-hover text-white rounded-xl transition-all duration-300 shadow-[0_2px_8px_rgba(252,93,13,0.25)] hover:shadow-[0_4px_16px_rgba(252,93,13,0.35)] hover:-translate-y-0.5">
             Try Free
           </a>
-          <a href="#" className="px-9 py-4 text-base font-medium border border-dark-border text-light hover:border-light-dim/50 hover:bg-dark-surface rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+          <a href="#" className="px-9 py-4 text-base font-medium border border-cool-border text-light hover:border-slate-light hover:bg-cool-surface rounded-xl transition-all duration-300 hover:-translate-y-0.5">
             See how it works
           </a>
         </div>
@@ -194,8 +206,8 @@ function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-        <div className="w-5 h-8 border border-light-dim/40 rounded-full flex items-start justify-center p-1.5">
-          <div className="w-1 h-2 bg-light-dim/60 rounded-full" style={{ animation: 'float-slow 2s ease-in-out infinite' }} />
+        <div className="w-5 h-8 border border-slate-light/40 rounded-full flex items-start justify-center p-1.5">
+          <div className="w-1 h-2 bg-slate-light/60 rounded-full" style={{ animation: 'float-slow 2s ease-in-out infinite' }} />
         </div>
       </div>
     </section>
@@ -205,27 +217,24 @@ function Hero() {
 /* ───────────────────────────── Section 2: Why Now ───────────────────────────── */
 function CoordinationGraphic() {
   return (
-    <div className="grid md:grid-cols-2 gap-8 mt-12">
+    <div className="grid md:grid-cols-2 gap-6 mt-12">
       {/* Without orchestration */}
-      <div className="relative bg-dark-surface/50 border border-dark-border/50 rounded-2xl p-8 overflow-hidden">
-        <p className="text-sm font-medium text-red-400/80 mb-6 uppercase tracking-wider">Without orchestration</p>
+      <div className="relative bg-cool-surface border border-cool-border/60 rounded-2xl p-8 overflow-hidden">
+        <p className="font-mono text-xs font-medium text-red-500/70 mb-6 uppercase tracking-wider">Without orchestration</p>
         <svg viewBox="0 0 320 200" className="w-full h-auto" fill="none">
-          {/* Scattered disconnected nodes */}
           {[
             { x: 60, y: 40, delay: 0 }, { x: 180, y: 30, delay: 0.3 }, { x: 260, y: 60, delay: 0.6 },
             { x: 40, y: 120, delay: 0.2 }, { x: 150, y: 100, delay: 0.5 }, { x: 240, y: 130, delay: 0.4 },
             { x: 100, y: 170, delay: 0.1 }, { x: 200, y: 170, delay: 0.7 },
           ].map((n, i) => (
             <g key={i} style={{ animation: `erratic-${(i % 2) + 1} ${2 + i * 0.3}s ease-in-out infinite`, animationDelay: `${n.delay}s` }}>
-              <circle cx={n.x} cy={n.y} r="8" fill="#ef4444" opacity="0.15" />
+              <circle cx={n.x} cy={n.y} r="8" fill="#ef4444" opacity="0.12" />
               <circle cx={n.x} cy={n.y} r="4" fill="#ef4444" opacity="0.5" />
             </g>
           ))}
-          {/* Broken connection lines */}
           <line x1="64" y1="42" x2="120" y2="70" stroke="#ef4444" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
           <line x1="155" y1="102" x2="240" y2="130" stroke="#ef4444" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
           <line x1="43" y1="122" x2="100" y2="168" stroke="#ef4444" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
-          {/* Conflict indicators */}
           <text x="120" y="75" fill="#ef4444" fontSize="14" opacity="0.5">✕</text>
           <text x="190" y="85" fill="#ef4444" fontSize="14" opacity="0.5">✕</text>
           <text x="80" y="145" fill="#ef4444" fontSize="14" opacity="0.5">?</text>
@@ -233,30 +242,26 @@ function CoordinationGraphic() {
       </div>
 
       {/* With orchestration */}
-      <div className="relative bg-dark-surface/50 border border-accent/20 rounded-2xl p-8 overflow-hidden">
+      <div className="relative bg-cool-surface border border-accent/20 rounded-2xl p-8 overflow-hidden">
         <div className="absolute inset-0 bg-accent/[0.02]" />
-        <p className="text-sm font-medium text-accent mb-6 uppercase tracking-wider relative z-10">With orchestration</p>
+        <p className="font-mono text-xs font-medium text-accent mb-6 uppercase tracking-wider relative z-10">With orchestration</p>
         <svg viewBox="0 0 320 200" className="w-full h-auto relative z-10" fill="none">
-          {/* Orchestrated flow lines */}
           <path d="M40,100 C80,60 120,60 160,100 S240,140 280,100" stroke="#3b82f6" strokeWidth="2" opacity="0.5"
             strokeDasharray="8 4" style={{ animation: 'coordinated-flow 2s linear infinite' }} />
           <path d="M40,60 L100,60 L160,40 L220,60 L280,60" stroke="#3b82f6" strokeWidth="1.5" opacity="0.4"
             strokeDasharray="8 4" style={{ animation: 'coordinated-flow 3s linear infinite' }} />
           <path d="M40,150 L100,140 L160,160 L220,140 L280,150" stroke="#10b981" strokeWidth="1.5" opacity="0.4"
             strokeDasharray="8 4" style={{ animation: 'coordinated-flow 2.5s linear infinite' }} />
-
-          {/* Connected nodes */}
           {[
             { x: 40, y: 100 }, { x: 100, y: 60 }, { x: 160, y: 100 },
             { x: 220, y: 60 }, { x: 280, y: 100 },
             { x: 100, y: 140 }, { x: 160, y: 40 }, { x: 220, y: 140 },
           ].map((n, i) => (
             <g key={i}>
-              <circle cx={n.x} cy={n.y} r="10" fill="#3b82f6" opacity="0.15" />
+              <circle cx={n.x} cy={n.y} r="10" fill="#3b82f6" opacity="0.12" />
               <circle cx={n.x} cy={n.y} r="5" fill="#3b82f6" opacity="0.7" />
             </g>
           ))}
-          {/* Governance checkpoints */}
           <rect x="152" y="92" width="16" height="16" rx="3" stroke="#10b981" strokeWidth="1.5" fill="none" opacity="0.7" />
           <path d="M156 100 L159 103 L164 97" stroke="#10b981" strokeWidth="1.5" opacity="0.7" />
         </svg>
@@ -267,23 +272,23 @@ function CoordinationGraphic() {
 
 function WhyNow() {
   return (
-    <section className="py-32 bg-dark-base">
+    <section className="py-32 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-4">Why now</p>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Why now</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-8">The coordination gap</h2>
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-8">The coordination gap</h2>
         </Reveal>
         <Reveal delay={2}>
-          <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-2 border-accent pl-6 py-4 mb-10 max-w-3xl">
-            <p className="text-xl sm:text-2xl font-display font-semibold leading-snug">
-              By 2028, 33% of enterprise applications will include agentic AI — up from less than 1% today.
+          <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 mb-10 max-w-3xl">
+            <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
+              By 2028, <span className="font-mono">33%</span> of enterprise applications will include agentic AI — up from less than <span className="font-mono">1%</span> today.
             </p>
           </div>
         </Reveal>
         <Reveal delay={3}>
-          <div className="max-w-3xl space-y-5 text-light-dim leading-relaxed">
+          <div className="max-w-3xl space-y-5 text-slate leading-relaxed">
             <p>
               Most enterprises have no plan for how those agents work together — or how to build agents they can actually trust.
             </p>
@@ -293,7 +298,7 @@ function WhyNow() {
             <p>
               The enterprises pulling ahead are doing two things differently. They're building agents on an orchestration foundation — where every agent is durable, governed, and stateful by design. And they're coordinating those agents with processes and people through a single platform that compounds value over time.
             </p>
-            <p className="text-light font-medium">
+            <p className="text-light font-semibold">
               That foundation is agentic orchestration.
             </p>
           </div>
@@ -309,6 +314,7 @@ function WhyNow() {
 /* ───────────────────────────── Section 3: The Spectrum ───────────────────────────── */
 function Spectrum() {
   const [hoveredUseCase, setHoveredUseCase] = useState(null)
+  const barRef = useReveal()
 
   const useCases = [
     { label: 'Order processing', zone: 'left', description: 'High-volume, rules-driven order handling running millions of times daily.' },
@@ -323,54 +329,53 @@ function Spectrum() {
   ]
 
   const zones = [
-    { key: 'left', label: 'Fully automated', color: 'from-accent/20 to-accent/5', dotColor: 'bg-accent' },
-    { key: 'mid', label: 'Hybrid', color: 'from-purple-500/20 to-purple-500/5', dotColor: 'bg-purple-400' },
-    { key: 'right', label: 'Fully adaptive', color: 'from-mint/20 to-mint/5', dotColor: 'bg-mint' },
+    { key: 'left', label: 'Fully automated', color: 'from-accent/10 to-accent/[0.02]', dotColor: 'bg-accent' },
+    { key: 'mid', label: 'Hybrid', color: 'from-purple-500/10 to-purple-500/[0.02]', dotColor: 'bg-purple-500' },
+    { key: 'right', label: 'Fully adaptive', color: 'from-mint/10 to-mint/[0.02]', dotColor: 'bg-mint' },
   ]
 
   return (
-    <section className="py-32 bg-dark-surface">
+    <section className="py-32 bg-cool-surface">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-4">What Camunda does</p>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">What Camunda does</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-6">
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-6">
             From fully automated to fully adaptive
           </h2>
         </Reveal>
         <Reveal delay={2}>
-          <p className="text-light-dim text-lg max-w-3xl mb-16 leading-relaxed">
+          <p className="text-slate text-lg max-w-3xl mb-16 leading-relaxed">
             Camunda handles the full spectrum of enterprise work — from straight-through processing to complex agentic workflows — on one platform.
           </p>
         </Reveal>
 
-        {/* Spectrum bar */}
+        {/* Spectrum bar — animated on reveal */}
         <Reveal delay={2}>
           <div className="relative mb-4">
             <div className="flex justify-between mb-3 text-sm">
-              <span className="text-accent font-medium font-display">Straight-through processing</span>
-              <span className="text-mint font-medium font-display">Agentic workflows</span>
+              <span className="font-mono text-xs text-accent font-medium">Straight-through processing</span>
+              <span className="font-mono text-xs text-mint font-medium">Agentic workflows</span>
             </div>
-            <div className="relative h-2 rounded-full overflow-hidden"
+            <div ref={barRef} className="spectrum-bar-animated relative h-2 rounded-full overflow-hidden"
               style={{ background: 'linear-gradient(90deg, #FC5D0D 0%, #8b5cf6 50%, #10b981 100%)' }}>
-              <div className="absolute inset-0 bg-dark-base/10" />
             </div>
-            <div className="flex justify-between mt-2 text-xs text-light-dim/50">
+            <div className="flex justify-between mt-2 text-xs text-slate-light">
               <span className="max-w-[280px]">Automate end-to-end processes that run millions of times with zero drift.</span>
               <span className="max-w-[300px] text-right">Orchestrate AI agents, people, and systems through workflows that adapt.</span>
             </div>
           </div>
         </Reveal>
 
-        {/* Use case cards in three columns */}
+        {/* Use case cards */}
         <Reveal delay={3}>
           <div className="grid md:grid-cols-3 gap-5 mt-12">
             {zones.map((zone) => (
               <div key={zone.key} className="space-y-3">
                 <div className="flex items-center gap-2 mb-4">
                   <div className={`w-2 h-2 rounded-full ${zone.dotColor}`} />
-                  <span className="text-xs font-medium text-light-dim uppercase tracking-wider">{zone.label}</span>
+                  <span className="font-mono text-[11px] font-medium text-slate uppercase tracking-wider">{zone.label}</span>
                 </div>
                 {useCases.filter(uc => uc.zone === zone.key).map((uc, j) => {
                   const globalIdx = useCases.indexOf(uc)
@@ -378,8 +383,8 @@ function Spectrum() {
                   return (
                     <div
                       key={j}
-                      className={`relative bg-gradient-to-br ${zone.color} border border-dark-border/30 rounded-xl p-4 cursor-pointer transition-all duration-300 ${
-                        isHovered ? 'border-accent/40 -translate-y-0.5 shadow-lg shadow-accent/5' : 'hover:border-dark-border/60'
+                      className={`relative bg-gradient-to-br ${zone.color} border rounded-xl p-4 cursor-pointer transition-all duration-300 ${
+                        isHovered ? 'border-accent/30 -translate-y-0.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/50 hover:border-cool-border'
                       }`}
                       onMouseEnter={() => setHoveredUseCase(globalIdx)}
                       onMouseLeave={() => setHoveredUseCase(null)}
@@ -388,7 +393,7 @@ function Spectrum() {
                         {uc.label}
                       </p>
                       <div className={`transition-all duration-300 overflow-hidden ${isHovered ? 'max-h-20 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
-                        <p className="text-xs text-light-dim leading-relaxed">{uc.description}</p>
+                        <p className="text-xs text-slate leading-relaxed">{uc.description}</p>
                       </div>
                     </div>
                   )
@@ -399,8 +404,135 @@ function Spectrum() {
         </Reveal>
 
         <Reveal delay={4}>
-          <p className="text-center text-light-dim text-lg max-w-2xl mx-auto mt-14">
-            Most enterprises need both. <span className="text-light font-medium">One platform handles the full range</span> — with governance across everything.
+          <p className="text-center text-slate text-lg max-w-2xl mx-auto mt-14">
+            Most enterprises need both. <span className="text-light font-semibold">One platform handles the full range</span> — with governance across everything.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+/* ───────────────────────────── Section 6: Agentic Enterprise Stack ───────────────────────────── */
+function StackConnectors() {
+  return (
+    <div className="flex justify-center gap-16 py-1 relative">
+      {[0, 1, 2, 3].map(i => (
+        <div key={i} className="relative w-px h-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-cool-border via-accent/30 to-cool-border" />
+          {/* Flowing dot */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-accent"
+            style={{ animation: `flow-down 2s ease-in-out infinite`, animationDelay: `${i * 0.5}s` }}
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function AgenticStack() {
+  const [activeLayer, setActiveLayer] = useState(1)
+
+  const layers = [
+    {
+      label: 'Agentic Engagement',
+      subtitle: 'Where employees and customers interact',
+      details: 'Conversational interfaces across every channel — Teams, Slack, web, mobile. Understands intent, takes action, maintains context. One unified experience for employees and customers.',
+      borderClass: 'border-cool-border',
+      bgClass: 'bg-cool-surface',
+      labelColor: 'text-light',
+    },
+    {
+      label: 'Agentic Orchestration & Automation',
+      subtitle: 'Camunda',
+      details: 'The coordination engine. Orchestrate AI agents, automate processes, govern decisions, manage business objects. Build, compose, and deploy — from straight-through processing to fully adaptive agentic workflows.',
+      borderClass: 'border-accent/40 border-2',
+      bgClass: 'bg-gradient-to-r from-accent/[0.06] via-accent/[0.03] to-accent/[0.06]',
+      labelColor: 'text-accent',
+      isCamunda: true,
+    },
+    {
+      label: 'Core Systems & Data',
+      subtitle: 'Your existing technology investments',
+      details: 'ERPs, CRMs, databases, legacy systems, AI models, third-party agents. Camunda connects to them, orchestrates across them, and maintains a unified view of business state through the Business Object Graph.',
+      borderClass: 'border-cool-border',
+      bgClass: 'bg-dark-elevated/60',
+      labelColor: 'text-light',
+    },
+  ]
+
+  return (
+    <section className="py-32 bg-white">
+      <div className="max-w-5xl mx-auto px-6">
+        <Reveal>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">The Agentic Enterprise Stack</p>
+        </Reveal>
+        <Reveal delay={1}>
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-4">
+            The orchestration core your enterprise is missing
+          </h2>
+        </Reveal>
+        <Reveal delay={2}>
+          <p className="text-lg text-slate max-w-3xl mb-14 leading-relaxed">
+            Every enterprise already has engagement channels and core systems. What's missing is the intelligent orchestration layer that connects them.
+          </p>
+        </Reveal>
+
+        <Reveal delay={3}>
+          <div>
+            {layers.map((layer, i) => {
+              const isActive = activeLayer === i
+              return (
+                <div key={i}>
+                  <button
+                    onClick={() => setActiveLayer(i)}
+                    className={`w-full text-left rounded-2xl border transition-all duration-500 overflow-hidden cursor-pointer ${layer.borderClass} ${layer.bgClass} ${
+                      layer.isCamunda ? 'shadow-[0_0_40px_rgba(252,93,13,0.06)]' : 'shadow-[0_1px_3px_rgba(0,0,0,0.04)]'
+                    } ${layer.isCamunda && !isActive ? 'animate-[layer-pulse_4s_ease-in-out_infinite]' : ''}`}
+                  >
+                    <div className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          {layer.isCamunda && (
+                            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                              <div className="w-3 h-3 rounded-sm bg-accent" />
+                            </div>
+                          )}
+                          <div>
+                            <h3 className={`font-display text-lg font-bold ${layer.labelColor}`}>
+                              {layer.label}
+                            </h3>
+                            <p className={`text-sm mt-0.5 ${layer.isCamunda ? 'text-accent/60 font-mono font-medium text-xs' : 'text-slate'}`}>
+                              {layer.subtitle}
+                            </p>
+                          </div>
+                        </div>
+                        <svg
+                          className={`w-5 h-5 text-slate-light transition-transform duration-300 ${isActive ? 'rotate-180' : ''}`}
+                          viewBox="0 0 20 20" fill="none"
+                        >
+                          <path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+
+                      <div className={`transition-all duration-500 overflow-hidden ${isActive ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                        <p className="text-sm text-slate leading-relaxed max-w-2xl">{layer.details}</p>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Animated connectors between layers */}
+                  {i < 2 && <StackConnectors />}
+                </div>
+              )
+            })}
+          </div>
+        </Reveal>
+
+        <Reveal delay={4}>
+          <p className="text-slate text-center mt-12 max-w-2xl mx-auto leading-relaxed">
+            Because every process execution generates data, the platform learns over time — optimizing routing, surfacing bottlenecks, improving agent performance. <span className="text-light font-semibold">Your orchestration gets smarter the more you use it.</span>
           </p>
         </Reveal>
       </div>
@@ -418,26 +550,26 @@ function AudiencePaths() {
   ]
 
   return (
-    <section className="py-32 bg-dark-base">
+    <section className="py-32 bg-cool-surface">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-4">Start your journey</p>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Start your journey</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-14">Built for how you work</h2>
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-14">Built for how you work</h2>
         </Reveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {paths.map((path, i) => (
             <Reveal key={i} delay={i + 1}>
-              <a href="#" className="group block bg-dark-surface border border-dark-border/50 rounded-2xl p-6 h-full hover:border-accent/30 hover:bg-dark-elevated/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/5">
-                <div className="text-light-dim group-hover:text-accent transition-colors duration-300 mb-5">
+              <a href="#" className="group block bg-white border border-cool-border/60 rounded-2xl p-6 h-full hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
+                <div className="text-slate-light group-hover:text-accent transition-colors duration-300 mb-5">
                   {path.icon}
                 </div>
-                <p className="text-xs font-medium text-accent uppercase tracking-wider mb-1">{path.hook}</p>
-                <h3 className="font-display text-lg font-semibold mb-3 text-light">{path.label}</h3>
-                <p className="text-sm text-light-dim leading-relaxed mb-5">{path.description}</p>
-                <span className="text-sm font-medium text-accent group-hover:text-accent-hover transition-colors duration-200 inline-flex items-center gap-1.5">
+                <p className="font-mono text-[11px] font-medium text-accent uppercase tracking-wider mb-1">{path.hook}</p>
+                <h3 className="font-display text-lg font-bold mb-3 text-light">{path.label}</h3>
+                <p className="text-sm text-slate leading-relaxed mb-5">{path.description}</p>
+                <span className="text-sm font-semibold text-accent group-hover:text-accent-hover transition-colors duration-200 inline-flex items-center gap-1.5">
                   {path.cta}
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
@@ -460,13 +592,12 @@ function LogoMarquee() {
 
   return (
     <div className="relative overflow-hidden py-8 mb-16">
-      {/* Fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-dark-surface to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-dark-surface to-transparent z-10" />
+      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10" />
 
       <div className="marquee-track flex items-center gap-16 whitespace-nowrap">
         {doubled.map((name, i) => (
-          <span key={i} className="text-lg font-display font-semibold text-light-dim/50 tracking-wide select-none flex-shrink-0">
+          <span key={i} className="text-lg font-display font-bold text-slate-light/50 tracking-wide select-none flex-shrink-0">
             {name}
           </span>
         ))}
@@ -477,21 +608,21 @@ function LogoMarquee() {
 
 function SocialProof() {
   const stories = [
-    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-100', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', metric: '60% faster order processing' },
-    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-100', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', metric: '12M+ transactions orchestrated daily' },
-    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-100', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', metric: '40% reduction in claims processing time' },
-    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-100', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', metric: '99.7% order accuracy' },
+    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', metric: '60% faster order processing' },
+    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', metric: '12M+ transactions orchestrated daily' },
+    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', metric: '40% reduction in claims processing time' },
+    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', metric: '99.7% order accuracy' },
   ]
 
   return (
-    <section className="py-32 bg-dark-surface">
+    <section className="py-32 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-4">Trusted by industry leaders</p>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Trusted by industry leaders</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-12">
-            500+ enterprises orchestrate with Camunda
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-12">
+            <span className="font-mono">500+</span> enterprises orchestrate with Camunda
           </h2>
         </Reveal>
 
@@ -502,118 +633,17 @@ function SocialProof() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {stories.map((story, i) => (
             <Reveal key={i} delay={i + 1}>
-              <div className="bg-dark-base/50 border border-dark-border/50 rounded-2xl p-6 h-full hover:border-dark-border transition-all duration-300 hover:-translate-y-1">
-                <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full mb-4 ${story.tagColor}`}>
+              <div className="bg-cool-surface border border-cool-border/60 rounded-2xl p-6 h-full hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
+                <span className={`inline-block text-[11px] font-mono font-medium px-2.5 py-1 rounded-full mb-4 ${story.tagColor}`}>
                   {story.tag}
                 </span>
-                <h3 className="font-display font-semibold text-light mb-3">{story.company}</h3>
-                <p className="text-sm text-light-dim leading-relaxed mb-5">{story.description}</p>
-                <p className="font-display text-xl font-bold text-accent">{story.metric}</p>
+                <h3 className="font-display font-bold text-light mb-3">{story.company}</h3>
+                <p className="text-sm text-slate leading-relaxed mb-5">{story.description}</p>
+                <p className="font-mono text-lg font-bold text-accent">{story.metric}</p>
               </div>
             </Reveal>
           ))}
         </div>
-      </div>
-    </section>
-  )
-}
-
-/* ───────────────────────────── Section 6: Agentic Enterprise Stack ───────────────────────────── */
-function AgenticStack() {
-  const [activeLayer, setActiveLayer] = useState(1) // 0=top, 1=middle(camunda), 2=bottom
-
-  const layers = [
-    {
-      label: 'Agentic Engagement',
-      subtitle: 'Where employees and customers interact',
-      details: 'Conversational interfaces across every channel — Teams, Slack, web, mobile. Understands intent, takes action, maintains context. One unified experience for employees and customers.',
-      style: 'from-light/5 to-transparent border-light/10',
-    },
-    {
-      label: 'Agentic Orchestration & Automation',
-      subtitle: 'Camunda',
-      details: 'The coordination engine. Orchestrate AI agents, automate processes, govern decisions, manage business objects. Build, compose, and deploy — from straight-through processing to fully adaptive agentic workflows.',
-      style: 'from-accent/15 to-accent/5 border-accent/30',
-      isCamunda: true,
-    },
-    {
-      label: 'Core Systems & Data',
-      subtitle: 'Your existing technology investments',
-      details: 'ERPs, CRMs, databases, legacy systems, AI models, third-party agents. Camunda connects to them, orchestrates across them, and maintains a unified view of business state through the Business Object Graph.',
-      style: 'from-dark-elevated to-dark-surface border-dark-border/80',
-    },
-  ]
-
-  return (
-    <section className="py-32 bg-dark-base">
-      <div className="max-w-5xl mx-auto px-6">
-        <Reveal>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-4">The Agentic Enterprise Stack</p>
-        </Reveal>
-        <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            The orchestration core your enterprise is missing
-          </h2>
-        </Reveal>
-        <Reveal delay={2}>
-          <p className="text-lg text-light-dim max-w-3xl mb-14 leading-relaxed">
-            Every enterprise already has engagement channels and core systems. What's missing is the intelligent orchestration layer that connects them.
-          </p>
-        </Reveal>
-
-        <Reveal delay={3}>
-          <div className="space-y-3">
-            {layers.map((layer, i) => {
-              const isActive = activeLayer === i
-              return (
-                <button
-                  key={i}
-                  onClick={() => setActiveLayer(i)}
-                  className={`w-full text-left rounded-2xl border bg-gradient-to-r transition-all duration-500 overflow-hidden cursor-pointer ${layer.style} ${
-                    layer.isCamunda ? 'shadow-[0_0_30px_rgba(252,93,13,0.08)]' : ''
-                  } ${layer.isCamunda && !isActive ? 'animate-[layer-pulse_4s_ease-in-out_infinite]' : ''}`}
-                  style={{ minHeight: isActive ? '180px' : '72px' }}
-                >
-                  <div className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className={`font-display text-lg font-semibold ${layer.isCamunda ? 'text-accent' : 'text-light'}`}>
-                          {layer.label}
-                        </h3>
-                        <p className={`text-sm mt-0.5 ${layer.isCamunda ? 'text-accent/70 font-medium' : 'text-light-dim'}`}>
-                          {layer.subtitle}
-                        </p>
-                      </div>
-                      <svg
-                        className={`w-5 h-5 text-light-dim transition-transform duration-300 ${isActive ? 'rotate-180' : ''}`}
-                        viewBox="0 0 20 20" fill="none"
-                      >
-                        <path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-
-                    <div className={`transition-all duration-500 overflow-hidden ${isActive ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                      <p className="text-sm text-light-dim leading-relaxed max-w-2xl">{layer.details}</p>
-                    </div>
-                  </div>
-
-                  {/* Animated connection line between layers */}
-                  {i < 2 && (
-                    <div className="flex justify-center -mb-3 relative z-10">
-                      <div className="w-px h-6 bg-gradient-to-b from-accent/20 to-transparent" />
-                    </div>
-                  )}
-                </button>
-              )
-            })}
-          </div>
-        </Reveal>
-
-        <Reveal delay={4}>
-          <p className="text-light-dim text-center mt-12 max-w-2xl mx-auto leading-relaxed">
-            Because every process execution generates data, the platform learns over time — optimizing routing, surfacing bottlenecks, improving agent performance. <span className="text-light font-medium">Your orchestration gets smarter the more you use it.</span>
-          </p>
-        </Reveal>
       </div>
     </section>
   )
@@ -658,13 +688,13 @@ function WhyCamunda() {
   ]
 
   return (
-    <section className="py-32 bg-dark-surface">
+    <section className="py-32 bg-cool-surface">
       <div className="max-w-5xl mx-auto px-6">
         <Reveal>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-4">Why Camunda</p>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Why Camunda</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-14">Built different</h2>
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-14">Built different</h2>
         </Reveal>
 
         <Reveal delay={2}>
@@ -676,28 +706,28 @@ function WhyCamunda() {
                 onClick={() => setActiveBeat(i)}
                 className={`flex items-center gap-3 px-5 py-3.5 rounded-xl text-left transition-all duration-300 cursor-pointer flex-1 ${
                   activeBeat === i
-                    ? 'bg-accent/10 border border-accent/30 text-accent'
-                    : 'bg-dark-base/50 border border-dark-border/50 text-light-dim hover:border-dark-border hover:text-light'
+                    ? 'bg-accent/8 border border-accent/25 text-accent shadow-[0_1px_4px_rgba(252,93,13,0.08)]'
+                    : 'bg-white border border-cool-border/60 text-slate hover:border-slate-light hover:text-light'
                 }`}
               >
-                <span className={activeBeat === i ? 'text-accent' : 'text-light-dim'}>{beat.icon}</span>
-                <span className="font-display font-semibold text-sm">{beat.headline.length > 30 ? beat.headline.slice(0, 28) + '…' : beat.headline}</span>
+                <span className={activeBeat === i ? 'text-accent' : 'text-slate-light'}>{beat.icon}</span>
+                <span className="font-display font-bold text-sm">{beat.headline.length > 30 ? beat.headline.slice(0, 28) + '…' : beat.headline}</span>
               </button>
             ))}
           </div>
 
-          {/* Active beat content */}
-          <div className="bg-dark-base/50 border border-dark-border/50 rounded-2xl p-8 sm:p-10 transition-all duration-300">
+          {/* Active beat content — crossfade */}
+          <div className="bg-white border border-cool-border/60 rounded-2xl p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             {beats.map((beat, i) => (
-              <div key={i} className={`transition-all duration-400 ${activeBeat === i ? 'block' : 'hidden'}`}>
-                <h3 className="font-display text-2xl sm:text-3xl font-bold mb-4 text-light">{beat.headline}</h3>
-                <p className="text-light-dim text-lg leading-relaxed mb-8 max-w-2xl">{beat.lead}</p>
+              <div key={i} className={`tab-panel ${activeBeat === i ? 'active' : 'hidden'}`}>
+                <h3 className="font-display text-2xl sm:text-3xl font-extrabold mb-4 text-light">{beat.headline}</h3>
+                <p className="text-slate text-lg leading-relaxed mb-8 max-w-2xl">{beat.lead}</p>
 
-                <div className="grid sm:grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-4">
                   {beat.sections.map((sec, j) => (
-                    <div key={j} className="bg-dark-surface/50 border border-dark-border/30 rounded-xl p-5">
-                      <h4 className="font-display font-semibold text-light mb-2">{sec.title}</h4>
-                      <p className="text-sm text-light-dim leading-relaxed">{sec.text}</p>
+                    <div key={j} className="bg-cool-surface border border-cool-border/40 rounded-xl p-5">
+                      <h4 className="font-display font-bold text-light mb-2">{sec.title}</h4>
+                      <p className="text-sm text-slate leading-relaxed">{sec.text}</p>
                     </div>
                   ))}
                 </div>
@@ -710,70 +740,60 @@ function WhyCamunda() {
   )
 }
 
-/* ───────────────────────────── Section 8: Industries ───────────────────────────── */
+/* ───────────────────────────── Section 8: Industries — Larger Tiles ───────────────────────────── */
 function Industries() {
-  const [hoveredIndustry, setHoveredIndustry] = useState(null)
-
   const industries = [
     { icon: Icons.finance, name: 'Financial Services', hook: 'Orchestrate payments, onboarding, and compliance — end to end.', examples: ['Trade settlement', 'KYC', 'Account opening'] },
     { icon: Icons.insurance, name: 'Insurance', hook: 'Automate claims, underwriting, and policy management with AI-powered orchestration.', examples: ['Claims adjudication', 'Underwriting', 'Policy servicing'] },
     { icon: Icons.healthcare, name: 'Healthcare', hook: 'Coordinate patient journeys, medication delivery, and care management at scale.', examples: ['Patient onboarding', 'Medication management', 'Prior authorization'] },
     { icon: Icons.manufacturing, name: 'Manufacturing & Supply Chain', hook: 'Orchestrate orders, logistics, and production across your entire value chain.', examples: ['Order fulfillment', 'Shipment tracking', 'Production scheduling'] },
-    { icon: Icons.arrow, name: 'See all industries', hook: 'Explore how enterprises across every sector use Camunda to orchestrate their operations.', examples: [], isLink: true },
   ]
 
   return (
-    <section className="py-32 bg-dark-base">
+    <section className="py-32 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-4">Industries</p>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Industries</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-14">
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-14">
             Orchestration for your industry
           </h2>
         </Reveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {industries.map((ind, i) => (
             <Reveal key={i} delay={i + 1}>
               <a
                 href="#"
-                className={`group block rounded-2xl p-6 h-full transition-all duration-300 hover:-translate-y-1 ${
-                  ind.isLink
-                    ? 'border-2 border-dashed border-dark-border/50 hover:border-accent/30 bg-transparent'
-                    : 'bg-dark-surface border border-dark-border/50 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5'
-                }`}
-                onMouseEnter={() => setHoveredIndustry(i)}
-                onMouseLeave={() => setHoveredIndustry(null)}
+                className="group block bg-cool-surface border border-cool-border/60 rounded-2xl p-8 h-full transition-all duration-300 hover:-translate-y-1 hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)]"
               >
-                <div className="text-light-dim group-hover:text-accent transition-colors duration-300 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-white border border-cool-border/40 flex items-center justify-center text-slate-light group-hover:text-accent group-hover:border-accent/20 transition-all duration-300 mb-5">
                   {ind.icon}
                 </div>
-                <h3 className="font-display font-semibold text-light mb-2">{ind.name}</h3>
-                <p className="text-sm text-light-dim leading-relaxed mb-4">{ind.hook}</p>
+                <h3 className="font-display font-bold text-light text-lg mb-2">{ind.name}</h3>
+                <p className="text-sm text-slate leading-relaxed mb-5">{ind.hook}</p>
 
-                {/* Reveal examples on hover */}
-                {ind.examples.length > 0 && (
-                  <div className={`transition-all duration-300 overflow-hidden ${hoveredIndustry === i ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-dark-border/30">
-                      {ind.examples.map((ex, j) => (
-                        <span key={j} className="text-xs px-2 py-1 bg-accent/10 text-accent rounded-md">{ex}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {ind.isLink && (
-                  <span className="text-sm font-medium text-accent inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-200">
-                    Explore
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </span>
-                )}
+                {/* Always-visible example tags */}
+                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-cool-border/40">
+                  {ind.examples.map((ex, j) => (
+                    <span key={j} className="font-mono text-[11px] px-2 py-1 bg-accent/6 text-accent/80 rounded-md">{ex}</span>
+                  ))}
+                </div>
               </a>
             </Reveal>
           ))}
         </div>
+
+        {/* See all industries link */}
+        <Reveal delay={5}>
+          <div className="text-center mt-10">
+            <a href="#" className="inline-flex items-center gap-2 font-display font-semibold text-accent hover:text-accent-hover transition-colors duration-200">
+              See all industries
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
@@ -790,12 +810,20 @@ function GetStarted() {
 
   return (
     <section className="relative py-32 overflow-hidden">
-      {/* Background echoing hero */}
-      <div className="absolute inset-0 bg-dark-surface" />
-      <div className="absolute inset-0 bg-gradient-to-t from-dark-base via-transparent to-dark-base" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-accent/5 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-cool-surface" />
+      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-accent/[0.03] rounded-full blur-3xl" />
 
-      <svg className="absolute inset-0 w-full h-full opacity-[0.07]" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice">
+      {/* Subtle dot grid */}
+      <div
+        className="absolute inset-0 opacity-[0.18]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #c7cdd8 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      <svg className="absolute inset-0 w-full h-full opacity-[0.06]" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice">
         {[
           'M-100,200 C200,180 400,280 720,240 S1100,180 1540,220',
           'M-100,350 C300,320 500,400 720,370 S1000,310 1540,350',
@@ -808,7 +836,7 @@ function GetStarted() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <Reveal>
-          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-14">
+          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.03em] mb-14">
             Ready to orchestrate?
           </h2>
         </Reveal>
@@ -820,12 +848,12 @@ function GetStarted() {
                 href="#"
                 className={`block rounded-2xl p-6 text-center transition-all duration-300 hover:-translate-y-1 ${
                   cta.primary
-                    ? 'bg-accent hover:bg-accent-hover text-white shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30'
-                    : 'bg-dark-elevated/80 border border-dark-border/50 hover:border-accent/30 text-light hover:shadow-lg hover:shadow-accent/5'
+                    ? 'bg-accent hover:bg-accent-hover text-white shadow-[0_2px_8px_rgba(252,93,13,0.25)] hover:shadow-[0_4px_20px_rgba(252,93,13,0.35)]'
+                    : 'bg-white border border-cool-border/60 hover:border-slate-light text-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)]'
                 }`}
               >
-                <p className={`font-display text-xl font-bold mb-1 ${cta.primary ? 'text-white' : 'text-light'}`}>{cta.label}</p>
-                <p className={`text-sm ${cta.primary ? 'text-white/70' : 'text-light-dim'}`}>{cta.subtext}</p>
+                <p className={`font-display text-xl font-extrabold mb-1 ${cta.primary ? 'text-white' : 'text-light'}`}>{cta.label}</p>
+                <p className={`text-sm font-mono ${cta.primary ? 'text-white/70' : 'text-slate'}`}>{cta.subtext}</p>
               </a>
             </Reveal>
           ))}
@@ -838,21 +866,21 @@ function GetStarted() {
 /* ───────────────────────────── Footer ───────────────────────────── */
 function Footer() {
   return (
-    <footer className="bg-dark-base border-t border-dark-border/30 py-12">
+    <footer className="bg-white border-t border-cool-border/60 py-12">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-6">
-            <span className="font-display text-lg font-bold text-light">Camunda</span>
-            <span className="text-sm text-light-dim">&copy; 2026 Camunda. All rights reserved.</span>
+            <span className="font-display text-lg font-extrabold text-light">Camunda</span>
+            <span className="text-sm text-slate">&copy; 2026 Camunda. All rights reserved.</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-light-dim hover:text-light transition-colors duration-200">Privacy</a>
-            <a href="#" className="text-sm text-light-dim hover:text-light transition-colors duration-200">Terms</a>
-            <a href="#" className="text-sm text-light-dim hover:text-light transition-colors duration-200">Contact</a>
+            <a href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">Privacy</a>
+            <a href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">Terms</a>
+            <a href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">Contact</a>
             <div className="flex items-center gap-3 ml-2">
-              <a href="#" className="text-light-dim hover:text-light transition-colors duration-200">{Icons.github}</a>
-              <a href="#" className="text-light-dim hover:text-light transition-colors duration-200">{Icons.linkedin}</a>
-              <a href="#" className="text-light-dim hover:text-light transition-colors duration-200">{Icons.twitter}</a>
+              <a href="#" className="text-slate-light hover:text-light transition-colors duration-200">{Icons.github}</a>
+              <a href="#" className="text-slate-light hover:text-light transition-colors duration-200">{Icons.linkedin}</a>
+              <a href="#" className="text-slate-light hover:text-light transition-colors duration-200">{Icons.twitter}</a>
             </div>
           </div>
         </div>
@@ -864,7 +892,7 @@ function Footer() {
 /* ───────────────────────────── App ───────────────────────────── */
 export default function App() {
   return (
-    <div className="bg-dark-base text-light font-body min-h-screen">
+    <div className="bg-white text-light font-body min-h-screen">
       <Navbar />
       <Hero />
       <WhyNow />
