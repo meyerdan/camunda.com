@@ -247,3 +247,10 @@
   50% { stroke-opacity: 1; fill-opacity: 0.12; }
 }
 .orch-hub { animation: orch-hub-pulse 2.5s ease-in-out infinite; }
+
+/* ── Enterprise stack: Camunda network layer ── */
+@keyframes stack-net-breathe {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+.stack-net-node { animation: stack-net-breathe 3s ease-in-out infinite; }

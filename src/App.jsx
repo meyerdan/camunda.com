@@ -598,52 +598,133 @@ function Spectrum() {
 }
 
 /* ───────────────────────────── Section 6: Agentic Enterprise Stack ───────────────────────────── */
-function StackConnectors() {
+
+/* Icon components for stack tiles */
+const StackIcons = {
+  chat: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  headset: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M3 18v-6a9 9 0 0118 0v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3v5zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3v5z" stroke="currentColor" strokeWidth="1.5"/></svg>,
+  mail: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  teams: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="13" y="2" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="2" y="13" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5"/></svg>,
+  globe: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" strokeWidth="1.5"/></svg>,
+  phone: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" strokeWidth="1.5"/><line x1="12" y1="18" x2="12" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>,
+  bot: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M12 2l2.4 2.4L12 6.8 9.6 4.4 12 2z" fill="currentColor" opacity="0.4"/><rect x="4" y="8" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5"/><circle cx="9" cy="14" r="1.5" fill="currentColor"/><circle cx="15" cy="14" r="1.5" fill="currentColor"/></svg>,
+  db: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" strokeWidth="1.5"/><path d="M21 12c0 1.66-4.03 3-9 3s-9-1.34-9-3" stroke="currentColor" strokeWidth="1.5"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" strokeWidth="1.5"/></svg>,
+  erp: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/></svg>,
+  crm: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1.5"/></svg>,
+  legacy: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" strokeWidth="1.5"/></svg>,
+  cloud: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+}
+
+/* Living network SVG for the Camunda middle layer */
+function CamundaNetwork() {
+  /* Node positions in the network */
+  const nodes = [
+    { x: 60, y: 35, type: 'gear' },   { x: 160, y: 25, type: 'brain' },
+    { x: 260, y: 40, type: 'person' }, { x: 360, y: 28, type: 'gear' },
+    { x: 460, y: 38, type: 'diamond' },
+    { x: 110, y: 80, type: 'brain' },  { x: 210, y: 75, type: 'diamond' },
+    { x: 310, y: 82, type: 'person' }, { x: 410, y: 72, type: 'brain' },
+    { x: 60, y: 120, type: 'person' }, { x: 160, y: 125, type: 'gear' },
+    { x: 260, y: 115, type: 'brain' }, { x: 360, y: 128, type: 'gear' },
+    { x: 460, y: 118, type: 'diamond' },
+  ]
+
+  /* Connections: [fromIdx, toIdx, type] — 'solid' or 'glow' */
+  const edges = [
+    [0, 1, 'solid'], [1, 2, 'glow'], [2, 3, 'solid'], [3, 4, 'glow'],
+    [0, 5, 'solid'], [1, 6, 'glow'], [2, 7, 'solid'], [3, 8, 'glow'],
+    [5, 6, 'glow'], [6, 7, 'solid'], [7, 8, 'glow'],
+    [5, 9, 'solid'], [6, 10, 'glow'], [7, 11, 'solid'], [8, 13, 'glow'],
+    [9, 10, 'glow'], [10, 11, 'solid'], [11, 12, 'glow'], [12, 13, 'solid'],
+    [6, 11, 'glow'], [1, 7, 'solid'],
+  ]
+
+  const nodeIcon = (type, x, y) => {
+    const o = 5 // offset from center
+    switch(type) {
+      case 'gear': return <circle cx={x} cy={y} r={o} stroke="currentColor" strokeWidth="1" fill="none" opacity="0.6" />
+      case 'brain': return <><circle cx={x} cy={y} r={o-1} fill="currentColor" opacity="0.15" /><circle cx={x} cy={y} r={2} fill="currentColor" opacity="0.5" /></>
+      case 'person': return <><circle cx={x} cy={y-2} r="2.5" stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.5" /><path d={`M${x-4} ${y+4} a4 4 0 018 0`} stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.4" /></>
+      case 'diamond': return <rect x={x-4} y={y-4} width="8" height="8" rx="1" transform={`rotate(45 ${x} ${y})`} stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.5" />
+      default: return null
+    }
+  }
+
   return (
-    <div className="flex justify-center gap-16 py-1 relative">
-      {[0, 1, 2, 3].map(i => (
-        <div key={i} className="relative w-px h-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-cool-border via-accent/30 to-cool-border" />
-          {/* Flowing dot */}
-          <div
-            className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-accent"
-            style={{ animation: `flow-down 2s ease-in-out infinite`, animationDelay: `${i * 0.5}s` }}
+    <svg viewBox="0 0 520 155" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="pulse-glow-f"><feGaussianBlur stdDeviation="2.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+      </defs>
+
+      {/* Edges */}
+      {edges.map(([a, b, type], i) => {
+        const n1 = nodes[a], n2 = nodes[b]
+        return (
+          <line key={`e-${i}`} x1={n1.x} y1={n1.y} x2={n2.x} y2={n2.y}
+            stroke={type === 'glow' ? '#FC5D0D' : '#94a3b8'}
+            strokeWidth={type === 'glow' ? '1' : '0.8'}
+            opacity={type === 'glow' ? '0.18' : '0.12'}
+            strokeDasharray={type === 'glow' ? '4 3' : 'none'}
           />
-        </div>
-      ))}
-    </div>
+        )
+      })}
+
+      {/* Travelling pulses along glow edges */}
+      {edges.filter(([,,t]) => t === 'glow').map(([a, b], i) => {
+        const n1 = nodes[a], n2 = nodes[b]
+        const pathId = `net-path-${i}`
+        return (
+          <g key={`p-${i}`}>
+            <path id={pathId} d={`M${n1.x},${n1.y} L${n2.x},${n2.y}`} fill="none" stroke="none" />
+            <circle r="2.5" fill="#FC5D0D" opacity="0" filter="url(#pulse-glow-f)">
+              <animateMotion dur={`${2.5 + (i % 3) * 0.8}s`} begin={`${i * 0.6}s`} repeatCount="indefinite">
+                <mpath href={`#${pathId}`} />
+              </animateMotion>
+              <animate attributeName="opacity" values="0;0.8;0.8;0" dur={`${2.5 + (i % 3) * 0.8}s`} begin={`${i * 0.6}s`} repeatCount="indefinite" />
+            </circle>
+          </g>
+        )
+      })}
+
+      {/* Nodes */}
+      <g className="text-accent">
+        {nodes.map((n, i) => (
+          <g key={`n-${i}`} className="stack-net-node" style={{ animationDelay: `${i * 0.25}s` }}>
+            <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.04" />
+            {nodeIcon(n.type, n.x, n.y)}
+          </g>
+        ))}
+      </g>
+    </svg>
   )
 }
 
 function AgenticStack() {
-  const [activeLayer, setActiveLayer] = useState(1)
+  const [activeLayer, setActiveLayer] = useState(null)
 
-  const layers = [
-    {
-      label: 'Agentic Engagement',
-      subtitle: 'Where employees and customers interact',
-      details: 'Conversational interfaces across every channel — Teams, Slack, web, mobile. Understands intent, takes action, maintains context. One unified experience for employees and customers.',
-      borderClass: 'border-cool-border',
-      bgClass: 'bg-cool-surface',
-      labelColor: 'text-light',
-    },
-    {
-      label: 'Agentic Orchestration & Automation',
-      subtitle: 'Camunda',
-      details: 'The coordination engine — and the most powerful multi-agent framework in the market. Build agents that orchestrate other agents via MCP and A2A. Coordinate through handoff or supervisor patterns. Wait durably for agent responses across minutes or months. Govern every decision with a complete audit trail.',
-      borderClass: 'border-accent/40 border-2',
-      bgClass: 'bg-gradient-to-r from-accent/[0.06] via-accent/[0.03] to-accent/[0.06]',
-      labelColor: 'text-accent',
-      isCamunda: true,
-    },
-    {
-      label: 'Core Systems & Data',
-      subtitle: 'Your existing technology investments',
-      details: 'ERPs, CRMs, databases, legacy systems, AI models, third-party agents. Camunda connects to them, orchestrates across them, and maintains a unified view of business state through the Business Object Graph.',
-      borderClass: 'border-cool-border',
-      bgClass: 'bg-dark-elevated/60',
-      labelColor: 'text-light',
-    },
+  const topTiles = [
+    { icon: StackIcons.chat, label: 'Messaging' },
+    { icon: StackIcons.headset, label: 'Voice' },
+    { icon: StackIcons.mail, label: 'Email' },
+    { icon: StackIcons.teams, label: 'Collaboration' },
+    { icon: StackIcons.globe, label: 'Web portal' },
+    { icon: StackIcons.phone, label: 'Mobile' },
+    { icon: StackIcons.bot, label: 'AI chatbot' },
+  ]
+
+  const bottomTiles = [
+    { icon: StackIcons.db, label: 'Database' },
+    { icon: StackIcons.erp, label: 'ERP' },
+    { icon: StackIcons.crm, label: 'CRM' },
+    { icon: StackIcons.legacy, label: 'Legacy' },
+    { icon: StackIcons.db, label: 'Data warehouse' },
+    { icon: StackIcons.cloud, label: 'Cloud / SaaS' },
+  ]
+
+  const layerDetails = [
+    'Conversational interfaces across every channel — Teams, Slack, web, mobile. Understands intent, takes action, maintains context. One unified experience for employees and customers.',
+    'The coordination engine — and the most powerful multi-agent framework in the market. Build agents that orchestrate other agents via MCP and A2A. Coordinate through handoff or supervisor patterns. Wait durably for agent responses across minutes or months. Govern every decision with a complete audit trail.',
+    'ERPs, CRMs, databases, legacy systems, AI models, third-party agents. Camunda connects to them, orchestrates across them, and maintains a unified view of business state through the Business Object Graph.',
   ]
 
   return (
@@ -659,58 +740,117 @@ function AgenticStack() {
         </Reveal>
         <Reveal delay={2}>
           <p className="text-lg text-slate max-w-3xl mb-14 leading-relaxed">
-            Every enterprise already has engagement channels and core systems. What's missing is the intelligent orchestration layer that connects them.
+            Every enterprise already has engagement channels and core systems. What&rsquo;s missing is the intelligent orchestration layer that connects them.
           </p>
         </Reveal>
 
+        {/* ═══ Three-layer architecture diagram ═══ */}
         <Reveal delay={3}>
-          <div>
-            {layers.map((layer, i) => {
-              const isActive = activeLayer === i
-              return (
-                <div key={i}>
-                  <button
-                    onClick={() => setActiveLayer(i)}
-                    className={`w-full text-left rounded-2xl border transition-all duration-500 overflow-hidden cursor-pointer ${layer.borderClass} ${layer.bgClass} ${
-                      layer.isCamunda ? 'shadow-[0_0_40px_rgba(252,93,13,0.06)]' : 'shadow-[0_1px_3px_rgba(0,0,0,0.04)]'
-                    } ${layer.isCamunda && !isActive ? 'animate-[layer-pulse_4s_ease-in-out_infinite]' : ''}`}
-                  >
-                    <div className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          {layer.isCamunda && (
-                            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                              <div className="w-3 h-3 rounded-sm bg-accent" />
-                            </div>
-                          )}
-                          <div>
-                            <h3 className={`font-display text-lg font-bold ${layer.labelColor}`}>
-                              {layer.label}
-                            </h3>
-                            <p className={`text-sm mt-0.5 ${layer.isCamunda ? 'text-accent/60 font-mono font-medium text-xs' : 'text-slate'}`}>
-                              {layer.subtitle}
-                            </p>
-                          </div>
-                        </div>
-                        <svg
-                          className={`w-5 h-5 text-slate-light transition-transform duration-300 ${isActive ? 'rotate-180' : ''}`}
-                          viewBox="0 0 20 20" fill="none"
-                        >
-                          <path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
+          <div className="relative">
 
-                      <div className={`transition-all duration-500 overflow-hidden ${isActive ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                        <p className="text-sm text-slate leading-relaxed max-w-2xl">{layer.details}</p>
-                      </div>
-                    </div>
-                  </button>
-
-                  {/* Animated connectors between layers */}
-                  {i < 2 && <StackConnectors />}
+            {/* ── Top layer: Engagement Channels ── */}
+            <button onClick={() => setActiveLayer(activeLayer === 0 ? null : 0)}
+              className="w-full text-left bg-cool-surface border border-cool-border/60 rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] cursor-pointer hover:border-slate-light transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="font-display text-base font-bold text-light">Agentic Engagement</h3>
+                  <p className="text-xs text-slate mt-0.5">Where employees and customers interact</p>
                 </div>
-              )
-            })}
+                <svg className={`w-4 h-4 text-slate-light transition-transform duration-300 ${activeLayer === 0 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </div>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {topTiles.map((t, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5 w-16">
+                    <div className="w-10 h-10 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
+                      {t.icon}
+                    </div>
+                    <span className="text-[10px] text-slate-light text-center leading-tight">{t.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className={`transition-all duration-500 overflow-hidden ${activeLayer === 0 ? 'max-h-24 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[0]}</p>
+              </div>
+            </button>
+
+            {/* ── Connectors: top → middle ── */}
+            <div className="flex justify-around px-16 py-0.5">
+              {[0,1,2,3,4].map(i => (
+                <div key={i} className="w-px h-8 bg-gradient-to-b from-cool-border to-accent/20" />
+              ))}
+            </div>
+
+            {/* ── Middle layer: Camunda (THE HERO) ── */}
+            <button onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
+              className="w-full text-left border-2 border-accent/30 rounded-2xl overflow-hidden cursor-pointer hover:border-accent/50 transition-all duration-300 shadow-[0_0_40px_rgba(252,93,13,0.06)] animate-[layer-pulse_4s_ease-in-out_infinite]">
+              <div className="bg-gradient-to-br from-accent/[0.06] via-white to-accent/[0.04] p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <div className="w-3 h-3 rounded-sm bg-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-base font-bold text-accent">Agentic Orchestration & Automation</h3>
+                      <p className="text-xs text-accent/60 font-mono font-medium mt-0.5">Camunda</p>
+                    </div>
+                  </div>
+                  <svg className={`w-4 h-4 text-accent/40 transition-transform duration-300 ${activeLayer === 1 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </div>
+
+                {/* Living network — always visible */}
+                <CamundaNetwork />
+
+                {/* Node legend */}
+                <div className="flex flex-wrap gap-x-5 gap-y-1 justify-center mt-3">
+                  {[
+                    { label: 'Automation', icon: '⚙' },
+                    { label: 'AI agent', icon: '✦' },
+                    { label: 'Human', icon: '👤' },
+                    { label: 'Decision', icon: '◆' },
+                  ].map((item, i) => (
+                    <span key={i} className="flex items-center gap-1 text-[10px] text-slate-light">
+                      <span className="text-xs opacity-60">{item.icon}</span> {item.label}
+                    </span>
+                  ))}
+                </div>
+
+                <div className={`transition-all duration-500 overflow-hidden ${activeLayer === 1 ? 'max-h-32 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                  <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[1]}</p>
+                </div>
+              </div>
+            </button>
+
+            {/* ── Connectors: middle → bottom ── */}
+            <div className="flex justify-around px-16 py-0.5">
+              {[0,1,2,3,4].map(i => (
+                <div key={i} className="w-px h-8 bg-gradient-to-b from-accent/20 to-cool-border" />
+              ))}
+            </div>
+
+            {/* ── Bottom layer: Core Systems ── */}
+            <button onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
+              className="w-full text-left bg-dark-elevated/60 border border-cool-border/60 rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] cursor-pointer hover:border-slate-light transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="font-display text-base font-bold text-light">Core Systems & Data</h3>
+                  <p className="text-xs text-slate mt-0.5">Your existing technology investments</p>
+                </div>
+                <svg className={`w-4 h-4 text-slate-light transition-transform duration-300 ${activeLayer === 2 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </div>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {bottomTiles.map((t, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5 w-16">
+                    <div className="w-10 h-10 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
+                      {t.icon}
+                    </div>
+                    <span className="text-[10px] text-slate-light text-center leading-tight">{t.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className={`transition-all duration-500 overflow-hidden ${activeLayer === 2 ? 'max-h-24 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[2]}</p>
+              </div>
+            </button>
           </div>
         </Reveal>
 
