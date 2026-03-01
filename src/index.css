@@ -1,32 +1,188 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════
+   Layer 2: Runtime theme tokens (cascade-driven, switchable)
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+[data-theme="light"] {
+  --theme-bg-base:        #ffffff;
+  --theme-bg-surface:     #f5f6f8;
+  --theme-bg-elevated:    #ebedf2;
+  --theme-border-default: #d4d7e0;
+  --theme-border-subtle:  #e8eaf0;
+  --theme-text-primary:   #0f0f13;
+  --theme-text-secondary: #475569;
+  --theme-text-tertiary:  #94a3b8;
+
+  /* Glassmorphism */
+  --theme-glass-bg:       rgba(255,255,255,0.70);
+  --theme-glass-border:   rgba(0,0,0,0.06);
+
+  /* Glows */
+  --theme-glow-accent:    rgba(252, 93, 13, 0.12);
+  --theme-glow-violet:    rgba(124, 58, 237, 0.10);
+
+  /* Sparkline / SVG data color */
+  --theme-data-color:     #1B2A4A;
+  --theme-data-color-rgb: 27, 42, 74;
+
+  /* Hero mesh gradient orbs */
+  --theme-mesh-1: rgba(124, 58, 237, 0.06);
+  --theme-mesh-2: rgba(59, 130, 246, 0.05);
+  --theme-mesh-3: rgba(252, 93, 13, 0.04);
+  --theme-mesh-4: rgba(6, 182, 212, 0.04);
+
+  /* Hero headline gradient */
+  --theme-hero-from: #1B2A4A;
+  --theme-hero-via:  #4c2889;
+  --theme-hero-to:   #7c3aed;
+
+  /* Dot grid */
+  --theme-dot-color: #c7cdd8;
+
+  /* Navbar scrolled */
+  --theme-nav-scrolled: rgba(255,255,255,0.85);
+
+  /* Marquee fade */
+  --theme-marquee-fade: #ffffff;
+
+  /* Orchestration company warm tint */
+  --theme-warm-from: #fdf8f5;
+  --theme-warm-via:  #fef6f0;
+
+  /* Card surface */
+  --theme-card-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  --theme-card-shadow-hover: 0 2px 16px rgba(0,0,0,0.06);
+
+  /* Selection */
+  --theme-selection-bg: rgba(124, 58, 237, 0.20);
+  --theme-selection-color: #0f0f13;
+
+  /* WhyNow stat cards */
+  --theme-stat-from: rgba(252, 93, 13, 0.08);
+  --theme-stat-to:   rgba(252, 93, 13, 0.02);
+
+  /* Gauge track */
+  --theme-gauge-track: #e2e8f0;
+}
+
+[data-theme="dark"] {
+  --theme-bg-base:        #0a0a0f;
+  --theme-bg-surface:     #111118;
+  --theme-bg-elevated:    #1a1a26;
+  --theme-border-default: #2a2a3d;
+  --theme-border-subtle:  #1f1f2e;
+  --theme-text-primary:   #f0f0ff;
+  --theme-text-secondary: #8892a4;
+  --theme-text-tertiary:  #4a5568;
+
+  /* Glassmorphism */
+  --theme-glass-bg:       rgba(20, 20, 35, 0.70);
+  --theme-glass-border:   rgba(255,255,255,0.08);
+
+  /* Glows */
+  --theme-glow-accent:    rgba(252, 93, 13, 0.20);
+  --theme-glow-violet:    rgba(124, 58, 237, 0.18);
+
+  /* Sparkline / SVG data color */
+  --theme-data-color:     #a5b4fc;
+  --theme-data-color-rgb: 165, 180, 252;
+
+  /* Hero mesh gradient orbs (much stronger) */
+  --theme-mesh-1: rgba(124, 58, 237, 0.18);
+  --theme-mesh-2: rgba(59, 130, 246, 0.14);
+  --theme-mesh-3: rgba(252, 93, 13, 0.10);
+  --theme-mesh-4: rgba(6, 182, 212, 0.12);
+
+  /* Hero headline gradient */
+  --theme-hero-from: #a5b4fc;
+  --theme-hero-via:  #c4b5fd;
+  --theme-hero-to:   #7c3aed;
+
+  /* Dot grid */
+  --theme-dot-color: #1a1a2e;
+
+  /* Navbar scrolled */
+  --theme-nav-scrolled: rgba(10,10,15,0.90);
+
+  /* Marquee fade */
+  --theme-marquee-fade: #0a0a0f;
+
+  /* Orchestration company warm tint → cool dark violet tint */
+  --theme-warm-from: #0d0d18;
+  --theme-warm-via:  #0f0f1e;
+
+  /* Card surface */
+  --theme-card-shadow: 0 1px 0 rgba(255,255,255,0.03), 0 4px 16px rgba(0,0,0,0.4);
+  --theme-card-shadow-hover: 0 0 20px rgba(124,58,237,0.12), 0 4px 24px rgba(0,0,0,0.4);
+
+  /* Selection */
+  --theme-selection-bg: rgba(124, 58, 237, 0.35);
+  --theme-selection-color: #f0f0ff;
+
+  /* WhyNow stat cards */
+  --theme-stat-from: rgba(252, 93, 13, 0.12);
+  --theme-stat-to:   rgba(252, 93, 13, 0.04);
+
+  /* Gauge track */
+  --theme-gauge-track: #2a2a3d;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Layer 1: Tailwind @theme tokens (compile-time + var references)
+   ═══════════════════════════════════════════════════════════════ */
+
 @theme {
   --font-display: 'Sora', system-ui, sans-serif;
   --font-body: 'Sora', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --color-dark-base: #ffffff;
-  --color-dark-surface: #f5f6f8;
-  --color-dark-elevated: #ebedf2;
-  --color-dark-border: #d4d7e0;
-  --color-light: #1a1a2e;
-  --color-light-dim: #64748b;
-  --color-navy: #1B2A4A;
+
+  /* Semantic tokens → resolve at runtime via cascade */
+  --color-bg-base:     var(--theme-bg-base);
+  --color-bg-surface:  var(--theme-bg-surface);
+  --color-bg-elevated: var(--theme-bg-elevated);
+  --color-border:      var(--theme-border-default);
+  --color-border-subtle: var(--theme-border-subtle);
+  --color-text:        var(--theme-text-primary);
+  --color-text-dim:    var(--theme-text-secondary);
+  --color-text-muted:  var(--theme-text-tertiary);
+  --color-glass-bg:    var(--theme-glass-bg);
+  --color-glass-border: var(--theme-glass-border);
+
+  /* Static palette (theme-invariant) */
   --color-accent: #FC5D0D;
   --color-accent-hover: #e04d08;
   --color-accent-glow: rgba(252, 93, 13, 0.12);
   --color-accent-subtle: rgba(252, 93, 13, 0.06);
+  --color-violet: #7c3aed;
+  --color-violet-mid: #4c2889;
   --color-mint: #10b981;
-  --color-slate: #475569;
-  --color-slate-light: #94a3b8;
-  --color-cool-surface: #f0f2f7;
-  --color-cool-border: #c7cdd8;
+
+  /* Legacy aliases for backward compat during migration */
+  --color-light: var(--theme-text-primary);
+  --color-navy: var(--theme-text-primary);
+  --color-slate: var(--theme-text-secondary);
+  --color-slate-light: var(--theme-text-tertiary);
+  --color-cool-surface: var(--theme-bg-surface);
+  --color-cool-border: var(--theme-border-default);
+  --color-dark-base: var(--theme-bg-base);
+  --color-dark-surface: var(--theme-bg-surface);
+  --color-dark-elevated: var(--theme-bg-elevated);
+  --color-dark-border: var(--theme-border-default);
+  --color-light-dim: var(--theme-text-secondary);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Base styles
+   ═══════════════════════════════════════════════════════════════ */
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: #ffffff;
-    color: #1a1a2e;
+    background-color: var(--theme-bg-base);
+    color: var(--theme-text-primary);
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
 
   body {
@@ -37,12 +193,35 @@
   }
 
   ::selection {
-    background-color: rgba(252, 93, 13, 0.25);
-    color: #fff;
+    background-color: var(--theme-selection-bg);
+    color: var(--theme-selection-color);
   }
 }
 
-/* Scroll-triggered animation base — must be unlayered to override Tailwind transforms */
+/* ═══════════════════════════════════════════════════════════════
+   Card glassmorphism surface
+   ═══════════════════════════════════════════════════════════════ */
+
+.card-surface {
+  background: var(--theme-glass-bg);
+  border: 1px solid var(--theme-glass-border);
+  box-shadow: var(--theme-card-shadow);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.card-surface:hover {
+  box-shadow: var(--theme-card-shadow-hover);
+}
+
+[data-theme="dark"] .card-surface {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Scroll-reveal animations
+   ═══════════════════════════════════════════════════════════════ */
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -60,7 +239,11 @@
 .reveal-delay-4 { transition-delay: 0.32s; }
 .reveal-delay-5 { transition-delay: 0.40s; }
 
-/* Spectrum bar fill animation */
+/* ═══════════════════════════════════════════════════════════════
+   Keyframes
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Spectrum bar fill */
 @keyframes spectrum-fill {
   0% { transform: scaleX(0); }
   100% { transform: scaleX(1); }
@@ -75,11 +258,11 @@
   animation: spectrum-fill 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Tab content crossfade */
+/* Tab crossfade */
 .tab-panel { opacity: 0; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease; }
 .tab-panel.active { opacity: 1; transform: translateY(0); }
 
-/* Flowing data particles for stack */
+/* Data particles */
 @keyframes flow-down {
   0% { transform: translateY(-8px); opacity: 0; }
   20% { opacity: 1; }
@@ -94,7 +277,7 @@
   100% { transform: translateY(-48px); opacity: 0; }
 }
 
-/* Sparkline draw animation */
+/* Sparkline draw */
 @keyframes sparkline-draw {
   0% { stroke-dashoffset: 200; }
   100% { stroke-dashoffset: 0; }
@@ -115,7 +298,7 @@
   100% { opacity: 1; }
 }
 
-/* Bar grow animation */
+/* Bar grow */
 @keyframes bar-grow {
   0% { transform: scaleY(0); }
   100% { transform: scaleY(1); }
@@ -126,7 +309,7 @@
   animation: bar-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Gauge fill animation */
+/* Gauge fill */
 @keyframes gauge-fill {
   0% { stroke-dasharray: 0 100.5; }
   100% { stroke-dasharray: 96 100.5; }
@@ -136,10 +319,10 @@
   animation: gauge-fill 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Subtle section divider */
+/* Section divider */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(27, 42, 74, 0.08) 30%, rgba(27, 42, 74, 0.08) 70%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--theme-data-color-rgb), 0.08) 30%, rgba(var(--theme-data-color-rgb), 0.08) 70%, transparent);
 }
 
 /* Logo marquee */
@@ -156,7 +339,15 @@
   animation-play-state: paused;
 }
 
-/* Hero background animation */
+/* Hero mesh aurora drift */
+@keyframes aurora-drift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  25% { transform: translate(40px, -50px) rotate(2deg) scale(1.03); }
+  50% { transform: translate(-30px, 30px) rotate(-1deg) scale(0.97); }
+  75% { transform: translate(50px, 15px) rotate(1deg) scale(1.02); }
+}
+
+/* Hero background animations */
 @keyframes float-slow {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
   25% { transform: translate(30px, -40px) rotate(1deg); }
@@ -187,9 +378,16 @@
   50% { box-shadow: 0 0 40px rgba(252, 93, 13, 0.15), inset 0 0 30px rgba(252, 93, 13, 0.05); }
 }
 
-/* ── Chaos diagram: "Without orchestration" ── */
+[data-theme="dark"] .camunda-layer-glow {
+  animation-name: layer-pulse-dark;
+}
 
-/* Nodes drift apart slowly — growing isolation */
+@keyframes layer-pulse-dark {
+  0%, 100% { box-shadow: 0 0 40px rgba(252, 93, 13, 0.12), inset 0 0 30px rgba(252, 93, 13, 0.05); }
+  50% { box-shadow: 0 0 60px rgba(252, 93, 13, 0.22), inset 0 0 40px rgba(252, 93, 13, 0.08); }
+}
+
+/* ── Chaos diagram ── */
 @keyframes chaos-drift {
   0%, 100% { transform: translate(0, 0); }
   15% { transform: translate(6px, -8px); }
@@ -199,7 +397,6 @@
 }
 .chaos-node { animation: chaos-drift 4s ease-in-out infinite; }
 
-/* Connection lines flicker and snap */
 @keyframes chaos-flicker {
   0%, 18% { opacity: 0.2; }
   20%, 24% { opacity: 0; }
@@ -209,7 +406,6 @@
 }
 .chaos-line { animation: chaos-flicker 7s ease-in-out infinite; }
 
-/* Failure markers (X, ?) pulse in / out */
 @keyframes chaos-fail-pulse {
   0%, 15% { opacity: 0; }
   20%, 40% { opacity: 0.6; }
@@ -217,7 +413,6 @@
 }
 .chaos-fail { opacity: 0; animation: chaos-fail-pulse 6s ease-in-out infinite; }
 
-/* Warning icons fade in briefly */
 @keyframes chaos-warn-pulse {
   0%, 25% { opacity: 0; }
   30%, 40% { opacity: 0.5; }
@@ -225,16 +420,13 @@
 }
 .chaos-warn { opacity: 0; animation: chaos-warn-pulse 8s ease-in-out infinite; }
 
-/* ── Flow diagram: "With orchestration" ── */
-
-/* Nodes gently pulse when work passes through */
+/* ── Flow diagram ── */
 @keyframes flow-node-pulse {
   0%, 100% { opacity: 0.6; r: 5; }
   50% { opacity: 0.9; r: 6; }
 }
 .flow-node { animation: flow-node-pulse 3s ease-in-out infinite; }
 
-/* Completion checkmarks flash */
 @keyframes flow-check {
   0%, 60% { opacity: 0; }
   65%, 80% { opacity: 0.8; }
@@ -242,7 +434,6 @@
 }
 .flow-complete { opacity: 0; animation: flow-check 4s ease-in-out infinite; }
 
-/* Central orchestrator hub gently pulses */
 @keyframes orch-hub-pulse {
   0%, 100% { stroke-opacity: 0.7; fill-opacity: 0.06; }
   50% { stroke-opacity: 1; fill-opacity: 0.12; }
@@ -254,7 +445,7 @@
   0%   { transform: translateY(-8px) scale(0.6); opacity: 0; }
   6%   { opacity: 0.22; transform: translateY(40px) scale(0.8); }
   30%  { opacity: 0.30; }
-  46%  { opacity: 0.70; transform: translateY(400px) scale(1); } /* brightest = Camunda zone */
+  46%  { opacity: 0.70; transform: translateY(400px) scale(1); }
   56%  { opacity: 0.55; }
   75%  { opacity: 0.22; }
   94%  { opacity: 0.08; }

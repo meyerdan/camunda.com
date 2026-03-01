@@ -1,5 +1,47 @@
 import { useState, useEffect, useRef } from 'react'
 
+/* ───────── Theme ───────── */
+const THEME_COLORS = {
+  light: {
+    data: '#1B2A4A',
+    dotGrid: '#c7cdd8',
+    flowBlue: '#3b82f6',
+    flowGreen: '#10b981',
+    failRed: '#ef4444',
+    heroNodeAccent: '#FC5D0D',
+    heroNodeMuted: '#94a3b8',
+    lineGrad1: '#FC5D0D',
+    lineGrad2: '#475569',
+    gaugeTrack: '#e2e8f0',
+  },
+  dark: {
+    data: '#a5b4fc',
+    dotGrid: '#1a1a2e',
+    flowBlue: '#60a5fa',
+    flowGreen: '#34d399',
+    failRed: '#f87171',
+    heroNodeAccent: '#FB923C',
+    heroNodeMuted: '#6366f1',
+    lineGrad1: '#a78bfa',
+    lineGrad2: '#6366f1',
+    gaugeTrack: '#2a2a3d',
+  },
+}
+
+function useTheme() {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('camunda-theme') || 'light'
+    }
+    return 'light'
+  })
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('camunda-theme', theme)
+  }, [theme])
+  return [theme, setTheme]
+}
+
 /* ───────────────────────────── Hook: Intersection Observer ───────────────────────────── */
 function useReveal() {
   const ref = useRef(null)
@@ -22,6 +64,23 @@ function Reveal({ children, className = '', delay = 0 }) {
     <div ref={ref} className={`reveal ${delay ? `reveal-delay-${delay}` : ''} ${className}`}>
       {children}
     </div>
+  )
+}
+
+/* ───────────────────────────── Theme Toggle ───────────────────────────── */
+function ThemeToggle({ theme, setTheme }) {
+  return (
+    <button
+      onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}
+      aria-label="Toggle theme"
+      className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-text-dim hover:text-text hover:bg-bg-surface transition-all duration-200 cursor-pointer"
+    >
+      {theme === 'light' ? (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+      ) : (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      )}
+    </button>
   )
 }
 
@@ -75,7 +134,7 @@ const Icons = {
 }
 
 /* ───────────────────────────── Navbar ───────────────────────────── */
-function Navbar() {
+function Navbar({ theme, setTheme }) {
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -84,36 +143,49 @@ function Navbar() {
   }, [])
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)]' : ''}`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl border-b border-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)]' : ''}`}
+      style={scrolled ? { backgroundColor: 'var(--theme-nav-scrolled)' } : undefined}
+    >
       <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-10">
-          <a href="#" className="font-display text-xl font-extrabold tracking-tight text-light">Camunda</a>
+          <a href="#" className="font-display text-xl font-extrabold tracking-tight text-text">Camunda</a>
           <div className="hidden md:flex items-center gap-7">
             {['Platform', 'Solutions', 'Developers', 'Customers', 'Pricing'].map(item => (
-              <a key={item} href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">{item}</a>
+              <a key={item} href="#" className="text-sm text-text-dim hover:text-text transition-colors duration-200">{item}</a>
             ))}
           </div>
         </div>
-        <a href="#" className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold bg-accent hover:bg-accent-hover text-white rounded-lg transition-all duration-200 shadow-[0_1px_2px_rgba(252,93,13,0.3)]">
-          Try Free
-        </a>
+        <div className="flex items-center gap-3">
+          <ThemeToggle theme={theme} setTheme={setTheme} />
+          <a href="#" className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold bg-accent hover:bg-accent-hover text-white rounded-lg transition-all duration-200 shadow-[0_1px_2px_rgba(252,93,13,0.3)]">
+            Try Free
+          </a>
+        </div>
       </div>
     </nav>
   )
 }
 
 /* ───────────────────────────── Section 1: Hero ───────────────────────────── */
-function HeroBackground() {
+function HeroBackground({ theme }) {
+  const tc = THEME_COLORS[theme]
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Gradient base */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-cool-surface" />
+      <div className="absolute inset-0 bg-bg-base" />
+
+      {/* Mesh gradient orbs */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full blur-3xl opacity-30" style={{ backgroundColor: 'var(--theme-mesh-1)', animation: 'aurora-drift 20s ease-in-out infinite' }} />
+      <div className="absolute top-[10%] right-[-15%] w-[50vw] h-[50vw] rounded-full blur-3xl opacity-20" style={{ backgroundColor: 'var(--theme-mesh-2)', animation: 'aurora-drift 25s ease-in-out infinite reverse' }} />
+      <div className="absolute bottom-[-10%] left-[20%] w-[45vw] h-[45vw] rounded-full blur-3xl opacity-25" style={{ backgroundColor: 'var(--theme-mesh-3)', animation: 'aurora-drift 22s ease-in-out infinite 3s' }} />
+      <div className="absolute bottom-[20%] right-[10%] w-[35vw] h-[35vw] rounded-full blur-3xl opacity-15" style={{ backgroundColor: 'var(--theme-mesh-4)', animation: 'aurora-drift 18s ease-in-out infinite 5s' }} />
 
       {/* Subtle dot grid */}
       <div
         className="absolute inset-0 opacity-[0.35]"
         style={{
-          backgroundImage: 'radial-gradient(circle, #c7cdd8 1px, transparent 1px)',
+          backgroundImage: `radial-gradient(circle, var(--theme-dot-color) 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
       />
@@ -122,14 +194,14 @@ function HeroBackground() {
       <svg className="absolute inset-0 w-full h-full opacity-[0.28]" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0" />
-            <stop offset="50%" stopColor="#FC5D0D" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+            <stop offset="0%" stopColor={tc.lineGrad1} stopOpacity="0" />
+            <stop offset="50%" stopColor={tc.lineGrad1} stopOpacity="0.7" />
+            <stop offset="100%" stopColor={tc.lineGrad1} stopOpacity="0" />
           </linearGradient>
           <linearGradient id="line-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#475569" stopOpacity="0" />
-            <stop offset="50%" stopColor="#475569" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#475569" stopOpacity="0" />
+            <stop offset="0%" stopColor={tc.lineGrad2} stopOpacity="0" />
+            <stop offset="50%" stopColor={tc.lineGrad2} stopOpacity="0.5" />
+            <stop offset="100%" stopColor={tc.lineGrad2} stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -164,9 +236,9 @@ function HeroBackground() {
           { cx: 860, cy: 130 }, { cx: 540, cy: 620 }, { cx: 1200, cy: 570 },
         ].map((node, i) => (
           <g key={i}>
-            <circle cx={node.cx} cy={node.cy} r="4" fill={i % 4 === 0 ? '#FC5D0D' : '#94a3b8'} opacity="0.5"
+            <circle cx={node.cx} cy={node.cy} r="4" fill={i % 4 === 0 ? tc.heroNodeAccent : tc.heroNodeMuted} opacity="0.5"
               style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.35}s` }} />
-            <circle cx={node.cx} cy={node.cy} r="10" fill="none" stroke={i % 4 === 0 ? '#FC5D0D' : '#94a3b8'} strokeWidth="0.5" opacity="0.2"
+            <circle cx={node.cx} cy={node.cy} r="10" fill="none" stroke={i % 4 === 0 ? tc.heroNodeAccent : tc.heroNodeMuted} strokeWidth="0.5" opacity="0.2"
               style={{ animation: `pulse-glow 3s ease-in-out infinite`, animationDelay: `${i * 0.35}s` }} />
           </g>
         ))}
@@ -179,34 +251,37 @@ function HeroBackground() {
   )
 }
 
-function Hero() {
+function Hero({ theme }) {
   const ref = useReveal()
   return (
     <section className="relative pt-32 pb-24 sm:pt-40 sm:pb-32 flex items-center justify-center">
-      <HeroBackground />
+      <HeroBackground theme={theme} />
       <div ref={ref} className="reveal relative z-10 max-w-5xl mx-auto px-8 text-center">
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-semibold tracking-[-0.035em] leading-[1.06] mb-5 text-navy">
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-semibold tracking-[-0.035em] leading-[1.06] mb-5 text-text">
           The enterprise platform<br className="hidden sm:block" /> for{' '}
-          <span className="font-bold bg-gradient-to-r from-[#1B2A4A] via-[#4c2889] to-[#7c3aed] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text'}}>agentic orchestration</span>
+          <span className="font-bold bg-clip-text text-transparent" style={{
+            backgroundImage: 'linear-gradient(to right, var(--theme-hero-from), var(--theme-hero-via), var(--theme-hero-to))',
+            WebkitBackgroundClip: 'text',
+          }}>agentic orchestration</span>
         </h1>
-        <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-3 leading-relaxed">
+        <p className="text-lg sm:text-xl text-text-dim max-w-2xl mx-auto mb-3 leading-relaxed">
           Cut processing time, eliminate manual work, and scale automation that actually delivers.
           <br className="hidden sm:block" />
           One platform to orchestrate AI agents, processes, and people.
         </p>
-        <p className="text-sm sm:text-base text-slate-light max-w-2xl mx-auto mb-9">
+        <p className="text-sm sm:text-base text-text-muted max-w-2xl mx-auto mb-9">
           The most advanced framework for building production-grade multi-agent systems.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="#" className="px-9 py-4 text-base font-semibold bg-accent hover:bg-accent-hover text-white rounded-xl transition-all duration-300 shadow-[0_2px_8px_rgba(252,93,13,0.25)] hover:shadow-[0_4px_16px_rgba(252,93,13,0.35)] hover:-translate-y-0.5">
             Try Free
           </a>
-          <a href="#" className="px-9 py-4 text-base font-medium border border-cool-border text-light hover:border-slate-light hover:bg-cool-surface rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+          <a href="#" className="px-9 py-4 text-base font-medium border border-border text-text hover:border-text-muted hover:bg-bg-surface rounded-xl transition-all duration-300 hover:-translate-y-0.5">
             See how it works
           </a>
         </div>
         <div className="mt-6">
-          <a href="#" className="inline-flex items-center gap-1.5 text-sm font-medium text-slate hover:text-light transition-colors duration-200">
+          <a href="#" className="inline-flex items-center gap-1.5 text-sm font-medium text-text-dim hover:text-text transition-colors duration-200">
             Build your first orchestrated agent in 5 minutes
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </a>
@@ -217,68 +292,69 @@ function Hero() {
 }
 
 /* ───────────────────────────── Outcomes Bar ───────────────────────────── */
-function MiniLineDown() {
+function MiniLineDown({ color = '#1B2A4A' }) {
   return (
     <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
-      <polyline points="2,6 12,8 22,12 32,16 42,22 52,28 58,30" fill="none" stroke="#1B2A4A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,6 12,8 22,12 32,16 42,22 52,28 58,30" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
       <linearGradient id="fill-down" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
-        <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
+        <stop offset="0%" stopColor={color} stopOpacity="0.10" />
+        <stop offset="100%" stopColor={color} stopOpacity="0" />
       </linearGradient>
       <path d="M2,6 L12,8 L22,12 L32,16 L42,22 L52,28 L58,30 L58,32 L2,32 Z" fill="url(#fill-down)" className="sparkline-area" />
     </svg>
   )
 }
 
-function MiniBarGrow() {
+function MiniBarGrow({ color = '#1B2A4A' }) {
   return (
     <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
       {[
         { x: 2, h: 8 }, { x: 11, h: 14 }, { x: 20, h: 18 }, { x: 29, h: 22 },
         { x: 38, h: 26 }, { x: 47, h: 30 },
       ].map((bar, i) => (
-        <rect key={i} x={bar.x} y={32 - bar.h} width="7" height={bar.h} rx="1.5" fill="#1B2A4A"
+        <rect key={i} x={bar.x} y={32 - bar.h} width="7" height={bar.h} rx="1.5" fill={color}
           opacity="0.6" className="bar-grow" style={{ animationDelay: `${i * 0.1}s` }} />
       ))}
     </svg>
   )
 }
 
-function MiniGauge() {
+function MiniGauge({ color = '#1B2A4A', trackColor = '#e2e8f0' }) {
   return (
     <svg viewBox="0 0 40 40" className="w-[36px] h-[36px]">
-      <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e8f0" strokeWidth="3" />
-      <circle cx="20" cy="20" r="16" fill="none" stroke="#1B2A4A" strokeWidth="3"
+      <circle cx="20" cy="20" r="16" fill="none" stroke={trackColor} strokeWidth="3" />
+      <circle cx="20" cy="20" r="16" fill="none" stroke={color} strokeWidth="3"
         strokeDasharray="96 100.5" strokeDashoffset="0" strokeLinecap="round"
         transform="rotate(-90 20 20)" className="gauge-fill" />
-      <text x="20" y="23" textAnchor="middle" fill="#1B2A4A" fontSize="9" fontWeight="600" fontFamily="'JetBrains Mono', monospace">99%</text>
+      <text x="20" y="23" textAnchor="middle" fill={color} fontSize="9" fontWeight="600" fontFamily="'JetBrains Mono', monospace">99%</text>
     </svg>
   )
 }
 
-function MiniLineUp() {
+function MiniLineUp({ color = '#1B2A4A' }) {
   return (
     <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
-      <polyline points="2,28 12,24 22,22 32,18 42,12 52,8 58,4" fill="none" stroke="#1B2A4A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,28 12,24 22,22 32,18 42,12 52,8 58,4" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
       <linearGradient id="fill-up" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
-        <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
+        <stop offset="0%" stopColor={color} stopOpacity="0.10" />
+        <stop offset="100%" stopColor={color} stopOpacity="0" />
       </linearGradient>
       <path d="M2,28 L12,24 L22,22 L32,18 L42,12 L52,8 L58,4 L58,32 L2,32 Z" fill="url(#fill-up)" className="sparkline-area" />
     </svg>
   )
 }
 
-function OutcomesBar() {
+function OutcomesBar({ theme }) {
+  const tc = THEME_COLORS[theme]
   const tiles = [
-    { chart: <MiniLineDown />, number: '60%', label: 'faster processing' },
-    { chart: <MiniBarGrow />, number: '12M+', label: 'daily orchestrations' },
-    { chart: <MiniGauge />, number: '99.7%', label: 'accuracy at scale' },
-    { chart: <MiniLineUp />, number: '500+', label: 'enterprises' },
+    { chart: <MiniLineDown color={tc.data} />, number: '60%', label: 'faster processing' },
+    { chart: <MiniBarGrow color={tc.data} />, number: '12M+', label: 'daily orchestrations' },
+    { chart: <MiniGauge color={tc.data} trackColor={tc.gaugeTrack} />, number: '99.7%', label: 'accuracy at scale' },
+    { chart: <MiniLineUp color={tc.data} />, number: '500+', label: 'enterprises' },
   ]
 
   return (
-    <section className="py-10 bg-white border-y border-cool-border/40">
+    <section className="py-10 bg-bg-base border-y border-border/40">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {tiles.map((tile, i) => (
@@ -288,15 +364,15 @@ function OutcomesBar() {
                   {tile.chart}
                 </div>
                 <div>
-                  <p className="font-mono text-2xl sm:text-3xl font-bold text-light leading-none">{tile.number}</p>
-                  <p className="text-sm text-slate mt-0.5">{tile.label}</p>
+                  <p className="font-mono text-2xl sm:text-3xl font-bold text-text leading-none">{tile.number}</p>
+                  <p className="text-sm text-text-dim mt-0.5">{tile.label}</p>
                 </div>
               </div>
             </Reveal>
           ))}
         </div>
         <Reveal delay={5}>
-          <p className="text-center text-sm text-slate-light mt-6">Real results from enterprises automating what used to be manual.</p>
+          <p className="text-center text-sm text-text-muted mt-6">Real results from enterprises automating what used to be manual.</p>
         </Reveal>
       </div>
     </section>
@@ -304,7 +380,8 @@ function OutcomesBar() {
 }
 
 /* ───────────────────────────── Section 2: Why Now ───────────────────────────── */
-function CoordinationGraphic() {
+function CoordinationGraphic({ theme }) {
+  const tc = THEME_COLORS[theme]
   /* ── Left diagram: nodes & connections ── */
   const chaosNodes = [
     { x: 60, y: 40 }, { x: 180, y: 30 }, { x: 260, y: 60 },
@@ -323,9 +400,9 @@ function CoordinationGraphic() {
 
   /* ── Right diagram: paths & nodes ── */
   const flowPaths = [
-    { id: 'path-top', d: 'M30,60 L100,60 L160,40 L220,60 L290,60', color: '#3b82f6', width: 1.5 },
-    { id: 'path-mid', d: 'M30,110 C80,70 120,70 160,110 S240,150 290,110', color: '#3b82f6', width: 2 },
-    { id: 'path-bot', d: 'M30,160 L100,150 L160,170 L220,150 L290,160', color: '#10b981', width: 1.5 },
+    { id: 'path-top', d: 'M30,60 L100,60 L160,40 L220,60 L290,60', color: tc.flowBlue, width: 1.5 },
+    { id: 'path-mid', d: 'M30,110 C80,70 120,70 160,110 S240,150 290,110', color: tc.flowBlue, width: 2 },
+    { id: 'path-bot', d: 'M30,160 L100,150 L160,170 L220,150 L290,160', color: tc.flowGreen, width: 1.5 },
   ]
   const flowNodes = [
     { x: 30, y: 60 }, { x: 100, y: 60 }, { x: 160, y: 40 }, { x: 220, y: 60 }, { x: 290, y: 60 },
@@ -337,43 +414,43 @@ function CoordinationGraphic() {
     <div className="grid md:grid-cols-2 gap-6 mt-12">
       {/* ────── Without orchestration ────── */}
       <div>
-        <div className="relative bg-cool-surface border border-cool-border/60 rounded-2xl p-8 overflow-hidden">
+        <div className="relative bg-bg-surface border border-border/60 rounded-2xl p-8 overflow-hidden">
           <p className="font-mono text-xs font-medium text-red-500/70 mb-6 uppercase tracking-wider">Without orchestration</p>
           <svg viewBox="0 0 320 210" className="w-full h-auto" fill="none">
             {/* Connections — flicker and snap */}
             {chaosLines.map((l, i) => (
               <line key={`cl-${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
-                stroke="#ef4444" strokeWidth="1" strokeDasharray="4 4"
+                stroke={tc.failRed} strokeWidth="1" strokeDasharray="4 4"
                 className="chaos-line" style={{ animationDelay: `${i * 1.1}s` }} />
             ))}
 
             {/* Nodes — drift apart */}
             {chaosNodes.map((n, i) => (
               <g key={`cn-${i}`} className="chaos-node" style={{ animationDelay: `${i * 0.4}s`, animationDuration: `${3 + i * 0.5}s` }}>
-                <circle cx={n.x} cy={n.y} r="8" fill="#ef4444" opacity="0.10" />
-                <circle cx={n.x} cy={n.y} r="4" fill="#ef4444" opacity="0.5" />
+                <circle cx={n.x} cy={n.y} r="8" fill={tc.failRed} opacity="0.10" />
+                <circle cx={n.x} cy={n.y} r="4" fill={tc.failRed} opacity="0.5" />
               </g>
             ))}
 
             {/* Failure markers — pulse in/out staggered */}
-            <text x="118" y="74" fill="#ef4444" fontSize="14" className="chaos-fail" style={{ animationDelay: '0s' }}>✕</text>
-            <text x="195" y="82" fill="#ef4444" fontSize="14" className="chaos-fail" style={{ animationDelay: '2.5s' }}>✕</text>
-            <text x="75" y="148" fill="#ef4444" fontSize="12" className="chaos-fail" style={{ animationDelay: '4.5s' }}>?</text>
-            <text x="225" y="98" fill="#ef4444" fontSize="12" className="chaos-fail" style={{ animationDelay: '1.8s' }}>!</text>
-            <text x="148" y="178" fill="#ef4444" fontSize="14" className="chaos-fail" style={{ animationDelay: '3.5s' }}>✕</text>
+            <text x="118" y="74" fill={tc.failRed} fontSize="14" className="chaos-fail" style={{ animationDelay: '0s' }}>&#x2715;</text>
+            <text x="195" y="82" fill={tc.failRed} fontSize="14" className="chaos-fail" style={{ animationDelay: '2.5s' }}>&#x2715;</text>
+            <text x="75" y="148" fill={tc.failRed} fontSize="12" className="chaos-fail" style={{ animationDelay: '4.5s' }}>?</text>
+            <text x="225" y="98" fill={tc.failRed} fontSize="12" className="chaos-fail" style={{ animationDelay: '1.8s' }}>!</text>
+            <text x="148" y="178" fill={tc.failRed} fontSize="14" className="chaos-fail" style={{ animationDelay: '3.5s' }}>&#x2715;</text>
             {/* Warning triangles */}
-            <text x="88" y="55" fill="#ef4444" fontSize="11" className="chaos-warn" style={{ animationDelay: '1s' }}>⚠</text>
-            <text x="210" y="155" fill="#ef4444" fontSize="11" className="chaos-warn" style={{ animationDelay: '5s' }}>⚠</text>
+            <text x="88" y="55" fill={tc.failRed} fontSize="11" className="chaos-warn" style={{ animationDelay: '1s' }}>&#x26A0;</text>
+            <text x="210" y="155" fill={tc.failRed} fontSize="11" className="chaos-warn" style={{ animationDelay: '5s' }}>&#x26A0;</text>
           </svg>
         </div>
-        <p className="text-xs text-slate-light mt-3 leading-relaxed px-2">
+        <p className="text-xs text-text-muted mt-3 leading-relaxed px-2">
           Agents, systems, and people working in isolation. Value is capped. Each new automation adds complexity — and can make things worse.
         </p>
       </div>
 
       {/* ────── With orchestration ────── */}
       <div>
-        <div className="relative bg-cool-surface border border-accent/20 rounded-2xl p-8 overflow-hidden">
+        <div className="relative bg-bg-surface border border-accent/20 rounded-2xl p-8 overflow-hidden">
           <div className="absolute inset-0 bg-accent/[0.02]" />
           <p className="font-mono text-xs font-medium text-accent mb-6 uppercase tracking-wider relative z-10">With orchestration</p>
           <svg viewBox="0 0 320 210" className="w-full h-auto relative z-10" fill="none">
@@ -407,26 +484,26 @@ function CoordinationGraphic() {
             {/* Nodes — static with hover glow */}
             {flowNodes.map((n, i) => (
               <g key={`fn-${i}`}>
-                <circle cx={n.x} cy={n.y} r="10" fill="#3b82f6" opacity="0.08" />
-                <circle cx={n.x} cy={n.y} r="5" fill="#3b82f6" opacity="0.6" className="flow-node" style={{ animationDelay: `${i * 0.3}s` }} />
+                <circle cx={n.x} cy={n.y} r="10" fill={tc.flowBlue} opacity="0.08" />
+                <circle cx={n.x} cy={n.y} r="5" fill={tc.flowBlue} opacity="0.6" className="flow-node" style={{ animationDelay: `${i * 0.3}s` }} />
               </g>
             ))}
 
             {/* Completion flashes at end nodes */}
             {[{ x: 290, y: 60 }, { x: 290, y: 110 }, { x: 290, y: 160 }].map((n, i) => (
               <g key={`check-${i}`} className="flow-complete" style={{ animationDelay: `${2.5 + i * 0.8}s` }}>
-                <circle cx={n.x} cy={n.y} r="8" fill="#10b981" opacity="0.15" />
-                <path d={`M${n.x - 3} ${n.y} L${n.x - 1} ${n.y + 2.5} L${n.x + 3.5} ${n.y - 2.5}`} stroke="#10b981" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx={n.x} cy={n.y} r="8" fill={tc.flowGreen} opacity="0.15" />
+                <path d={`M${n.x - 3} ${n.y} L${n.x - 1} ${n.y + 2.5} L${n.x + 3.5} ${n.y - 2.5}`} stroke={tc.flowGreen} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
               </g>
             ))}
 
             {/* Central orchestrator — pulsing hub */}
-            <rect x="150" y="100" width="20" height="20" rx="4" stroke="#10b981" strokeWidth="1.5" fill="#10b981" fillOpacity="0.06"
+            <rect x="150" y="100" width="20" height="20" rx="4" stroke={tc.flowGreen} strokeWidth="1.5" fill={tc.flowGreen} fillOpacity="0.06"
               className="orch-hub" filter="url(#glow-green)" />
-            <path d="M155 110 L158 113 L165 106" stroke="#10b981" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M155 110 L158 113 L165 106" stroke={tc.flowGreen} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <p className="text-xs text-slate-light mt-3 leading-relaxed px-2">
+        <p className="text-xs text-text-muted mt-3 leading-relaxed px-2">
           Work flows end to end — across agents, systems, and people. AI automates steps and guides decisions. Orchestration resolves the fragmentation.
         </p>
       </div>
@@ -434,12 +511,12 @@ function CoordinationGraphic() {
   )
 }
 
-function WhyNow() {
+function WhyNow({ theme }) {
   return (
-    <section className="py-40 bg-white">
+    <section className="py-40 bg-bg-base">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Why now</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">Why now</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-10">The automation ceiling</h2>
@@ -449,7 +526,7 @@ function WhyNow() {
         <div className="grid lg:grid-cols-[3fr_2fr] gap-10 lg:gap-20">
           {/* Narrative — left column on desktop, second on mobile */}
           <Reveal delay={2}>
-            <div className="space-y-5 text-slate leading-relaxed order-2 lg:order-1">
+            <div className="space-y-5 text-text-dim leading-relaxed order-2 lg:order-1">
               <p>
                 Every enterprise has automated tasks. RPA bots handle data entry. AI agents process documents. But the end-to-end process — the full claims journey, the complete order-to-cash cycle, the patient intake workflow — still depends on manual handoffs, human exception handling, and stitched-together integrations. Results flatten. And each new bot or agent you add increases fragmentation.
               </p>
@@ -462,7 +539,7 @@ function WhyNow() {
               <p>
                 The enterprises breaking through are doing something different. They&rsquo;re building on an orchestration foundation — where agents, processes, and human handoffs are coordinated end to end.
               </p>
-              <p className="text-light font-semibold">
+              <p className="text-text font-semibold">
                 That foundation is agentic orchestration.
               </p>
             </div>
@@ -471,24 +548,24 @@ function WhyNow() {
           {/* Stats — right column on desktop, first on mobile */}
           <Reveal delay={2}>
             <div className="space-y-6 order-1 lg:order-2">
-              <div className="bg-gradient-to-br from-accent/8 to-accent/[0.02] border-l-[3px] border-accent pl-6 py-5 rounded-r-xl">
-                <p className="text-lg sm:text-xl font-display font-bold leading-snug text-light">
+              <div className="border-l-[3px] border-accent pl-6 py-5 rounded-r-xl" style={{ background: `linear-gradient(to bottom right, var(--theme-stat-from), var(--theme-stat-to))` }}>
+                <p className="text-lg sm:text-xl font-display font-bold leading-snug text-text">
                   <span className="font-mono text-accent">71%</span> of organizations say they&rsquo;re using AI agents. Only <span className="font-mono text-accent">11%</span> of agentic AI use cases reached production last year.
                 </p>
-                <p className="text-xs text-slate-light mt-3 font-mono">— Camunda, State of Agentic Orchestration and Automation 2026</p>
+                <p className="text-xs text-text-muted mt-3 font-mono">— Camunda, State of Agentic Orchestration and Automation 2026</p>
               </div>
-              <div className="bg-gradient-to-br from-accent/8 to-accent/[0.02] border-l-[3px] border-accent pl-6 py-5 rounded-r-xl">
-                <p className="text-lg sm:text-xl font-display font-bold leading-snug text-light">
+              <div className="border-l-[3px] border-accent pl-6 py-5 rounded-r-xl" style={{ background: `linear-gradient(to bottom right, var(--theme-stat-from), var(--theme-stat-to))` }}>
+                <p className="text-lg sm:text-xl font-display font-bold leading-snug text-text">
                   <span className="font-mono text-accent">88%</span> of IT leaders say AI needs to be orchestrated across business processes to maximize value. Yet <span className="font-mono text-accent">85%</span> admit they haven&rsquo;t reached the process maturity to do it.
                 </p>
-                <p className="text-xs text-slate-light mt-3 font-mono">— Camunda, State of Agentic Orchestration and Automation 2026</p>
+                <p className="text-xs text-text-muted mt-3 font-mono">— Camunda, State of Agentic Orchestration and Automation 2026</p>
               </div>
             </div>
           </Reveal>
         </div>
 
         <Reveal>
-          <CoordinationGraphic />
+          <CoordinationGraphic theme={theme} />
         </Reveal>
       </div>
     </section>
@@ -519,10 +596,10 @@ function Spectrum() {
   ]
 
   return (
-    <section className="py-40 bg-cool-surface">
+    <section className="py-40 bg-bg-surface">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">What Camunda does</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">What Camunda does</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-6">
@@ -530,7 +607,7 @@ function Spectrum() {
           </h2>
         </Reveal>
         <Reveal delay={2}>
-          <p className="text-slate text-lg max-w-3xl mb-16 leading-relaxed">
+          <p className="text-text-dim text-lg max-w-3xl mb-16 leading-relaxed">
             Camunda handles the full spectrum of enterprise work — from straight-through processing to complex agentic workflows — on one platform.
           </p>
         </Reveal>
@@ -539,13 +616,13 @@ function Spectrum() {
         <Reveal delay={2}>
           <div className="relative mb-4">
             <div className="flex justify-between mb-3 text-sm">
-              <span className="font-mono text-sm text-light font-medium">Straight-through processing</span>
+              <span className="font-mono text-sm text-text font-medium">Straight-through processing</span>
               <span className="font-mono text-sm text-mint font-medium">Agentic workflows</span>
             </div>
             <div ref={barRef} className="spectrum-bar-animated relative h-2 rounded-full overflow-hidden"
               style={{ background: 'linear-gradient(90deg, #FC5D0D 0%, #8b5cf6 50%, #10b981 100%)' }}>
             </div>
-            <div className="flex justify-between mt-2 text-sm text-slate-light">
+            <div className="flex justify-between mt-2 text-sm text-text-muted">
               <span className="max-w-[340px]">Automate end-to-end processes that run millions of times with zero drift. The proven foundation hundreds of enterprises already run on.</span>
               <span className="max-w-[340px] text-right">Turn complex, judgment-heavy work into intelligent workflows. Agents and people, coordinated end to end.</span>
             </div>
@@ -559,7 +636,7 @@ function Spectrum() {
               <div key={zone.key} className="space-y-3">
                 <div className="flex items-center gap-2 mb-4">
                   <div className={`w-2 h-2 rounded-full ${zone.dotColor}`} />
-                  <span className="font-mono text-xs font-medium text-slate uppercase tracking-wider">{zone.label}</span>
+                  <span className="font-mono text-xs font-medium text-text-dim uppercase tracking-wider">{zone.label}</span>
                 </div>
                 {useCases.filter(uc => uc.zone === zone.key).map((uc, j) => {
                   const globalIdx = useCases.indexOf(uc)
@@ -568,16 +645,16 @@ function Spectrum() {
                     <div
                       key={j}
                       className={`relative bg-gradient-to-br ${zone.color} border rounded-xl p-4 cursor-pointer transition-all duration-300 ${
-                        isHovered ? 'border-accent/30 -translate-y-0.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/50 hover:border-cool-border'
+                        isHovered ? 'border-accent/30 -translate-y-0.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-border/50 hover:border-border'
                       }`}
                       onMouseEnter={() => setHoveredUseCase(globalIdx)}
                       onMouseLeave={() => setHoveredUseCase(null)}
                     >
-                      <p className={`text-sm font-medium transition-colors duration-200 ${isHovered ? 'text-light' : 'text-light/80'}`}>
+                      <p className={`text-sm font-medium transition-colors duration-200 ${isHovered ? 'text-text' : 'text-text/80'}`}>
                         {uc.label}
                       </p>
                       <div className={`transition-all duration-300 overflow-hidden ${isHovered ? 'max-h-20 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
-                        <p className="text-xs text-slate leading-relaxed">{uc.description}</p>
+                        <p className="text-xs text-text-dim leading-relaxed">{uc.description}</p>
                       </div>
                     </div>
                   )
@@ -588,8 +665,8 @@ function Spectrum() {
         </Reveal>
 
         <Reveal delay={4}>
-          <p className="text-center text-slate text-lg max-w-2xl mx-auto mt-14">
-            Most enterprises need both. <span className="text-light font-semibold">One platform handles the full range</span> — with governance across everything.
+          <p className="text-center text-text-dim text-lg max-w-2xl mx-auto mt-14">
+            Most enterprises need both. <span className="text-text font-semibold">One platform handles the full range</span> — with governance across everything.
           </p>
         </Reveal>
       </div>
@@ -647,10 +724,10 @@ function AgenticStack() {
   ]
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-32 bg-bg-base">
       <div className="max-w-5xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">The Agentic Enterprise Stack</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">The Agentic Enterprise Stack</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-4">
@@ -658,7 +735,7 @@ function AgenticStack() {
           </h2>
         </Reveal>
         <Reveal delay={2}>
-          <p className="text-lg text-slate max-w-3xl mb-10 leading-relaxed">
+          <p className="text-lg text-text-dim max-w-3xl mb-10 leading-relaxed">
             Every enterprise already has engagement channels and core systems. What&rsquo;s missing is the intelligent orchestration layer that connects them.
           </p>
         </Reveal>
@@ -690,13 +767,13 @@ function AgenticStack() {
 
             {/* ── Top layer: Engagement Channels ── */}
             <button onClick={() => setActiveLayer(activeLayer === 0 ? null : 0)}
-              className={`w-full text-left bg-cool-surface border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 0 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
+              className={`w-full text-left bg-bg-surface border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 0 ? 'border-text-muted shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-text-muted hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-display text-base font-bold text-light">Agentic Engagement</h3>
-                  <p className="text-xs text-slate mt-0.5">Where employees and customers interact</p>
+                  <h3 className="font-display text-base font-bold text-text">Agentic Engagement</h3>
+                  <p className="text-xs text-text-dim mt-0.5">Where employees and customers interact</p>
                 </div>
-                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 0 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate'}`}>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 0 ? 'bg-text-dim/10 text-text-dim' : 'bg-border/40 text-text-dim'}`}>
                   {activeLayer === 0 ? 'Close' : 'Explore'}
                   <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 0 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
@@ -704,18 +781,18 @@ function AgenticStack() {
               <div className="flex flex-wrap gap-2.5 justify-center">
                 {topTiles.map((t, i) => (
                   <div key={i} className="flex flex-col items-center gap-1 w-14">
-                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/70 flex items-center justify-center text-slate">
+                    <div className="w-8 h-8 rounded-lg bg-bg-base border border-border/70 flex items-center justify-center text-text-dim">
                       {t.icon}
                     </div>
-                    <span className="text-[10px] text-slate text-center leading-tight">{t.label}</span>
+                    <span className="text-[10px] text-text-dim text-center leading-tight">{t.label}</span>
                   </div>
                 ))}
               </div>
               <div className={`grid transition-all duration-500 ${activeLayer === 0 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                 <div className="overflow-hidden">
-                  <div className="border-t border-cool-border/50 pt-3">
-                    <p className="text-sm text-slate leading-relaxed">{layerDetails[0]}</p>
-                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-slate hover:text-light mt-3 transition-colors">
+                  <div className="border-t border-border/50 pt-3">
+                    <p className="text-sm text-text-dim leading-relaxed">{layerDetails[0]}</p>
+                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-text-dim hover:text-text mt-3 transition-colors">
                       Discover integrations
                       <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </a>
@@ -727,14 +804,14 @@ function AgenticStack() {
             {/* ── Connectors: top → middle ── */}
             <div className="flex justify-around px-16 py-px">
               {[0,1,2,3,4].map(i => (
-                <div key={i} className="w-px h-5 bg-gradient-to-b from-cool-border to-accent/20" />
+                <div key={i} className="w-px h-5 bg-gradient-to-b from-border to-accent/20" />
               ))}
             </div>
 
             {/* ── Middle layer: Camunda (THE HERO) ── */}
             <button onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
               className={`w-full text-left border-2 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 shadow-[0_0_40px_rgba(252,93,13,0.06)] animate-[layer-pulse_4s_ease-in-out_infinite] ${activeLayer === 1 ? 'border-accent/50' : 'border-accent/30 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(252,93,13,0.10)]'}`}>
-              <div className="bg-gradient-to-br from-accent/[0.06] via-white to-accent/[0.04] p-4 sm:p-5">
+              <div className="bg-gradient-to-br from-accent/[0.06] via-bg-base to-accent/[0.04] p-4 sm:p-5">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2.5">
                     <div className="w-6 h-6 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0">
@@ -754,7 +831,7 @@ function AgenticStack() {
                 {/* Capability chips */}
                 <div className="flex flex-wrap gap-2 justify-center mt-1">
                   {['Multi-agent orchestration', 'Durable execution', 'Human-in-the-loop', 'End-to-end governance', 'MCP & A2A', 'Visual modeling'].map((cap, i) => (
-                    <span key={i} className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-light/70 bg-white/60 border border-cool-border/50 rounded-full px-3 py-1">
+                    <span key={i} className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-text/70 bg-bg-base/60 border border-border/50 rounded-full px-3 py-1">
                       <span className="w-1 h-1 rounded-full bg-accent/40" />
                       {cap}
                     </span>
@@ -764,8 +841,8 @@ function AgenticStack() {
                 <div className={`grid transition-all duration-500 ${activeLayer === 1 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                   <div className="overflow-hidden">
                     <div className="border-t border-accent/15 pt-3">
-                      <p className="text-sm text-slate leading-relaxed">{layerDetails[1]}</p>
-                      <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-slate hover:text-light mt-3 transition-colors">
+                      <p className="text-sm text-text-dim leading-relaxed">{layerDetails[1]}</p>
+                      <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-text-dim hover:text-text mt-3 transition-colors">
                         How Camunda works
                         <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                       </a>
@@ -778,19 +855,19 @@ function AgenticStack() {
             {/* ── Connectors: middle → bottom ── */}
             <div className="flex justify-around px-16 py-px">
               {[0,1,2,3,4].map(i => (
-                <div key={i} className="w-px h-5 bg-gradient-to-b from-accent/20 to-cool-border" />
+                <div key={i} className="w-px h-5 bg-gradient-to-b from-accent/20 to-border" />
               ))}
             </div>
 
             {/* ── Bottom layer: Core Systems ── */}
             <button onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
-              className={`w-full text-left bg-dark-elevated/60 border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 2 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
+              className={`w-full text-left bg-bg-elevated/60 border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 2 ? 'border-text-muted shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-text-muted hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-display text-base font-bold text-light">Core Systems & Data</h3>
-                  <p className="text-xs text-slate mt-0.5">Your existing technology investments</p>
+                  <h3 className="font-display text-base font-bold text-text">Core Systems & Data</h3>
+                  <p className="text-xs text-text-dim mt-0.5">Your existing technology investments</p>
                 </div>
-                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 2 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate'}`}>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 2 ? 'bg-text-dim/10 text-text-dim' : 'bg-border/40 text-text-dim'}`}>
                   {activeLayer === 2 ? 'Close' : 'Explore'}
                   <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 2 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
@@ -798,18 +875,18 @@ function AgenticStack() {
               <div className="flex flex-wrap gap-2.5 justify-center">
                 {bottomTiles.map((t, i) => (
                   <div key={i} className="flex flex-col items-center gap-1 w-14">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${t.ai ? 'bg-purple-50 border border-purple-200/70 text-purple-600' : 'bg-white border border-cool-border/70 text-slate'}`}>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${t.ai ? 'bg-purple-50 border border-purple-200/70 text-purple-600' : 'bg-bg-base border border-border/70 text-text-dim'}`}>
                       {t.icon}
                     </div>
-                    <span className={`text-[10px] text-center leading-tight ${t.ai ? 'text-purple-600 font-medium' : 'text-slate'}`}>{t.label}</span>
+                    <span className={`text-[10px] text-center leading-tight ${t.ai ? 'text-purple-600 font-medium' : 'text-text-dim'}`}>{t.label}</span>
                   </div>
                 ))}
               </div>
               <div className={`grid transition-all duration-500 ${activeLayer === 2 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                 <div className="overflow-hidden">
-                  <div className="border-t border-cool-border/50 pt-3">
-                    <p className="text-sm text-slate leading-relaxed">{layerDetails[2]}</p>
-                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-slate hover:text-light mt-3 transition-colors">
+                  <div className="border-t border-border/50 pt-3">
+                    <p className="text-sm text-text-dim leading-relaxed">{layerDetails[2]}</p>
+                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-text-dim hover:text-text mt-3 transition-colors">
                       Discover integrations
                       <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </a>
@@ -821,12 +898,12 @@ function AgenticStack() {
         </Reveal>
 
         <Reveal delay={4}>
-          <p className="text-slate text-center mt-10 max-w-2xl mx-auto leading-relaxed">
-            Because every process execution generates data, the platform learns over time — optimizing routing, surfacing bottlenecks, improving agent performance. <span className="text-light font-semibold">Your orchestration gets smarter the more you use it.</span>
+          <p className="text-text-dim text-center mt-10 max-w-2xl mx-auto leading-relaxed">
+            Because every process execution generates data, the platform learns over time — optimizing routing, surfacing bottlenecks, improving agent performance. <span className="text-text font-semibold">Your orchestration gets smarter the more you use it.</span>
           </p>
         </Reveal>
         <Reveal delay={4}>
-          <p className="font-mono text-sm text-slate-light text-center mt-4 max-w-2xl mx-auto">
+          <p className="font-mono text-sm text-text-muted text-center mt-4 max-w-2xl mx-auto">
             Works with any AI provider, any agent framework, any LLM. Connect via MCP, A2A, REST, or any protocol. No lock-in.
           </p>
         </Reveal>
@@ -845,10 +922,10 @@ function AudiencePaths() {
   ]
 
   return (
-    <section className="py-40 bg-cool-surface">
+    <section className="py-40 bg-bg-surface">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Start your journey</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">Start your journey</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-14">Built for how you work</h2>
@@ -857,14 +934,14 @@ function AudiencePaths() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {paths.map((path, i) => (
             <Reveal key={i} delay={i + 1}>
-              <a href="#" className="group block bg-white border border-cool-border/60 rounded-2xl p-6 h-full hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
-                <div className="text-slate-light group-hover:text-accent transition-colors duration-300 mb-5">
+              <a href="#" className="group block bg-bg-base border border-border/60 rounded-2xl p-6 h-full hover:border-text-muted hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
+                <div className="text-text-muted group-hover:text-accent transition-colors duration-300 mb-5">
                   {path.icon}
                 </div>
-                <p className="font-mono text-[11px] font-medium text-slate-light uppercase tracking-wider mb-1">{path.hook}</p>
-                <h3 className="font-display text-lg font-bold mb-3 text-light">{path.label}</h3>
-                <p className="text-sm text-slate leading-relaxed mb-5">{path.description}</p>
-                <span className="text-sm font-semibold text-navy group-hover:text-light transition-colors duration-200 inline-flex items-center gap-1.5">
+                <p className="font-mono text-[11px] font-medium text-text-muted uppercase tracking-wider mb-1">{path.hook}</p>
+                <h3 className="font-display text-lg font-bold mb-3 text-text">{path.label}</h3>
+                <p className="text-sm text-text-dim leading-relaxed mb-5">{path.description}</p>
+                <span className="text-sm font-semibold text-text group-hover:text-text transition-colors duration-200 inline-flex items-center gap-1.5">
                   {path.cta}
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
@@ -887,12 +964,12 @@ function LogoMarquee() {
 
   return (
     <div className="relative overflow-hidden py-8 mb-16">
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10" />
+      <div className="absolute left-0 top-0 bottom-0 w-24 z-10" style={{ background: 'linear-gradient(to right, var(--theme-marquee-fade), transparent)' }} />
+      <div className="absolute right-0 top-0 bottom-0 w-24 z-10" style={{ background: 'linear-gradient(to left, var(--theme-marquee-fade), transparent)' }} />
 
       <div className="marquee-track flex items-center gap-16 whitespace-nowrap">
         {doubled.map((name, i) => (
-          <span key={i} className="text-lg font-display font-bold text-slate-light/50 tracking-wide select-none flex-shrink-0">
+          <span key={i} className="text-lg font-display font-bold text-text-muted/50 tracking-wide select-none flex-shrink-0">
             {name}
           </span>
         ))}
@@ -903,71 +980,82 @@ function LogoMarquee() {
 
 /* Sparkline SVGs for social proof cards */
 /* Compact inline sparklines — consistent 48×20 for social proof cards */
-function SparklineDown() {
+function SparklineDown({ color = '#1B2A4A' }) {
   return (
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
         <linearGradient id="sp-down-f" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
-          <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
+          <stop offset="0%" stopColor={color} stopOpacity="0.10" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d="M2,3 L10,5 L18,8 L26,11 L34,14 L42,16 L46,18 L46,20 L2,20 Z" fill="url(#sp-down-f)" className="sparkline-area" />
-      <polyline points="2,3 10,5 18,8 26,11 34,14 42,16 46,18" fill="none" stroke="#1B2A4A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,3 10,5 18,8 26,11 34,14 42,16 46,18" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
-function SparklineUp() {
+function SparklineUp({ color = '#1B2A4A' }) {
   return (
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
         <linearGradient id="sp-up-f" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
-          <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
+          <stop offset="0%" stopColor={color} stopOpacity="0.10" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d="M2,18 L10,15 L18,12 L26,10 L34,7 L42,4 L46,2 L46,20 L2,20 Z" fill="url(#sp-up-f)" className="sparkline-area" />
-      <polyline points="2,18 10,15 18,12 26,10 34,7 42,4 46,2" fill="none" stroke="#1B2A4A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,18 10,15 18,12 26,10 34,7 42,4 46,2" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
-function SparklineBars() {
+function SparklineBars({ color = '#1B2A4A' }) {
   return (
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       {[{x:2,h:5},{x:8,h:9},{x:14,h:7},{x:20,h:12},{x:26,h:15},{x:32,h:13},{x:38,h:17},{x:44,h:14}].map((b,i)=>(
-        <rect key={i} x={b.x} y={20-b.h} width="4" height={b.h} rx="1" fill="#1B2A4A" opacity={0.20 + i * 0.06} className="bar-grow" style={{ animationDelay: `${i * 0.06}s` }} />
+        <rect key={i} x={b.x} y={20-b.h} width="4" height={b.h} rx="1" fill={color} opacity={0.20 + i * 0.06} className="bar-grow" style={{ animationDelay: `${i * 0.06}s` }} />
       ))}
     </svg>
   )
 }
-function SparklineFlat() {
+function SparklineFlat({ color = '#1B2A4A' }) {
   return (
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
         <linearGradient id="sp-flat-f" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
+          <stop offset="0%" stopColor={color} stopOpacity="0.08" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d="M2,5 L10,4 L18,5 L26,3 L34,4 L42,3 L46,4 L46,20 L2,20 Z" fill="url(#sp-flat-f)" className="sparkline-area" />
-      <polyline points="2,5 10,4 18,5 26,3 34,4 42,3 46,4" fill="none" stroke="#1B2A4A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,5 10,4 18,5 26,3 34,4 42,3 46,4" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
 
-function SocialProof() {
+function SocialProof({ theme }) {
+  const tc = THEME_COLORS[theme]
+  const isDark = theme === 'dark'
+
   const stories = [
-    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Replaced manual coordination of insurance verification, prior authorization, and logistics with end-to-end orchestrated workflows for specialty medication delivery.', sparkline: <SparklineUp />, metric: '60% faster' },
-    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automated trade settlement that previously required manual reconciliation across multiple clearing systems. Full regulatory audit trail built in.', sparkline: <SparklineBars />, metric: '12M+ daily' },
-    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment that adjusters previously reviewed manually. Complex cases route to specialists — with full context.', sparkline: <SparklineDown />, metric: '40% less time' },
-    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrated order fulfillment across 200+ warehouses — replacing manual coordination of inventory, shipping, and customer communication.', sparkline: <SparklineFlat />, metric: '99.7% accuracy' },
+    { company: 'Wellpointe', tag: 'Healthcare',
+      tagColor: isDark ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/20' : 'text-emerald-700 bg-emerald-50 border border-emerald-200/60',
+      description: 'Replaced manual coordination of insurance verification, prior authorization, and logistics with end-to-end orchestrated workflows for specialty medication delivery.', sparkline: <SparklineUp color={tc.data} />, metric: '60% faster' },
+    { company: 'Global Investment Bank', tag: 'Financial Services',
+      tagColor: isDark ? 'text-blue-400 bg-blue-500/10 border border-blue-500/20' : 'text-blue-700 bg-blue-50 border border-blue-200/60',
+      description: 'Automated trade settlement that previously required manual reconciliation across multiple clearing systems. Full regulatory audit trail built in.', sparkline: <SparklineBars color={tc.data} />, metric: '12M+ daily' },
+    { company: 'European Insurer', tag: 'Insurance',
+      tagColor: isDark ? 'text-purple-400 bg-purple-500/10 border border-purple-500/20' : 'text-purple-700 bg-purple-50 border border-purple-200/60',
+      description: 'AI agents handle initial claims assessment that adjusters previously reviewed manually. Complex cases route to specialists — with full context.', sparkline: <SparklineDown color={tc.data} />, metric: '40% less time' },
+    { company: 'Global Retailer', tag: 'Retail',
+      tagColor: isDark ? 'text-amber-400 bg-amber-500/10 border border-amber-500/20' : 'text-amber-700 bg-amber-50 border border-amber-200/60',
+      description: 'Orchestrated order fulfillment across 200+ warehouses — replacing manual coordination of inventory, shipping, and customer communication.', sparkline: <SparklineFlat color={tc.data} />, metric: '99.7% accuracy' },
   ]
 
   return (
-    <section className="py-40 bg-white">
+    <section className="py-40 bg-bg-base">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Trusted by industry leaders</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">Trusted by industry leaders</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-12">
@@ -982,15 +1070,15 @@ function SocialProof() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {stories.map((story, i) => (
             <Reveal key={i} delay={i + 1}>
-              <div className="flex flex-col bg-cool-surface border border-cool-border/60 rounded-2xl p-6 h-full hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
+              <div className="flex flex-col bg-bg-surface border border-border/60 rounded-2xl p-6 h-full hover:border-text-muted hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
                 <span className={`inline-block text-[11px] font-mono font-medium px-2.5 py-1 rounded-full mb-4 self-start ${story.tagColor}`}>
                   {story.tag}
                 </span>
-                <h3 className="font-display font-bold text-light mb-3">{story.company}</h3>
-                <p className="text-sm text-slate leading-relaxed mb-5">{story.description}</p>
+                <h3 className="font-display font-bold text-text mb-3">{story.company}</h3>
+                <p className="text-sm text-text-dim leading-relaxed mb-5">{story.description}</p>
                 <div className="flex items-center gap-2.5 mt-auto">
                   {story.sparkline}
-                  <p className="font-mono text-sm font-bold text-navy leading-tight">{story.metric}</p>
+                  <p className="font-mono text-sm font-bold text-text leading-tight">{story.metric}</p>
                 </div>
               </div>
             </Reveal>
@@ -1040,10 +1128,10 @@ function WhyCamunda() {
   ]
 
   return (
-    <section className="py-40 bg-cool-surface">
+    <section className="py-40 bg-bg-surface">
       <div className="max-w-5xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Why Camunda</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">Why Camunda</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-14">Built different</h2>
@@ -1058,28 +1146,28 @@ function WhyCamunda() {
                 onClick={() => setActiveBeat(i)}
                 className={`flex items-center gap-3 px-5 py-3.5 rounded-xl text-left transition-all duration-300 cursor-pointer flex-1 ${
                   activeBeat === i
-                    ? 'bg-white border border-cool-border text-navy shadow-[0_1px_6px_rgba(0,0,0,0.06)] font-semibold'
-                    : 'bg-white border border-cool-border/60 text-slate hover:border-slate-light hover:text-light'
+                    ? 'bg-bg-base border border-border text-text shadow-[0_1px_6px_rgba(0,0,0,0.06)] font-semibold'
+                    : 'bg-bg-base border border-border/60 text-text-dim hover:border-text-muted hover:text-text'
                 }`}
               >
-                <span className={activeBeat === i ? 'text-navy' : 'text-slate-light'}>{beat.icon}</span>
-                <span className="font-display font-bold text-sm">{beat.headline.length > 30 ? beat.headline.slice(0, 28) + '…' : beat.headline}</span>
+                <span className={activeBeat === i ? 'text-text' : 'text-text-muted'}>{beat.icon}</span>
+                <span className="font-display font-bold text-sm">{beat.headline.length > 30 ? beat.headline.slice(0, 28) + '\u2026' : beat.headline}</span>
               </button>
             ))}
           </div>
 
           {/* Active beat content — crossfade */}
-          <div className="bg-white border border-cool-border/60 rounded-2xl p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="bg-bg-base border border-border/60 rounded-2xl p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             {beats.map((beat, i) => (
               <div key={i} className={`tab-panel ${activeBeat === i ? 'active' : 'hidden'}`}>
-                <h3 className="font-display text-2xl sm:text-3xl font-bold mb-4 text-light">{beat.headline}</h3>
-                <p className="text-slate text-lg leading-relaxed mb-8 max-w-2xl">{beat.lead}</p>
+                <h3 className="font-display text-2xl sm:text-3xl font-bold mb-4 text-text">{beat.headline}</h3>
+                <p className="text-text-dim text-lg leading-relaxed mb-8 max-w-2xl">{beat.lead}</p>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   {beat.sections.map((sec, j) => (
-                    <div key={j} className="bg-cool-surface border border-cool-border/40 rounded-xl p-5">
-                      <h4 className="font-display font-bold text-light mb-2">{sec.title}</h4>
-                      <p className="text-sm text-slate leading-relaxed">{sec.text}</p>
+                    <div key={j} className="bg-bg-surface border border-border/40 rounded-xl p-5">
+                      <h4 className="font-display font-bold text-text mb-2">{sec.title}</h4>
+                      <p className="text-sm text-text-dim leading-relaxed">{sec.text}</p>
                     </div>
                   ))}
                 </div>
@@ -1121,12 +1209,12 @@ function OrchestrationCompany() {
   return (
     <section className="relative py-32 overflow-hidden">
       {/* Subtle warm-tinted background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#fdf8f5] via-[#fef6f0] to-[#fdf8f5]" />
+      <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, var(--theme-warm-from), var(--theme-warm-via), var(--theme-warm-from))` }} />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(252,93,13,0.04),transparent)]" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">The orchestration company</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">The orchestration company</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-[-0.025em] mb-12 max-w-3xl">
@@ -1137,21 +1225,21 @@ function OrchestrationCompany() {
         <div className="grid md:grid-cols-2 gap-6">
           {cards.map((card, i) => (
             <Reveal key={i} delay={i + 1}>
-              <div className="bg-white border border-cool-border/60 rounded-2xl p-8 h-full shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+              <div className="bg-bg-base border border-border/60 rounded-2xl p-8 h-full shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
                 {/* Analyst name */}
-                <p className="font-display text-lg font-extrabold text-light tracking-tight mb-1">{card.analyst}</p>
+                <p className="font-display text-lg font-extrabold text-text tracking-tight mb-1">{card.analyst}</p>
                 {/* Report title */}
-                <p className="font-mono text-xs text-slate-light mb-6">{card.title}</p>
+                <p className="font-mono text-xs text-text-muted mb-6">{card.title}</p>
 
                 {/* Lead quote — visual focal point */}
-                <blockquote className="font-display text-xl sm:text-2xl font-bold text-light leading-snug mb-6 relative pl-4 border-l-[3px] border-accent/30">
+                <blockquote className="font-display text-xl sm:text-2xl font-bold text-text leading-snug mb-6 relative pl-4 border-l-[3px] border-accent/30">
                   {card.quote}
                 </blockquote>
 
                 {/* Supporting points */}
                 <ul className="space-y-3">
                   {card.points.map((pt, j) => (
-                    <li key={j} className="flex gap-2.5 text-[13px] text-slate leading-relaxed">
+                    <li key={j} className="flex gap-2.5 text-[13px] text-text-dim leading-relaxed">
                       <span className="mt-1.5 w-1 h-1 rounded-full bg-accent/40 flex-shrink-0" />
                       {pt}
                     </li>
@@ -1164,7 +1252,7 @@ function OrchestrationCompany() {
 
         {/* Legal disclaimer */}
         <Reveal delay={3}>
-          <p className="text-[10px] text-slate-light/60 mt-8 max-w-3xl leading-relaxed">
+          <p className="text-[10px] text-text-muted/60 mt-8 max-w-3xl leading-relaxed">
             Gartner does not endorse any vendor, product or service depicted in its research publications. Gartner research publications consist of the opinions of Gartner's research organization and should not be construed as statements of fact.
           </p>
         </Reveal>
@@ -1183,10 +1271,10 @@ function Industries() {
   ]
 
   return (
-    <section className="py-40 bg-white">
+    <section className="py-40 bg-bg-base">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Industries</p>
+          <p className="font-mono text-xs font-medium text-text-muted uppercase tracking-wider mb-4">Industries</p>
         </Reveal>
         <Reveal delay={1}>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-14">
@@ -1199,18 +1287,18 @@ function Industries() {
             <Reveal key={i} delay={i + 1}>
               <a
                 href="#"
-                className="group block bg-cool-surface border border-cool-border/60 rounded-2xl p-8 h-full transition-all duration-300 hover:-translate-y-1 hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)]"
+                className="group block bg-bg-surface border border-border/60 rounded-2xl p-8 h-full transition-all duration-300 hover:-translate-y-1 hover:border-text-muted hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)]"
               >
-                <div className="w-12 h-12 rounded-xl bg-white border border-cool-border/40 flex items-center justify-center text-slate-light group-hover:text-accent group-hover:border-accent/20 transition-all duration-300 mb-5">
+                <div className="w-12 h-12 rounded-xl bg-bg-base border border-border/40 flex items-center justify-center text-text-muted group-hover:text-accent group-hover:border-accent/20 transition-all duration-300 mb-5">
                   {ind.icon}
                 </div>
-                <h3 className="font-display font-bold text-light text-lg mb-2">{ind.name}</h3>
-                <p className="text-sm text-slate leading-relaxed mb-5">{ind.hook}</p>
+                <h3 className="font-display font-bold text-text text-lg mb-2">{ind.name}</h3>
+                <p className="text-sm text-text-dim leading-relaxed mb-5">{ind.hook}</p>
 
                 {/* Always-visible example tags */}
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-cool-border/40">
+                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border/40">
                   {ind.examples.map((ex, j) => (
-                    <span key={j} className="font-mono text-[11px] px-2 py-1 bg-cool-surface text-slate border border-cool-border/40 rounded-md">{ex}</span>
+                    <span key={j} className="font-mono text-[11px] px-2 py-1 bg-bg-surface text-text-dim border border-border/40 rounded-md">{ex}</span>
                   ))}
                 </div>
               </a>
@@ -1221,7 +1309,7 @@ function Industries() {
         {/* See all industries link */}
         <Reveal delay={5}>
           <div className="text-center mt-10">
-            <a href="#" className="inline-flex items-center gap-2 font-display font-semibold text-navy hover:text-light transition-colors duration-200">
+            <a href="#" className="inline-flex items-center gap-2 font-display font-semibold text-text hover:text-text transition-colors duration-200">
               See all industries
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </a>
@@ -1243,15 +1331,15 @@ function GetStarted() {
 
   return (
     <section className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-cool-surface" />
-      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white" />
+      <div className="absolute inset-0 bg-bg-surface" />
+      <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-transparent to-bg-base" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-accent/[0.03] rounded-full blur-3xl" />
 
       {/* Subtle dot grid */}
       <div
         className="absolute inset-0 opacity-[0.18]"
         style={{
-          backgroundImage: 'radial-gradient(circle, #c7cdd8 1px, transparent 1px)',
+          backgroundImage: `radial-gradient(circle, var(--theme-dot-color) 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
       />
@@ -1282,11 +1370,11 @@ function GetStarted() {
                 className={`block rounded-2xl p-6 text-center transition-all duration-300 hover:-translate-y-1 ${
                   cta.primary
                     ? 'bg-accent hover:bg-accent-hover text-white shadow-[0_2px_8px_rgba(252,93,13,0.25)] hover:shadow-[0_4px_20px_rgba(252,93,13,0.35)]'
-                    : 'bg-white border border-cool-border/60 hover:border-slate-light text-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)]'
+                    : 'bg-bg-base border border-border/60 hover:border-text-muted text-text hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)]'
                 }`}
               >
-                <p className={`font-display text-xl font-extrabold mb-1 ${cta.primary ? 'text-white' : 'text-light'}`}>{cta.label}</p>
-                <p className={`text-sm font-mono ${cta.primary ? 'text-white/70' : 'text-slate'}`}>{cta.subtext}</p>
+                <p className={`font-display text-xl font-extrabold mb-1 ${cta.primary ? 'text-white' : 'text-text'}`}>{cta.label}</p>
+                <p className={`text-sm font-mono ${cta.primary ? 'text-white/70' : 'text-text-dim'}`}>{cta.subtext}</p>
               </a>
             </Reveal>
           ))}
@@ -1299,21 +1387,21 @@ function GetStarted() {
 /* ───────────────────────────── Footer ───────────────────────────── */
 function Footer() {
   return (
-    <footer className="bg-white border-t border-cool-border/60 py-12">
+    <footer className="bg-bg-base border-t border-border/60 py-12">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-6">
-            <span className="font-display text-lg font-extrabold text-light">Camunda</span>
-            <span className="text-sm text-slate">&copy; 2026 Camunda. All rights reserved.</span>
+            <span className="font-display text-lg font-extrabold text-text">Camunda</span>
+            <span className="text-sm text-text-dim">&copy; 2026 Camunda. All rights reserved.</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">Privacy</a>
-            <a href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">Terms</a>
-            <a href="#" className="text-sm text-slate hover:text-light transition-colors duration-200">Contact</a>
+            <a href="#" className="text-sm text-text-dim hover:text-text transition-colors duration-200">Privacy</a>
+            <a href="#" className="text-sm text-text-dim hover:text-text transition-colors duration-200">Terms</a>
+            <a href="#" className="text-sm text-text-dim hover:text-text transition-colors duration-200">Contact</a>
             <div className="flex items-center gap-3 ml-2">
-              <a href="#" className="text-slate-light hover:text-light transition-colors duration-200">{Icons.github}</a>
-              <a href="#" className="text-slate-light hover:text-light transition-colors duration-200">{Icons.linkedin}</a>
-              <a href="#" className="text-slate-light hover:text-light transition-colors duration-200">{Icons.twitter}</a>
+              <a href="#" className="text-text-muted hover:text-text transition-colors duration-200">{Icons.github}</a>
+              <a href="#" className="text-text-muted hover:text-text transition-colors duration-200">{Icons.linkedin}</a>
+              <a href="#" className="text-text-muted hover:text-text transition-colors duration-200">{Icons.twitter}</a>
             </div>
           </div>
         </div>
@@ -1324,16 +1412,17 @@ function Footer() {
 
 /* ───────────────────────────── App ───────────────────────────── */
 export default function App() {
+  const [theme, setTheme] = useTheme()
   return (
-    <div className="bg-white text-light font-body min-h-screen">
-      <Navbar />
-      <Hero />
-      <OutcomesBar />
-      <WhyNow />
+    <div className="bg-bg-base text-text font-body min-h-screen">
+      <Navbar theme={theme} setTheme={setTheme} />
+      <Hero theme={theme} />
+      <OutcomesBar theme={theme} />
+      <WhyNow theme={theme} />
       <Spectrum />
       <AgenticStack />
       <AudiencePaths />
-      <SocialProof />
+      <SocialProof theme={theme} />
       <WhyCamunda />
       <OrchestrationCompany />
       <Industries />
