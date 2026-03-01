@@ -1418,9 +1418,9 @@ export default function App() {
       <WhyNow theme={theme} />
       <Spectrum />
       <AgenticStack />
+      <WhyCamunda />
       <AudiencePaths />
       <SocialProof theme={theme} />
-      <WhyCamunda />
       <OrchestrationCompany />
       <Industries />
       <GetStarted />
