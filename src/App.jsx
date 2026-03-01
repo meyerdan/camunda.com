@@ -897,7 +897,88 @@ function WhyCamunda() {
   )
 }
 
-/* ───────────────────────────── Section 8: Industries — Larger Tiles ───────────────────────────── */
+/* ───────────────────────────── Section 8: The Orchestration Company ───────────────────────────── */
+function OrchestrationCompany() {
+  const cards = [
+    {
+      analyst: 'Gartner',
+      title: 'Visionary — BOAT Magic Quadrant, 2025',
+      quote: '\u201CCamunda\u2019s strongest capability is Orchestration.\u201D',
+      points: [
+        'Top 3 in completeness of vision among all 20 vendors in the inaugural Magic Quadrant for Business Orchestration and Automation Technologies',
+        'Recognized for native multi-agent orchestration: \u201Cnatively supports and orchestrates multi-agent systems, embedding AI agents directly within BPMN process models\u201D',
+        'Zeebe workflow engine noted for \u201Cspeed, scalability, and resilience\u201D',
+      ],
+    },
+    {
+      analyst: 'Forrester',
+      title: 'Best-in-Class Orchestration — DPA Wave, Q3 2025',
+      quote: '\u201CUnique approach to agentic orchestration.\u201D',
+      points: [
+        'Perfect 5/5 scores in Orchestration and Process Standards',
+        'Zeebe \u201Cearns top marks for orchestration with a distributed and stateful approach\u201D',
+        'Above-average customer feedback praising effective orchestration',
+        '\u201CCamunda best suits enterprises with professional developers who want to automate complex processes and require best-in-class orchestration\u201D',
+      ],
+    },
+  ]
+
+  return (
+    <section className="relative py-24 overflow-hidden">
+      {/* Subtle warm-tinted background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#fdf8f5] via-[#fef6f0] to-[#fdf8f5]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(252,93,13,0.04),transparent)]" />
+
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
+        <Reveal>
+          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">The orchestration company</p>
+        </Reveal>
+        <Reveal delay={1}>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-[-0.02em] mb-12 max-w-3xl">
+            The next era of enterprise automation runs on orchestration.
+          </h2>
+        </Reveal>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {cards.map((card, i) => (
+            <Reveal key={i} delay={i + 1}>
+              <div className="bg-white border border-cool-border/60 rounded-2xl p-8 h-full shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                {/* Analyst name */}
+                <p className="font-display text-lg font-extrabold text-light tracking-tight mb-1">{card.analyst}</p>
+                {/* Report title */}
+                <p className="font-mono text-xs text-slate-light mb-6">{card.title}</p>
+
+                {/* Lead quote — visual focal point */}
+                <blockquote className="font-display text-xl sm:text-2xl font-bold text-light leading-snug mb-6 relative pl-4 border-l-[3px] border-accent/30">
+                  {card.quote}
+                </blockquote>
+
+                {/* Supporting points */}
+                <ul className="space-y-3">
+                  {card.points.map((pt, j) => (
+                    <li key={j} className="flex gap-2.5 text-[13px] text-slate leading-relaxed">
+                      <span className="mt-1.5 w-1 h-1 rounded-full bg-accent/40 flex-shrink-0" />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Legal disclaimer */}
+        <Reveal delay={3}>
+          <p className="text-[10px] text-slate-light/60 mt-8 max-w-3xl leading-relaxed">
+            Gartner does not endorse any vendor, product or service depicted in its research publications. Gartner research publications consist of the opinions of Gartner's research organization and should not be construed as statements of fact.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+/* ───────────────────────────── Section 9: Industries — Larger Tiles ───────────────────────────── */
 function Industries() {
   const industries = [
     { icon: Icons.finance, name: 'Financial Services', hook: 'Orchestrate payments, onboarding, and compliance — end to end.', examples: ['Trade settlement', 'KYC', 'Account opening'] },
@@ -1059,6 +1140,7 @@ export default function App() {
       <AudiencePaths />
       <SocialProof />
       <WhyCamunda />
+      <OrchestrationCompany />
       <Industries />
       <GetStarted />
       <Footer />
