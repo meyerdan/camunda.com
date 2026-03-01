@@ -534,13 +534,10 @@ function WhyNow({ theme }) {
                 This is the automation ceiling. Individual task automation can&rsquo;t scale into operational transformation without something connecting it all together.
               </p>
               <p>
-                Enterprises building multi-agent systems hit the same wall. Agents that work in isolation can&rsquo;t coordinate across an end-to-end process. Failures cascade. Nobody orchestrates the whole.
-              </p>
-              <p>
-                The enterprises breaking through are doing something different. They&rsquo;re building on an orchestration foundation — where agents, processes, and human handoffs are coordinated end to end.
+                And the stakes are rising. AI is getting more capable every quarter — but capability without coordination is risk. Orchestration is what lets you hand AI real authority over your operations. Not just automating individual steps, but giving AI control over the end-to-end flow itself — deciding how work moves, when to escalate, when to reroute, when to bring in a human. All within a governed, auditable process. That&rsquo;s not limiting AI. That&rsquo;s what makes it powerful enough to run the work that matters.
               </p>
               <p className="text-text font-semibold">
-                That foundation is agentic orchestration.
+                That&rsquo;s agentic orchestration.
               </p>
             </div>
           </Reveal>
