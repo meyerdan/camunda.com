@@ -616,31 +616,42 @@ const StackIcons = {
 }
 
 /* Living network SVG for the Camunda middle layer */
-function CamundaNetwork() {
-  /* Node positions in the network */
-  const nodes = [
-    { x: 60, y: 22, type: 'gear' },   { x: 160, y: 14, type: 'brain' },
-    { x: 260, y: 26, type: 'person' }, { x: 360, y: 16, type: 'gear' },
-    { x: 460, y: 24, type: 'diamond' },
-    { x: 110, y: 56, type: 'brain' },  { x: 210, y: 52, type: 'diamond' },
-    { x: 310, y: 58, type: 'person' }, { x: 410, y: 50, type: 'brain' },
-    { x: 60, y: 90, type: 'person' }, { x: 160, y: 94, type: 'gear' },
-    { x: 260, y: 88, type: 'brain' }, { x: 360, y: 96, type: 'gear' },
-    { x: 460, y: 90, type: 'diamond' },
-  ]
+/* ── Network graph data (shared between render + animation) ── */
+const NET_NODES = [
+  { x: 60, y: 22, type: 'gear' },   { x: 160, y: 14, type: 'brain' },
+  { x: 260, y: 26, type: 'person' }, { x: 360, y: 16, type: 'gear' },
+  { x: 460, y: 24, type: 'diamond' },
+  { x: 110, y: 56, type: 'brain' },  { x: 210, y: 52, type: 'diamond' },
+  { x: 310, y: 58, type: 'person' }, { x: 410, y: 50, type: 'brain' },
+  { x: 60, y: 90, type: 'person' }, { x: 160, y: 94, type: 'gear' },
+  { x: 260, y: 88, type: 'brain' }, { x: 360, y: 96, type: 'gear' },
+  { x: 460, y: 90, type: 'diamond' },
+]
+const NET_EDGES = [
+  [0, 1, 'solid'], [1, 2, 'glow'], [2, 3, 'solid'], [3, 4, 'glow'],
+  [0, 5, 'solid'], [1, 6, 'glow'], [2, 7, 'solid'], [3, 8, 'glow'],
+  [5, 6, 'glow'], [6, 7, 'solid'], [7, 8, 'glow'],
+  [5, 9, 'solid'], [6, 10, 'glow'], [7, 11, 'solid'], [8, 13, 'glow'],
+  [9, 10, 'glow'], [10, 11, 'solid'], [11, 12, 'glow'], [12, 13, 'solid'],
+  [6, 11, 'glow'], [1, 7, 'solid'],
+]
+/* Pre-compute adjacency: for each node, list of { to, edgeType } */
+const NET_ADJ = (() => {
+  const adj = NET_NODES.map(() => [])
+  NET_EDGES.forEach(([a, b]) => {
+    adj[a].push(b)
+    adj[b].push(a)
+  })
+  return adj
+})()
+const NET_BRAINS = NET_NODES.map((n, i) => [n, i]).filter(([n]) => n.type === 'brain').map(([, i]) => i)
 
-  /* Connections: [fromIdx, toIdx, type] — 'solid' or 'glow' */
-  const edges = [
-    [0, 1, 'solid'], [1, 2, 'glow'], [2, 3, 'solid'], [3, 4, 'glow'],
-    [0, 5, 'solid'], [1, 6, 'glow'], [2, 7, 'solid'], [3, 8, 'glow'],
-    [5, 6, 'glow'], [6, 7, 'solid'], [7, 8, 'glow'],
-    [5, 9, 'solid'], [6, 10, 'glow'], [7, 11, 'solid'], [8, 13, 'glow'],
-    [9, 10, 'glow'], [10, 11, 'solid'], [11, 12, 'glow'], [12, 13, 'solid'],
-    [6, 11, 'glow'], [1, 7, 'solid'],
-  ]
+function CamundaNetwork() {
+  const pulseGroupRef = useRef(null)
+  const nodeRefsMap = useRef({})
 
   const nodeIcon = (type, x, y) => {
-    const o = 5 // offset from center
+    const o = 5
     switch(type) {
       case 'gear': return <circle cx={x} cy={y} r={o} stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.8" />
       case 'brain': return <><circle cx={x} cy={y} r={o-1} fill="currentColor" opacity="0.2" /><circle cx={x} cy={y} r={2} fill="currentColor" opacity="0.7" /></>
@@ -650,15 +661,114 @@ function CamundaNetwork() {
     }
   }
 
+  /* ── Dynamic pulse animation (Option A + E) ── */
+  useEffect(() => {
+    const group = pulseGroupRef.current
+    if (!group) return
+
+    const SVG_NS = 'http://www.w3.org/2000/svg'
+    const pulses = []
+    let nextId = 0
+    let frame
+
+    const MAX_PULSES = 18
+
+    function spawnPulse(fromIdx) {
+      if (pulses.length >= MAX_PULSES) return
+      const neighbors = NET_ADJ[fromIdx]
+      if (!neighbors.length) return
+      const to = neighbors[Math.floor(Math.random() * neighbors.length)]
+      const el = document.createElementNS(SVG_NS, 'circle')
+      el.setAttribute('r', '3')
+      el.setAttribute('fill', '#FC5D0D')
+      el.setAttribute('opacity', '0')
+      el.setAttribute('filter', 'url(#pulse-glow-f)')
+      group.appendChild(el)
+      pulses.push({
+        id: nextId++, from: fromIdx, to, progress: 0,
+        speed: 0.012 + Math.random() * 0.008,
+        hops: 0, pause: 0, el,
+      })
+    }
+
+    /* Option E — burst spawns from brain nodes */
+    function spawnBurst() {
+      const brain = NET_BRAINS[Math.floor(Math.random() * NET_BRAINS.length)]
+      const count = 2 + Math.floor(Math.random() * 2) // 2-3
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => spawnPulse(brain), i * 150)
+      }
+    }
+    spawnBurst()
+    const burstTimer = setInterval(spawnBurst, 2200 + Math.random() * 1800)
+
+    /* Flash a decision node briefly */
+    function flashNode(idx) {
+      const bg = nodeRefsMap.current[idx]
+      if (!bg) return
+      bg.setAttribute('opacity', '0.25')
+      bg.setAttribute('r', '14')
+      setTimeout(() => { bg.setAttribute('opacity', '0.07'); bg.setAttribute('r', '12') }, 350)
+    }
+
+    /* Main animation loop */
+    function tick() {
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i]
+
+        /* Paused at a decision node — countdown */
+        if (p.pause > 0) { p.pause--; continue }
+
+        p.progress += p.speed
+
+        if (p.progress >= 1) {
+          p.hops++
+          if (p.hops > 4) { p.el.remove(); pulses.splice(i, 1); continue }
+
+          /* Arrived at destination — pick next hop */
+          const destType = NET_NODES[p.to].type
+          const neighbors = NET_ADJ[p.to].filter(n => n !== p.from)
+          if (!neighbors.length) { p.el.remove(); pulses.splice(i, 1); continue }
+
+          /* Option A — decision nodes: pause + flash + random branch */
+          if (destType === 'diamond') {
+            flashNode(p.to)
+            p.pause = 18 // ~300ms at 60fps
+          }
+
+          const next = neighbors[Math.floor(Math.random() * neighbors.length)]
+          p.from = p.to
+          p.to = next
+          p.progress = 0
+        }
+
+        /* Interpolate position */
+        const f = NET_NODES[p.from], t = NET_NODES[p.to]
+        const x = f.x + (t.x - f.x) * p.progress
+        const y = f.y + (t.y - f.y) * p.progress
+        p.el.setAttribute('cx', x)
+        p.el.setAttribute('cy', y)
+        /* Fade in at start, sustain, fade out near end of life */
+        const lifeAlpha = p.hops >= 3 ? 0.4 : 0.85
+        const edgeAlpha = p.progress < 0.15 ? p.progress / 0.15 : p.progress > 0.85 ? (1 - p.progress) / 0.15 : 1
+        p.el.setAttribute('opacity', (edgeAlpha * lifeAlpha).toFixed(2))
+      }
+      frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+
+    return () => { cancelAnimationFrame(frame); clearInterval(burstTimer); pulses.forEach(p => p.el?.remove()) }
+  }, [])
+
   return (
     <svg viewBox="0 0 520 110" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
       <defs>
         <filter id="pulse-glow-f"><feGaussianBlur stdDeviation="2.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
       </defs>
 
-      {/* Edges */}
-      {edges.map(([a, b, type], i) => {
-        const n1 = nodes[a], n2 = nodes[b]
+      {/* Static edges */}
+      {NET_EDGES.map(([a, b, type], i) => {
+        const n1 = NET_NODES[a], n2 = NET_NODES[b]
         return (
           <line key={`e-${i}`} x1={n1.x} y1={n1.y} x2={n2.x} y2={n2.y}
             stroke={type === 'glow' ? '#FC5D0D' : '#94a3b8'}
@@ -669,28 +779,15 @@ function CamundaNetwork() {
         )
       })}
 
-      {/* Travelling pulses along glow edges */}
-      {edges.filter(([,,t]) => t === 'glow').map(([a, b], i) => {
-        const n1 = nodes[a], n2 = nodes[b]
-        const pathId = `net-path-${i}`
-        return (
-          <g key={`p-${i}`}>
-            <path id={pathId} d={`M${n1.x},${n1.y} L${n2.x},${n2.y}`} fill="none" stroke="none" />
-            <circle r="2.5" fill="#FC5D0D" opacity="0" filter="url(#pulse-glow-f)">
-              <animateMotion dur={`${2.5 + (i % 3) * 0.8}s`} begin={`${i * 0.6}s`} repeatCount="indefinite">
-                <mpath href={`#${pathId}`} />
-              </animateMotion>
-              <animate attributeName="opacity" values="0;0.8;0.8;0" dur={`${2.5 + (i % 3) * 0.8}s`} begin={`${i * 0.6}s`} repeatCount="indefinite" />
-            </circle>
-          </g>
-        )
-      })}
+      {/* Dynamic pulses rendered here via DOM manipulation */}
+      <g ref={pulseGroupRef} />
 
       {/* Nodes */}
       <g className="text-accent">
-        {nodes.map((n, i) => (
+        {NET_NODES.map((n, i) => (
           <g key={`n-${i}`} className="stack-net-node" style={{ animationDelay: `${i * 0.25}s` }}>
-            <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.07" />
+            <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.07"
+              ref={el => { if (el) nodeRefsMap.current[i] = el }} />
             {nodeIcon(n.type, n.x, n.y)}
           </g>
         ))}
