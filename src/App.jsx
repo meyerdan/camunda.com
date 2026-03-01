@@ -187,7 +187,7 @@ function Hero() {
       <div ref={ref} className="reveal relative z-10 max-w-5xl mx-auto px-8 text-center">
         <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-semibold tracking-[-0.035em] leading-[1.06] mb-5 text-navy">
           The enterprise platform<br className="hidden sm:block" /> for{' '}
-          <span className="font-bold bg-gradient-to-r from-navy via-[#2d4a7a] to-navy/80 bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text'}}>agentic orchestration</span>
+          <span className="font-bold bg-gradient-to-r from-accent via-[#e04d08] to-[#c44008] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text'}}>agentic orchestration</span>
         </h1>
         <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-3 leading-relaxed">
           Cut processing time, eliminate manual work, and scale automation that actually delivers.
