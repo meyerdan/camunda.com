@@ -534,7 +534,7 @@ function WhyNow({ theme }) {
                 This is the automation ceiling. Individual task automation can&rsquo;t scale into operational transformation without something connecting it all together.
               </p>
               <p>
-                And the stakes are rising. AI is getting more capable every quarter — but capability without coordination is risk. Orchestration is what lets you hand AI real authority over your operations. Not just automating individual steps, but giving AI control over the end-to-end flow itself — deciding how work moves, when to escalate, when to reroute, when to bring in a human. All within a governed, auditable process. That&rsquo;s not limiting AI. That&rsquo;s what makes it powerful enough to run the work that matters.
+                And the stakes are rising. AI is getting more capable every quarter — but capability without coordination is risk. Orchestration is what lets you hand AI real authority over your operations. Not just automating individual steps, but giving AI control over the end-to-end flow itself — deciding how work moves, when to escalate, when to reroute, when to bring in a human. All while staying in control — enforcing deterministic guardrails where needed, maintaining a complete audit trail, and building the operational trust that lets you give AI more responsibility over time. That&rsquo;s not limiting AI. That&rsquo;s what makes it powerful enough to run the work that matters.
               </p>
               <p className="text-text font-semibold">
                 That&rsquo;s agentic orchestration.
