@@ -436,7 +436,7 @@ function Spectrum() {
           <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">What Camunda does</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em] mb-6">
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-6">
             From fully automated to fully adaptive
           </h2>
         </Reveal>
@@ -450,13 +450,13 @@ function Spectrum() {
         <Reveal delay={2}>
           <div className="relative mb-4">
             <div className="flex justify-between mb-3 text-sm">
-              <span className="font-mono text-xs text-accent font-medium">Straight-through processing</span>
-              <span className="font-mono text-xs text-mint font-medium">Agentic workflows</span>
+              <span className="font-mono text-sm text-accent font-medium">Straight-through processing</span>
+              <span className="font-mono text-sm text-mint font-medium">Agentic workflows</span>
             </div>
             <div ref={barRef} className="spectrum-bar-animated relative h-2 rounded-full overflow-hidden"
               style={{ background: 'linear-gradient(90deg, #FC5D0D 0%, #8b5cf6 50%, #10b981 100%)' }}>
             </div>
-            <div className="flex justify-between mt-2 text-xs text-slate-light">
+            <div className="flex justify-between mt-2 text-sm text-slate-light">
               <span className="max-w-[340px]">Automate end-to-end processes that run millions of times with zero drift. The proven foundation hundreds of enterprises already run on.</span>
               <span className="max-w-[340px] text-right">Build and orchestrate multi-agent systems, people, and processes through workflows that adapt — with durable coordination and governance built in.</span>
             </div>
@@ -470,7 +470,7 @@ function Spectrum() {
               <div key={zone.key} className="space-y-3">
                 <div className="flex items-center gap-2 mb-4">
                   <div className={`w-2 h-2 rounded-full ${zone.dotColor}`} />
-                  <span className="font-mono text-[11px] font-medium text-slate uppercase tracking-wider">{zone.label}</span>
+                  <span className="font-mono text-xs font-medium text-slate uppercase tracking-wider">{zone.label}</span>
                 </div>
                 {useCases.filter(uc => uc.zone === zone.key).map((uc, j) => {
                   const globalIdx = useCases.indexOf(uc)
@@ -707,60 +707,65 @@ function LogoMarquee() {
 }
 
 /* Sparkline SVGs for social proof cards */
+/* Compact inline sparklines — consistent 48×20 for social proof cards */
 function SparklineDown() {
   return (
-    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
+    <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
-        <linearGradient id="sp-down-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.12" />
+        <linearGradient id="sp-down-f" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
           <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <path d="M0,4 L13,6 L26,10 L40,14 L53,18 L66,22 L80,26 L80,28 L0,28 Z" fill="url(#sp-down-fill)" />
-      <polyline points="0,4 13,6 26,10 40,14 53,18 66,22 80,26" fill="none" stroke="#FC5D0D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2,3 L10,5 L18,8 L26,11 L34,14 L42,16 L46,18 L46,20 L2,20 Z" fill="url(#sp-down-f)" className="sparkline-area" />
+      <polyline points="2,3 10,5 18,8 26,11 34,14 42,16 46,18" fill="none" stroke="#FC5D0D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
-function SparklineVolume() {
+function SparklineUp() {
   return (
-    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
-      {[{x:0,h:6},{x:10,h:10},{x:20,h:14},{x:30,h:12},{x:40,h:18},{x:50,h:22},{x:60,h:20},{x:70,h:26}].map((b,i)=>(
-        <rect key={i} x={b.x} y={28-b.h} width="8" height={b.h} rx="1.5" fill="#FC5D0D" opacity={0.15 + i * 0.08} />
+    <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
+      <defs>
+        <linearGradient id="sp-up-f" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d="M2,18 L10,15 L18,12 L26,10 L34,7 L42,4 L46,2 L46,20 L2,20 Z" fill="url(#sp-up-f)" className="sparkline-area" />
+      <polyline points="2,18 10,15 18,12 26,10 34,7 42,4 46,2" fill="none" stroke="#FC5D0D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+    </svg>
+  )
+}
+function SparklineBars() {
+  return (
+    <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
+      {[{x:2,h:5},{x:8,h:9},{x:14,h:7},{x:20,h:12},{x:26,h:15},{x:32,h:13},{x:38,h:17},{x:44,h:14}].map((b,i)=>(
+        <rect key={i} x={b.x} y={20-b.h} width="4" height={b.h} rx="1" fill="#FC5D0D" opacity={0.25 + i * 0.07} className="bar-grow" style={{ animationDelay: `${i * 0.06}s` }} />
       ))}
-    </svg>
-  )
-}
-function SparklineBeforeAfter() {
-  return (
-    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
-      <rect x="8" y="4" width="24" height="24" rx="3" fill="#FC5D0D" opacity="0.2" />
-      <rect x="48" y="14" width="24" height="14" rx="3" fill="#FC5D0D" opacity="0.45" />
-      <text x="20" y="20" textAnchor="middle" fill="#FC5D0D" fontSize="7" fontWeight="600" fontFamily="'JetBrains Mono', monospace">Before</text>
-      <text x="60" y="24" textAnchor="middle" fill="#FC5D0D" fontSize="7" fontWeight="600" fontFamily="'JetBrains Mono', monospace">After</text>
     </svg>
   )
 }
 function SparklineFlat() {
   return (
-    <svg viewBox="0 0 80 28" className="w-full h-[28px]">
+    <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
-        <linearGradient id="sp-flat-fill" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="sp-flat-f" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#10b981" stopOpacity="0.12" />
           <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <path d="M0,6 L13,5 L26,6 L40,5 L53,6 L66,5 L80,5 L80,28 L0,28 Z" fill="url(#sp-flat-fill)" />
-      <polyline points="0,6 13,5 26,6 40,5 53,6 66,5 80,5" fill="none" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2,5 L10,4 L18,5 L26,3 L34,4 L42,3 L46,4 L46,20 L2,20 Z" fill="url(#sp-flat-f)" className="sparkline-area" />
+      <polyline points="2,5 10,4 18,5 26,3 34,4 42,3 46,4" fill="none" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
 
 function SocialProof() {
   const stories = [
-    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', metric: '60% faster order processing', sparkline: <SparklineDown /> },
-    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', metric: '12M+ transactions orchestrated daily', sparkline: <SparklineVolume /> },
-    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', metric: '40% reduction in claims processing time', sparkline: <SparklineBeforeAfter /> },
-    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', metric: '99.7% order accuracy', sparkline: <SparklineFlat /> },
+    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', sparkline: <SparklineUp />, metric: '60% faster' },
+    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', sparkline: <SparklineBars />, metric: '12M+ daily' },
+    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', sparkline: <SparklineDown />, metric: '40% less time' },
+    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', sparkline: <SparklineFlat />, metric: '99.7% accuracy' },
   ]
 
   return (
@@ -782,14 +787,16 @@ function SocialProof() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {stories.map((story, i) => (
             <Reveal key={i} delay={i + 1}>
-              <div className="bg-cool-surface border border-cool-border/60 rounded-2xl p-6 h-full hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
-                <span className={`inline-block text-[11px] font-mono font-medium px-2.5 py-1 rounded-full mb-4 ${story.tagColor}`}>
+              <div className="flex flex-col bg-cool-surface border border-cool-border/60 rounded-2xl p-6 h-full hover:border-slate-light hover:shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1">
+                <span className={`inline-block text-[11px] font-mono font-medium px-2.5 py-1 rounded-full mb-4 self-start ${story.tagColor}`}>
                   {story.tag}
                 </span>
                 <h3 className="font-display font-bold text-light mb-3">{story.company}</h3>
                 <p className="text-sm text-slate leading-relaxed mb-5">{story.description}</p>
-                <div className="mb-2">{story.sparkline}</div>
-                <p className="font-mono text-lg font-bold text-accent">{story.metric}</p>
+                <div className="flex items-center gap-2.5 mt-auto">
+                  {story.sparkline}
+                  <p className="font-mono text-sm font-bold text-accent leading-tight">{story.metric}</p>
+                </div>
               </div>
             </Reveal>
           ))}
