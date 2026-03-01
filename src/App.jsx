@@ -646,32 +646,47 @@ const NET_ADJ = (() => {
 })()
 const NET_BRAINS = NET_NODES.map((n, i) => [n, i]).filter(([n]) => n.type === 'brain').map(([, i]) => i)
 
+/* Pre-compute edge lookup for O(1) find */
+const NET_EDGE_LOOKUP = (() => {
+  const m = {}
+  NET_EDGES.forEach(([a, b], i) => { m[`${a}-${b}`] = i; m[`${b}-${a}`] = i })
+  return m
+})()
+
 function CamundaNetwork() {
   const pulseGroupRef = useRef(null)
-  const nodeRefsMap = useRef({})
+  const edgeRefs = useRef({})
+  const nodeBgRefs = useRef({})
+  const nodeIconRefs = useRef({})
 
+  /* Node icons — no individual opacity; group opacity controls brightness */
   const nodeIcon = (type, x, y) => {
     const o = 5
     switch(type) {
-      case 'gear': return <circle cx={x} cy={y} r={o} stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.8" />
-      case 'brain': return <><circle cx={x} cy={y} r={o-1} fill="currentColor" opacity="0.2" /><circle cx={x} cy={y} r={2} fill="currentColor" opacity="0.7" /></>
-      case 'person': return <><circle cx={x} cy={y-2} r="2.5" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.7" /><path d={`M${x-4} ${y+4} a4 4 0 018 0`} stroke="currentColor" strokeWidth="1" fill="none" opacity="0.6" /></>
-      case 'diamond': return <rect x={x-4} y={y-4} width="8" height="8" rx="1" transform={`rotate(45 ${x} ${y})`} stroke="currentColor" strokeWidth="1" fill="none" opacity="0.7" />
+      case 'gear': return <circle cx={x} cy={y} r={o} stroke="currentColor" strokeWidth="1.2" fill="none" />
+      case 'brain': return <><circle cx={x} cy={y} r={o-1} fill="currentColor" opacity="0.3" /><circle cx={x} cy={y} r={2} fill="currentColor" /></>
+      case 'person': return <><circle cx={x} cy={y-2} r="2.5" stroke="currentColor" strokeWidth="1" fill="none" /><path d={`M${x-4} ${y+4} a4 4 0 018 0`} stroke="currentColor" strokeWidth="1" fill="none" /></>
+      case 'diamond': return <rect x={x-4} y={y-4} width="8" height="8" rx="1" transform={`rotate(45 ${x} ${y})`} stroke="currentColor" strokeWidth="1" fill="none" />
       default: return null
     }
   }
 
-  /* ── Dynamic pulse animation (Option A + E) ── */
+  /* ── Living network animation: edges + nodes activate/deactivate ── */
   useEffect(() => {
     const group = pulseGroupRef.current
     if (!group) return
-
     const SVG_NS = 'http://www.w3.org/2000/svg'
+
+    /* Visual state — lerped each frame for smooth transitions */
+    const nodeBgOp = NET_NODES.map(() => 0.02)
+    const nodeIconOp = NET_NODES.map(() => 0.22)
+    const edgeOp = NET_EDGES.map(() => 0.04)
+
     const pulses = []
     let nextId = 0
     let frame
-
-    const MAX_PULSES = 18
+    let burstTimer
+    const MAX_PULSES = 14
 
     function spawnPulse(fromIdx) {
       if (pulses.length >= MAX_PULSES) return
@@ -691,73 +706,96 @@ function CamundaNetwork() {
       })
     }
 
-    /* Option E — burst spawns from brain nodes */
+    /* Option E — irregular bursts from brain nodes */
     function spawnBurst() {
       const brain = NET_BRAINS[Math.floor(Math.random() * NET_BRAINS.length)]
-      const count = 2 + Math.floor(Math.random() * 2) // 2-3
-      for (let i = 0; i < count; i++) {
-        setTimeout(() => spawnPulse(brain), i * 150)
-      }
+      const count = 2 + Math.floor(Math.random() * 2)
+      for (let i = 0; i < count; i++) setTimeout(() => spawnPulse(brain), i * 150)
+    }
+    function scheduleBurst() {
+      burstTimer = setTimeout(() => { spawnBurst(); scheduleBurst() }, 2000 + Math.random() * 2000)
     }
     spawnBurst()
-    const burstTimer = setInterval(spawnBurst, 2200 + Math.random() * 1800)
-
-    /* Flash a decision node briefly */
-    function flashNode(idx) {
-      const bg = nodeRefsMap.current[idx]
-      if (!bg) return
-      bg.setAttribute('opacity', '0.25')
-      bg.setAttribute('r', '14')
-      setTimeout(() => { bg.setAttribute('opacity', '0.07'); bg.setAttribute('r', '12') }, 350)
-    }
+    scheduleBurst()
 
     /* Main animation loop */
     function tick() {
+      /* ── 1. Move pulses & build active sets ── */
+      const activeNodes = new Set()
+      const activeEdges = new Set()
+      const decidingNodes = new Set()
+
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i]
 
-        /* Paused at a decision node — countdown */
-        if (p.pause > 0) { p.pause--; continue }
+        if (p.pause > 0) {
+          p.pause--
+          activeNodes.add(p.to)
+          if (NET_NODES[p.to].type === 'diamond') decidingNodes.add(p.to)
+          const ei = NET_EDGE_LOOKUP[`${p.from}-${p.to}`]
+          if (ei !== undefined) activeEdges.add(ei)
+          continue
+        }
 
         p.progress += p.speed
 
         if (p.progress >= 1) {
           p.hops++
           if (p.hops > 4) { p.el.remove(); pulses.splice(i, 1); continue }
-
-          /* Arrived at destination — pick next hop */
           const destType = NET_NODES[p.to].type
           const neighbors = NET_ADJ[p.to].filter(n => n !== p.from)
           if (!neighbors.length) { p.el.remove(); pulses.splice(i, 1); continue }
-
-          /* Option A — decision nodes: pause + flash + random branch */
-          if (destType === 'diamond') {
-            flashNode(p.to)
-            p.pause = 18 // ~300ms at 60fps
-          }
-
+          if (destType === 'diamond') { p.pause = 20; decidingNodes.add(p.to) }
           const next = neighbors[Math.floor(Math.random() * neighbors.length)]
           p.from = p.to
           p.to = next
           p.progress = 0
         }
 
+        activeNodes.add(p.from)
+        activeNodes.add(p.to)
+        const ei = NET_EDGE_LOOKUP[`${p.from}-${p.to}`]
+        if (ei !== undefined) activeEdges.add(ei)
+
         /* Interpolate position */
         const f = NET_NODES[p.from], t = NET_NODES[p.to]
-        const x = f.x + (t.x - f.x) * p.progress
-        const y = f.y + (t.y - f.y) * p.progress
-        p.el.setAttribute('cx', x)
-        p.el.setAttribute('cy', y)
-        /* Fade in at start, sustain, fade out near end of life */
+        p.el.setAttribute('cx', f.x + (t.x - f.x) * p.progress)
+        p.el.setAttribute('cy', f.y + (t.y - f.y) * p.progress)
         const lifeAlpha = p.hops >= 3 ? 0.4 : 0.85
         const edgeAlpha = p.progress < 0.15 ? p.progress / 0.15 : p.progress > 0.85 ? (1 - p.progress) / 0.15 : 1
         p.el.setAttribute('opacity', (edgeAlpha * lifeAlpha).toFixed(2))
       }
+
+      /* ── 2. Lerp node brightness ── */
+      for (let i = 0; i < NET_NODES.length; i++) {
+        const active = activeNodes.has(i)
+        const deciding = decidingNodes.has(i)
+        const bgTarget = deciding ? 0.28 : active ? 0.16 : 0.02
+        const iconTarget = active ? 1.0 : 0.22
+        const rate = active ? 0.14 : 0.025
+
+        nodeBgOp[i] += (bgTarget - nodeBgOp[i]) * rate
+        nodeIconOp[i] += (iconTarget - nodeIconOp[i]) * rate
+        nodeBgRefs.current[i]?.setAttribute('opacity', nodeBgOp[i].toFixed(3))
+        nodeIconRefs.current[i]?.setAttribute('opacity', nodeIconOp[i].toFixed(3))
+      }
+
+      /* ── 3. Lerp edge brightness ── */
+      for (let i = 0; i < NET_EDGES.length; i++) {
+        const active = activeEdges.has(i)
+        const isGlow = NET_EDGES[i][2] === 'glow'
+        const target = active ? (isGlow ? 0.4 : 0.28) : 0.04
+        const rate = active ? 0.14 : 0.02
+
+        edgeOp[i] += (target - edgeOp[i]) * rate
+        edgeRefs.current[i]?.setAttribute('opacity', edgeOp[i].toFixed(3))
+      }
+
       frame = requestAnimationFrame(tick)
     }
     frame = requestAnimationFrame(tick)
 
-    return () => { cancelAnimationFrame(frame); clearInterval(burstTimer); pulses.forEach(p => p.el?.remove()) }
+    return () => { cancelAnimationFrame(frame); clearTimeout(burstTimer); pulses.forEach(p => p.el?.remove()) }
   }, [])
 
   return (
@@ -766,32 +804,34 @@ function CamundaNetwork() {
         <filter id="pulse-glow-f"><feGaussianBlur stdDeviation="2.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
       </defs>
 
-      {/* Static edges */}
+      {/* Edges — start nearly invisible, brighten when pulses travel them */}
       {NET_EDGES.map(([a, b, type], i) => {
         const n1 = NET_NODES[a], n2 = NET_NODES[b]
         return (
           <line key={`e-${i}`} x1={n1.x} y1={n1.y} x2={n2.x} y2={n2.y}
+            ref={el => { if (el) edgeRefs.current[i] = el }}
             stroke={type === 'glow' ? '#FC5D0D' : '#94a3b8'}
             strokeWidth={type === 'glow' ? '1.2' : '1'}
-            opacity={type === 'glow' ? '0.3' : '0.2'}
+            opacity="0.04"
             strokeDasharray={type === 'glow' ? '4 3' : 'none'}
           />
         )
       })}
 
-      {/* Dynamic pulses rendered here via DOM manipulation */}
+      {/* Dynamic pulses */}
       <g ref={pulseGroupRef} />
 
-      {/* Nodes */}
-      <g className="text-accent">
-        {NET_NODES.map((n, i) => (
-          <g key={`n-${i}`} className="stack-net-node" style={{ animationDelay: `${i * 0.25}s` }}>
-            <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.07"
-              ref={el => { if (el) nodeRefsMap.current[i] = el }} />
+      {/* Nodes — start dim, activate when orchestrator routes work through them */}
+      {NET_NODES.map((n, i) => (
+        <g key={`n-${i}`}>
+          <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.02"
+            ref={el => { if (el) nodeBgRefs.current[i] = el }} />
+          <g className="text-accent" opacity="0.22"
+            ref={el => { if (el) nodeIconRefs.current[i] = el }}>
             {nodeIcon(n.type, n.x, n.y)}
           </g>
-        ))}
-      </g>
+        </g>
+      ))}
     </svg>
   )
 }
