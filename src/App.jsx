@@ -436,7 +436,7 @@ function Spectrum() {
           <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">What Camunda does</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-6">
+          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em] mb-6">
             From fully automated to fully adaptive
           </h2>
         </Reveal>
