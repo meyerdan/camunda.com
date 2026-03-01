@@ -190,9 +190,9 @@ function Hero() {
           <span className="bg-gradient-to-r from-accent to-[#ff8a4c] bg-clip-text text-transparent">agentic orchestration</span>
         </h1>
         <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-3 leading-relaxed">
-          Orchestrate AI agents, processes, and people on one platform.
+          Cut processing time, eliminate manual work, and scale automation that actually delivers.
           <br className="hidden sm:block" />
-          Turn isolated automation into coordinated enterprise intelligence.
+          One platform to orchestrate AI agents, processes, and people.
         </p>
         <p className="text-sm sm:text-base text-slate-light max-w-2xl mx-auto mb-9">
           The production-grade framework for building and orchestrating multi-agent systems.
@@ -295,6 +295,9 @@ function OutcomesBar() {
             </Reveal>
           ))}
         </div>
+        <Reveal delay={5}>
+          <p className="text-center text-sm text-slate-light mt-6">Real results from enterprises automating what used to be manual.</p>
+        </Reveal>
       </div>
     </section>
   )
@@ -364,37 +367,44 @@ function WhyNow() {
           <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Why now</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-8">The coordination gap</h2>
-        </Reveal>
-        <Reveal delay={2}>
-          <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 mb-4 max-w-3xl">
-            <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
-              By 2028, <span className="font-mono">33%</span> of enterprise software applications will include agentic AI — up from less than <span className="font-mono">1%</span> in 2024.
-              <span className="text-sm font-normal text-slate ml-2">— Gartner</span>
-            </p>
-          </div>
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-8">The automation ceiling</h2>
         </Reveal>
         <Reveal delay={2}>
           <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 mb-10 max-w-3xl">
             <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
-              Yet over <span className="font-mono">40%</span> of agentic AI projects will be canceled by end of 2027 — due to escalating costs, unclear value, or inadequate risk controls.
-              <span className="text-sm font-normal text-slate ml-2">— Gartner</span>
+              <span className="font-mono">71%</span> of organizations say they&rsquo;re using AI agents. Only <span className="font-mono">11%</span> of agentic AI use cases reached production last year.
+              <span className="text-sm font-normal text-slate ml-2">— Camunda, State of Agentic Orchestration and Automation 2026</span>
             </p>
           </div>
         </Reveal>
         <Reveal delay={3}>
           <div className="max-w-3xl space-y-5 text-slate leading-relaxed">
             <p>
-              Enterprises are building multi-agent systems — but most have no plan for how those agents coordinate, share state, or recover from failures. And no way to build agents they can actually trust.
+              Every enterprise has automated tasks. RPA bots handle data entry. AI agents process documents. But the end-to-end process — the full claims journey, the complete order-to-cash cycle, the patient intake workflow — still depends on manual handoffs, human exception handling, and stitched-together integrations. The savings plateau. The complexity grows. And every new bot or agent adds more fragmentation, not less.
             </p>
             <p>
-              Agents operate in silos — making conflicting decisions, duplicating work, with no audit trail and no way to handle exceptions. When one agent fails, nothing catches it. When ten agents touch the same customer journey, nobody coordinates them. The result isn't transformation. It's expensive chaos.
+              This is the automation ceiling. Individual task automation can&rsquo;t scale into operational transformation without something connecting it all together.
             </p>
             <p>
-              The enterprises pulling ahead are doing two things differently. They're building agents on an orchestration foundation — where every agent is durable, governed, and stateful by design. And they're coordinating those agents with processes and people through a single platform that compounds value over time.
+              Meanwhile, enterprises building multi-agent systems face the same problem at a new level: agents that can&rsquo;t coordinate, can&rsquo;t share state, can&rsquo;t recover from failures. When one agent fails, nothing catches it. When ten agents touch the same customer journey, nobody orchestrates them.
+            </p>
+          </div>
+        </Reveal>
+        <Reveal delay={4}>
+          <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 my-10 max-w-3xl">
+            <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
+              <span className="font-mono">88%</span> of IT leaders say AI needs to be orchestrated across business processes to maximize value. Yet <span className="font-mono">85%</span> admit they haven&rsquo;t reached the process maturity to do it.
+              <span className="text-sm font-normal text-slate ml-2">— Camunda, State of Agentic Orchestration and Automation 2026</span>
+            </p>
+          </div>
+        </Reveal>
+        <Reveal delay={5}>
+          <div className="max-w-3xl space-y-5 text-slate leading-relaxed">
+            <p>
+              The enterprises breaking through are doing something different. They&rsquo;re building on an orchestration foundation — where every agent, every process, and every human handoff is coordinated end to end. Where automation compounds instead of fragments.
             </p>
             <p className="text-light font-semibold">
-              That foundation is agentic orchestration — the production-grade way to build, coordinate, and govern multi-agent systems.
+              That foundation is agentic orchestration.
             </p>
           </div>
         </Reveal>
@@ -458,7 +468,7 @@ function Spectrum() {
             </div>
             <div className="flex justify-between mt-2 text-sm text-slate-light">
               <span className="max-w-[340px]">Automate end-to-end processes that run millions of times with zero drift. The proven foundation hundreds of enterprises already run on.</span>
-              <span className="max-w-[340px] text-right">Build and orchestrate multi-agent systems, people, and processes through workflows that adapt — with durable coordination and governance built in.</span>
+              <span className="max-w-[340px] text-right">Turn complex, judgment-heavy work into intelligent workflows. Agents and people, coordinated end to end.</span>
             </div>
           </div>
         </Reveal>
@@ -762,10 +772,10 @@ function SparklineFlat() {
 
 function SocialProof() {
   const stories = [
-    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Orchestrates specialty medication delivery — coordinating insurance verification, prior authorization, and temperature-controlled logistics for patients with complex chronic conditions.', sparkline: <SparklineUp />, metric: '60% faster' },
-    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automates end-to-end trade settlement across multiple clearing systems with full regulatory audit trail.', sparkline: <SparklineBars />, metric: '12M+ daily' },
-    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment while orchestration ensures complex claims route to specialized adjusters with complete context.', sparkline: <SparklineDown />, metric: '40% less time' },
-    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrates order fulfillment across 200+ warehouses, coordinating inventory, shipping, and customer communication in real time.', sparkline: <SparklineFlat />, metric: '99.7% accuracy' },
+    { company: 'Wellpointe', tag: 'Healthcare', tagColor: 'text-emerald-700 bg-emerald-50 border border-emerald-200/60', description: 'Replaced manual coordination of insurance verification, prior authorization, and logistics with end-to-end orchestrated workflows for specialty medication delivery.', sparkline: <SparklineUp />, metric: '60% faster' },
+    { company: 'Global Investment Bank', tag: 'Financial Services', tagColor: 'text-blue-700 bg-blue-50 border border-blue-200/60', description: 'Automated trade settlement that previously required manual reconciliation across multiple clearing systems. Full regulatory audit trail built in.', sparkline: <SparklineBars />, metric: '12M+ daily' },
+    { company: 'European Insurer', tag: 'Insurance', tagColor: 'text-purple-700 bg-purple-50 border border-purple-200/60', description: 'AI agents handle initial claims assessment that adjusters previously reviewed manually. Complex cases route to specialists — with full context.', sparkline: <SparklineDown />, metric: '40% less time' },
+    { company: 'Global Retailer', tag: 'Retail', tagColor: 'text-amber-700 bg-amber-50 border border-amber-200/60', description: 'Orchestrated order fulfillment across 200+ warehouses — replacing manual coordination of inventory, shipping, and customer communication.', sparkline: <SparklineFlat />, metric: '99.7% accuracy' },
   ]
 
   return (
@@ -835,11 +845,11 @@ function WhyCamunda() {
     {
       icon: Icons.people,
       headline: 'Business-led, IT-enabled',
-      lead: "The business doesn't want to wait for IT. IT doesn't want to lose governance. Camunda gives both sides what they need.",
+      lead: "Your operations teams don\u2019t need to wait months for automation. Business teams model processes visually, compose from pre-built building blocks, and use the AI copilot to move fast. IT provides the connectors, guardrails, and governance \u2014 already on the same platform.",
       sections: [
-        { title: 'Business teams move fast', text: 'LOB leaders and business users model processes, compose workflows from pre-built building blocks, and deploy solutions using visual tools and an AI copilot. No code required to get started.' },
-        { title: 'IT stays in control', text: 'Developers build the building blocks, define guardrails, set governance policies. Everything the business creates runs within the architecture IT designed. Full visibility, full compliance.' },
-        { title: 'They meet in the middle', text: 'Business teams prove value quickly. When something needs to scale or integrate deeply, IT is already there — same platform, same governance model. No handoff, no rebuild. A business analyst models a process visually. IT packages the connectors and guardrails as reusable building blocks. The AI copilot helps both sides work faster. Progressive from prototype to production.' },
+        { title: 'Business teams move fast', text: 'Model a process visually. Compose it from building blocks. Use AI to accelerate. Go from idea to working automation in days \u2014 without writing a ticket.' },
+        { title: 'IT stays in control', text: 'Governance, security, and compliance are built into the platform \u2014 not bolted on after. IT defines the guardrails. Business teams work within them. Every change is versioned, auditable, and reversible.' },
+        { title: 'They meet in the middle', text: 'A business analyst models the process. IT packages the connectors. The AI copilot helps both sides work faster. From prototype to production on the same platform \u2014 no rebuild, no handoff, no lost time.' },
       ],
     },
   ]
