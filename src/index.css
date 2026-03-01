@@ -10,6 +10,7 @@
   --color-dark-border: #d4d7e0;
   --color-light: #1a1a2e;
   --color-light-dim: #64748b;
+  --color-navy: #1B2A4A;
   --color-accent: #FC5D0D;
   --color-accent-hover: #e04d08;
   --color-accent-glow: rgba(252, 93, 13, 0.12);
@@ -138,7 +139,7 @@
 /* Subtle section divider */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(252, 93, 13, 0.12) 30%, rgba(252, 93, 13, 0.12) 70%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(27, 42, 74, 0.08) 30%, rgba(27, 42, 74, 0.08) 70%, transparent);
 }
 
 /* Logo marquee */

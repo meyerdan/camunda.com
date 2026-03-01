@@ -173,7 +173,7 @@ function HeroBackground() {
       </svg>
 
       {/* Radial glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-accent/[0.04] rounded-full blur-3xl" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-[#1B2A4A]/[0.03] rounded-full blur-3xl" />
       <div className="absolute top-2/3 right-1/4 w-[500px] h-[500px] bg-[#475569]/[0.03] rounded-full blur-3xl" />
     </div>
   )
@@ -182,12 +182,12 @@ function HeroBackground() {
 function Hero() {
   const ref = useReveal()
   return (
-    <section className="relative pt-28 pb-20 sm:pt-32 sm:pb-24 flex items-center justify-center">
+    <section className="relative pt-32 pb-24 sm:pt-40 sm:pb-32 flex items-center justify-center">
       <HeroBackground />
       <div ref={ref} className="reveal relative z-10 max-w-5xl mx-auto px-8 text-center">
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.03em] leading-[1.08] mb-5">
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-semibold tracking-[-0.035em] leading-[1.06] mb-5 text-navy">
           The enterprise platform<br className="hidden sm:block" /> for{' '}
-          <span className="bg-gradient-to-r from-accent to-[#ff8a4c] bg-clip-text text-transparent">agentic orchestration</span>
+          <span className="font-bold bg-gradient-to-r from-navy via-[#2d4a7a] to-navy/80 bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text'}}>agentic orchestration</span>
         </h1>
         <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-3 leading-relaxed">
           Cut processing time, eliminate manual work, and scale automation that actually delivers.
@@ -206,7 +206,7 @@ function Hero() {
           </a>
         </div>
         <div className="mt-6">
-          <a href="#" className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover transition-colors duration-200">
+          <a href="#" className="inline-flex items-center gap-1.5 text-sm font-medium text-slate hover:text-light transition-colors duration-200">
             Build your first orchestrated agent in 5 minutes
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </a>
@@ -220,10 +220,10 @@ function Hero() {
 function MiniLineDown() {
   return (
     <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
-      <polyline points="2,6 12,8 22,12 32,16 42,22 52,28 58,30" fill="none" stroke="#FC5D0D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,6 12,8 22,12 32,16 42,22 52,28 58,30" fill="none" stroke="#1B2A4A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
       <linearGradient id="fill-down" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
-        <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+        <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
+        <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
       </linearGradient>
       <path d="M2,6 L12,8 L22,12 L32,16 L42,22 L52,28 L58,30 L58,32 L2,32 Z" fill="url(#fill-down)" className="sparkline-area" />
     </svg>
@@ -237,8 +237,8 @@ function MiniBarGrow() {
         { x: 2, h: 8 }, { x: 11, h: 14 }, { x: 20, h: 18 }, { x: 29, h: 22 },
         { x: 38, h: 26 }, { x: 47, h: 30 },
       ].map((bar, i) => (
-        <rect key={i} x={bar.x} y={32 - bar.h} width="7" height={bar.h} rx="1.5" fill="#FC5D0D"
-          opacity="0.7" className="bar-grow" style={{ animationDelay: `${i * 0.1}s` }} />
+        <rect key={i} x={bar.x} y={32 - bar.h} width="7" height={bar.h} rx="1.5" fill="#1B2A4A"
+          opacity="0.6" className="bar-grow" style={{ animationDelay: `${i * 0.1}s` }} />
       ))}
     </svg>
   )
@@ -248,10 +248,10 @@ function MiniGauge() {
   return (
     <svg viewBox="0 0 40 40" className="w-[36px] h-[36px]">
       <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e8f0" strokeWidth="3" />
-      <circle cx="20" cy="20" r="16" fill="none" stroke="#FC5D0D" strokeWidth="3"
+      <circle cx="20" cy="20" r="16" fill="none" stroke="#1B2A4A" strokeWidth="3"
         strokeDasharray="96 100.5" strokeDashoffset="0" strokeLinecap="round"
         transform="rotate(-90 20 20)" className="gauge-fill" />
-      <text x="20" y="23" textAnchor="middle" fill="#FC5D0D" fontSize="9" fontWeight="600" fontFamily="'JetBrains Mono', monospace">99%</text>
+      <text x="20" y="23" textAnchor="middle" fill="#1B2A4A" fontSize="9" fontWeight="600" fontFamily="'JetBrains Mono', monospace">99%</text>
     </svg>
   )
 }
@@ -259,10 +259,10 @@ function MiniGauge() {
 function MiniLineUp() {
   return (
     <svg viewBox="0 0 60 32" className="w-[60px] h-[32px]">
-      <polyline points="2,28 12,24 22,22 32,18 42,12 52,8 58,4" fill="none" stroke="#FC5D0D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,28 12,24 22,22 32,18 42,12 52,8 58,4" fill="none" stroke="#1B2A4A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
       <linearGradient id="fill-up" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
-        <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+        <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
+        <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
       </linearGradient>
       <path d="M2,28 L12,24 L22,22 L32,18 L42,12 L52,8 L58,4 L58,32 L2,32 Z" fill="url(#fill-up)" className="sparkline-area" />
     </svg>
@@ -436,17 +436,17 @@ function CoordinationGraphic() {
 
 function WhyNow() {
   return (
-    <section className="py-32 bg-white">
+    <section className="py-40 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Why now</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Why now</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-10">The automation ceiling</h2>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-10">The automation ceiling</h2>
         </Reveal>
 
         {/* Two-column layout: narrative left (~60%), stats right (~40%) */}
-        <div className="grid lg:grid-cols-[3fr_2fr] gap-10 lg:gap-14">
+        <div className="grid lg:grid-cols-[3fr_2fr] gap-10 lg:gap-20">
           {/* Narrative — left column on desktop, second on mobile */}
           <Reveal delay={2}>
             <div className="space-y-5 text-slate leading-relaxed order-2 lg:order-1">
@@ -519,13 +519,13 @@ function Spectrum() {
   ]
 
   return (
-    <section className="py-32 bg-cool-surface">
+    <section className="py-40 bg-cool-surface">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">What Camunda does</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">What Camunda does</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-6">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-6">
             From fully automated to fully adaptive
           </h2>
         </Reveal>
@@ -539,7 +539,7 @@ function Spectrum() {
         <Reveal delay={2}>
           <div className="relative mb-4">
             <div className="flex justify-between mb-3 text-sm">
-              <span className="font-mono text-sm text-accent font-medium">Straight-through processing</span>
+              <span className="font-mono text-sm text-light font-medium">Straight-through processing</span>
               <span className="font-mono text-sm text-mint font-medium">Agentic workflows</span>
             </div>
             <div ref={barRef} className="spectrum-bar-animated relative h-2 rounded-full overflow-hidden"
@@ -647,13 +647,13 @@ function AgenticStack() {
   ]
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-32 bg-white">
       <div className="max-w-5xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">The Agentic Enterprise Stack</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">The Agentic Enterprise Stack</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-4">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-4">
             The orchestration core your enterprise is missing
           </h2>
         </Reveal>
@@ -715,7 +715,7 @@ function AgenticStack() {
                 <div className="overflow-hidden">
                   <div className="border-t border-cool-border/50 pt-3">
                     <p className="text-sm text-slate leading-relaxed">{layerDetails[0]}</p>
-                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 mt-3 transition-colors">
+                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-slate hover:text-light mt-3 transition-colors">
                       Discover integrations
                       <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </a>
@@ -754,8 +754,8 @@ function AgenticStack() {
                 {/* Capability chips */}
                 <div className="flex flex-wrap gap-2 justify-center mt-1">
                   {['Multi-agent orchestration', 'Durable execution', 'Human-in-the-loop', 'End-to-end governance', 'MCP & A2A', 'Visual modeling'].map((cap, i) => (
-                    <span key={i} className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-accent/80 bg-accent/[0.06] border border-accent/[0.12] rounded-full px-3 py-1">
-                      <span className="w-1 h-1 rounded-full bg-accent/50" />
+                    <span key={i} className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-light/70 bg-white/60 border border-cool-border/50 rounded-full px-3 py-1">
+                      <span className="w-1 h-1 rounded-full bg-accent/40" />
                       {cap}
                     </span>
                   ))}
@@ -765,7 +765,7 @@ function AgenticStack() {
                   <div className="overflow-hidden">
                     <div className="border-t border-accent/15 pt-3">
                       <p className="text-sm text-slate leading-relaxed">{layerDetails[1]}</p>
-                      <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 mt-3 transition-colors">
+                      <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-slate hover:text-light mt-3 transition-colors">
                         How Camunda works
                         <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                       </a>
@@ -809,7 +809,7 @@ function AgenticStack() {
                 <div className="overflow-hidden">
                   <div className="border-t border-cool-border/50 pt-3">
                     <p className="text-sm text-slate leading-relaxed">{layerDetails[2]}</p>
-                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 mt-3 transition-colors">
+                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-slate hover:text-light mt-3 transition-colors">
                       Discover integrations
                       <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </a>
@@ -845,13 +845,13 @@ function AudiencePaths() {
   ]
 
   return (
-    <section className="py-32 bg-cool-surface">
+    <section className="py-40 bg-cool-surface">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Start your journey</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Start your journey</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-14">Built for how you work</h2>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-14">Built for how you work</h2>
         </Reveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -861,7 +861,7 @@ function AudiencePaths() {
                 <div className="text-slate-light group-hover:text-accent transition-colors duration-300 mb-5">
                   {path.icon}
                 </div>
-                <p className="font-mono text-[11px] font-medium text-accent uppercase tracking-wider mb-1">{path.hook}</p>
+                <p className="font-mono text-[11px] font-medium text-slate-light uppercase tracking-wider mb-1">{path.hook}</p>
                 <h3 className="font-display text-lg font-bold mb-3 text-light">{path.label}</h3>
                 <p className="text-sm text-slate leading-relaxed mb-5">{path.description}</p>
                 <span className="text-sm font-semibold text-accent group-hover:text-accent-hover transition-colors duration-200 inline-flex items-center gap-1.5">
@@ -908,12 +908,12 @@ function SparklineDown() {
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
         <linearGradient id="sp-down-f" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+          <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
+          <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d="M2,3 L10,5 L18,8 L26,11 L34,14 L42,16 L46,18 L46,20 L2,20 Z" fill="url(#sp-down-f)" className="sparkline-area" />
-      <polyline points="2,3 10,5 18,8 26,11 34,14 42,16 46,18" fill="none" stroke="#FC5D0D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,3 10,5 18,8 26,11 34,14 42,16 46,18" fill="none" stroke="#1B2A4A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
@@ -922,12 +922,12 @@ function SparklineUp() {
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
         <linearGradient id="sp-up-f" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FC5D0D" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#FC5D0D" stopOpacity="0" />
+          <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.10" />
+          <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d="M2,18 L10,15 L18,12 L26,10 L34,7 L42,4 L46,2 L46,20 L2,20 Z" fill="url(#sp-up-f)" className="sparkline-area" />
-      <polyline points="2,18 10,15 18,12 26,10 34,7 42,4 46,2" fill="none" stroke="#FC5D0D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,18 10,15 18,12 26,10 34,7 42,4 46,2" fill="none" stroke="#1B2A4A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
@@ -935,7 +935,7 @@ function SparklineBars() {
   return (
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       {[{x:2,h:5},{x:8,h:9},{x:14,h:7},{x:20,h:12},{x:26,h:15},{x:32,h:13},{x:38,h:17},{x:44,h:14}].map((b,i)=>(
-        <rect key={i} x={b.x} y={20-b.h} width="4" height={b.h} rx="1" fill="#FC5D0D" opacity={0.25 + i * 0.07} className="bar-grow" style={{ animationDelay: `${i * 0.06}s` }} />
+        <rect key={i} x={b.x} y={20-b.h} width="4" height={b.h} rx="1" fill="#1B2A4A" opacity={0.20 + i * 0.06} className="bar-grow" style={{ animationDelay: `${i * 0.06}s` }} />
       ))}
     </svg>
   )
@@ -945,12 +945,12 @@ function SparklineFlat() {
     <svg viewBox="0 0 48 20" className="w-12 h-5 flex-shrink-0">
       <defs>
         <linearGradient id="sp-flat-f" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#10b981" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+          <stop offset="0%" stopColor="#1B2A4A" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#1B2A4A" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d="M2,5 L10,4 L18,5 L26,3 L34,4 L42,3 L46,4 L46,20 L2,20 Z" fill="url(#sp-flat-f)" className="sparkline-area" />
-      <polyline points="2,5 10,4 18,5 26,3 34,4 42,3 46,4" fill="none" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
+      <polyline points="2,5 10,4 18,5 26,3 34,4 42,3 46,4" fill="none" stroke="#1B2A4A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sparkline-draw" />
     </svg>
   )
 }
@@ -964,13 +964,13 @@ function SocialProof() {
   ]
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-40 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Trusted by industry leaders</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Trusted by industry leaders</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-12">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-12">
             <span className="font-mono">500+</span> enterprises orchestrate with Camunda
           </h2>
         </Reveal>
@@ -1040,13 +1040,13 @@ function WhyCamunda() {
   ]
 
   return (
-    <section className="py-32 bg-cool-surface">
+    <section className="py-40 bg-cool-surface">
       <div className="max-w-5xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Why Camunda</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Why Camunda</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-14">Built different</h2>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-14">Built different</h2>
         </Reveal>
 
         <Reveal delay={2}>
@@ -1058,7 +1058,7 @@ function WhyCamunda() {
                 onClick={() => setActiveBeat(i)}
                 className={`flex items-center gap-3 px-5 py-3.5 rounded-xl text-left transition-all duration-300 cursor-pointer flex-1 ${
                   activeBeat === i
-                    ? 'bg-accent/8 border border-accent/25 text-accent shadow-[0_1px_4px_rgba(252,93,13,0.08)]'
+                    ? 'bg-accent/[0.04] border border-accent/20 text-accent shadow-[0_1px_4px_rgba(0,0,0,0.04)]'
                     : 'bg-white border border-cool-border/60 text-slate hover:border-slate-light hover:text-light'
                 }`}
               >
@@ -1072,7 +1072,7 @@ function WhyCamunda() {
           <div className="bg-white border border-cool-border/60 rounded-2xl p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             {beats.map((beat, i) => (
               <div key={i} className={`tab-panel ${activeBeat === i ? 'active' : 'hidden'}`}>
-                <h3 className="font-display text-2xl sm:text-3xl font-extrabold mb-4 text-light">{beat.headline}</h3>
+                <h3 className="font-display text-2xl sm:text-3xl font-bold mb-4 text-light">{beat.headline}</h3>
                 <p className="text-slate text-lg leading-relaxed mb-8 max-w-2xl">{beat.lead}</p>
 
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -1119,17 +1119,17 @@ function OrchestrationCompany() {
   ]
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-32 overflow-hidden">
       {/* Subtle warm-tinted background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#fdf8f5] via-[#fef6f0] to-[#fdf8f5]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(252,93,13,0.04),transparent)]" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">The orchestration company</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">The orchestration company</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-[-0.02em] mb-12 max-w-3xl">
+          <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-[-0.025em] mb-12 max-w-3xl">
             The next era of enterprise automation runs on orchestration.
           </h2>
         </Reveal>
@@ -1183,13 +1183,13 @@ function Industries() {
   ]
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-40 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Industries</p>
+          <p className="font-mono text-xs font-medium text-slate-light uppercase tracking-wider mb-4">Industries</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-14">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-[-0.025em] mb-14">
             Orchestration for your industry
           </h2>
         </Reveal>
