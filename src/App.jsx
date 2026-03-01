@@ -187,7 +187,7 @@ function Hero() {
       <div ref={ref} className="reveal relative z-10 max-w-5xl mx-auto px-8 text-center">
         <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-semibold tracking-[-0.035em] leading-[1.06] mb-5 text-navy">
           The enterprise platform<br className="hidden sm:block" /> for{' '}
-          <span className="font-bold bg-gradient-to-r from-accent via-[#e04d08] to-[#c44008] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text'}}>agentic orchestration</span>
+          <span className="font-bold bg-gradient-to-r from-[#1B2A4A] via-[#1a4d5e] to-[#0d7377] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text'}}>agentic orchestration</span>
         </h1>
         <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-3 leading-relaxed">
           Cut processing time, eliminate manual work, and scale automation that actually delivers.
@@ -864,7 +864,7 @@ function AudiencePaths() {
                 <p className="font-mono text-[11px] font-medium text-slate-light uppercase tracking-wider mb-1">{path.hook}</p>
                 <h3 className="font-display text-lg font-bold mb-3 text-light">{path.label}</h3>
                 <p className="text-sm text-slate leading-relaxed mb-5">{path.description}</p>
-                <span className="text-sm font-semibold text-accent group-hover:text-accent-hover transition-colors duration-200 inline-flex items-center gap-1.5">
+                <span className="text-sm font-semibold text-navy group-hover:text-light transition-colors duration-200 inline-flex items-center gap-1.5">
                   {path.cta}
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
@@ -990,7 +990,7 @@ function SocialProof() {
                 <p className="text-sm text-slate leading-relaxed mb-5">{story.description}</p>
                 <div className="flex items-center gap-2.5 mt-auto">
                   {story.sparkline}
-                  <p className="font-mono text-sm font-bold text-accent leading-tight">{story.metric}</p>
+                  <p className="font-mono text-sm font-bold text-navy leading-tight">{story.metric}</p>
                 </div>
               </div>
             </Reveal>
@@ -1058,11 +1058,11 @@ function WhyCamunda() {
                 onClick={() => setActiveBeat(i)}
                 className={`flex items-center gap-3 px-5 py-3.5 rounded-xl text-left transition-all duration-300 cursor-pointer flex-1 ${
                   activeBeat === i
-                    ? 'bg-accent/[0.04] border border-accent/20 text-accent shadow-[0_1px_4px_rgba(0,0,0,0.04)]'
+                    ? 'bg-white border border-cool-border text-navy shadow-[0_1px_6px_rgba(0,0,0,0.06)] font-semibold'
                     : 'bg-white border border-cool-border/60 text-slate hover:border-slate-light hover:text-light'
                 }`}
               >
-                <span className={activeBeat === i ? 'text-accent' : 'text-slate-light'}>{beat.icon}</span>
+                <span className={activeBeat === i ? 'text-navy' : 'text-slate-light'}>{beat.icon}</span>
                 <span className="font-display font-bold text-sm">{beat.headline.length > 30 ? beat.headline.slice(0, 28) + '…' : beat.headline}</span>
               </button>
             ))}
@@ -1210,7 +1210,7 @@ function Industries() {
                 {/* Always-visible example tags */}
                 <div className="flex flex-wrap gap-1.5 pt-4 border-t border-cool-border/40">
                   {ind.examples.map((ex, j) => (
-                    <span key={j} className="font-mono text-[11px] px-2 py-1 bg-accent/6 text-accent/80 rounded-md">{ex}</span>
+                    <span key={j} className="font-mono text-[11px] px-2 py-1 bg-cool-surface text-slate border border-cool-border/40 rounded-md">{ex}</span>
                   ))}
                 </div>
               </a>
@@ -1221,7 +1221,7 @@ function Industries() {
         {/* See all industries link */}
         <Reveal delay={5}>
           <div className="text-center mt-10">
-            <a href="#" className="inline-flex items-center gap-2 font-display font-semibold text-accent hover:text-accent-hover transition-colors duration-200">
+            <a href="#" className="inline-flex items-center gap-2 font-display font-semibold text-navy hover:text-light transition-colors duration-200">
               See all industries
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </a>
