@@ -642,10 +642,10 @@ function CamundaNetwork() {
   const nodeIcon = (type, x, y) => {
     const o = 5 // offset from center
     switch(type) {
-      case 'gear': return <circle cx={x} cy={y} r={o} stroke="currentColor" strokeWidth="1" fill="none" opacity="0.6" />
-      case 'brain': return <><circle cx={x} cy={y} r={o-1} fill="currentColor" opacity="0.15" /><circle cx={x} cy={y} r={2} fill="currentColor" opacity="0.5" /></>
-      case 'person': return <><circle cx={x} cy={y-2} r="2.5" stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.5" /><path d={`M${x-4} ${y+4} a4 4 0 018 0`} stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.4" /></>
-      case 'diamond': return <rect x={x-4} y={y-4} width="8" height="8" rx="1" transform={`rotate(45 ${x} ${y})`} stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.5" />
+      case 'gear': return <circle cx={x} cy={y} r={o} stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.8" />
+      case 'brain': return <><circle cx={x} cy={y} r={o-1} fill="currentColor" opacity="0.2" /><circle cx={x} cy={y} r={2} fill="currentColor" opacity="0.7" /></>
+      case 'person': return <><circle cx={x} cy={y-2} r="2.5" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.7" /><path d={`M${x-4} ${y+4} a4 4 0 018 0`} stroke="currentColor" strokeWidth="1" fill="none" opacity="0.6" /></>
+      case 'diamond': return <rect x={x-4} y={y-4} width="8" height="8" rx="1" transform={`rotate(45 ${x} ${y})`} stroke="currentColor" strokeWidth="1" fill="none" opacity="0.7" />
       default: return null
     }
   }
@@ -662,8 +662,8 @@ function CamundaNetwork() {
         return (
           <line key={`e-${i}`} x1={n1.x} y1={n1.y} x2={n2.x} y2={n2.y}
             stroke={type === 'glow' ? '#FC5D0D' : '#94a3b8'}
-            strokeWidth={type === 'glow' ? '1' : '0.8'}
-            opacity={type === 'glow' ? '0.18' : '0.12'}
+            strokeWidth={type === 'glow' ? '1.2' : '1'}
+            opacity={type === 'glow' ? '0.3' : '0.2'}
             strokeDasharray={type === 'glow' ? '4 3' : 'none'}
           />
         )
@@ -690,7 +690,7 @@ function CamundaNetwork() {
       <g className="text-accent">
         {nodes.map((n, i) => (
           <g key={`n-${i}`} className="stack-net-node" style={{ animationDelay: `${i * 0.25}s` }}>
-            <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.04" />
+            <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.07" />
             {nodeIcon(n.type, n.x, n.y)}
           </g>
         ))}
@@ -753,10 +753,10 @@ function AgenticStack() {
               className={`w-full text-left bg-cool-surface border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 0 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-display text-sm font-bold text-light">Agentic Engagement</h3>
-                  <p className="text-[11px] text-slate mt-0.5">Where employees and customers interact</p>
+                  <h3 className="font-display text-base font-bold text-light">Agentic Engagement</h3>
+                  <p className="text-xs text-slate mt-0.5">Where employees and customers interact</p>
                 </div>
-                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 0 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 0 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate'}`}>
                   {activeLayer === 0 ? 'Close' : 'Explore'}
                   <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 0 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
@@ -764,10 +764,10 @@ function AgenticStack() {
               <div className="flex flex-wrap gap-2.5 justify-center">
                 {topTiles.map((t, i) => (
                   <div key={i} className="flex flex-col items-center gap-1 w-14">
-                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/70 flex items-center justify-center text-slate">
                       {t.icon}
                     </div>
-                    <span className="text-[9px] text-slate-light text-center leading-tight">{t.label}</span>
+                    <span className="text-[10px] text-slate text-center leading-tight">{t.label}</span>
                   </div>
                 ))}
               </div>
@@ -797,11 +797,11 @@ function AgenticStack() {
                       <div className="w-2.5 h-2.5 rounded-sm bg-accent" />
                     </div>
                     <div>
-                      <h3 className="font-display text-sm font-bold text-accent">Agentic Orchestration & Automation</h3>
-                      <p className="text-[11px] text-accent/60 font-mono font-medium">Camunda</p>
+                      <h3 className="font-display text-base font-bold text-accent">Agentic Orchestration & Automation</h3>
+                      <p className="text-xs text-accent/70 font-mono font-medium">Camunda</p>
                     </div>
                   </div>
-                  <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 1 ? 'bg-accent/10 text-accent' : 'bg-accent/[0.07] text-accent/60'}`}>
+                  <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 1 ? 'bg-accent/10 text-accent' : 'bg-accent/[0.08] text-accent/70'}`}>
                     {activeLayer === 1 ? 'Close' : 'Explore'}
                     <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 1 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   </span>
@@ -813,12 +813,12 @@ function AgenticStack() {
                 {/* Node legend — matches actual SVG node shapes */}
                 <div className="flex flex-wrap gap-x-5 gap-y-1 justify-center mt-2">
                   {[
-                    { label: 'Automation', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="5" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.6" /></svg> },
-                    { label: 'AI agent', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="4" fill="#FC5D0D" opacity="0.15" /><circle cx="7" cy="7" r="2" fill="#FC5D0D" opacity="0.5" /></svg> },
-                    { label: 'Human', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="5" r="2.5" stroke="#FC5D0D" strokeWidth="0.8" fill="none" opacity="0.5" /><path d="M3 12 a4 4 0 018 0" stroke="#FC5D0D" strokeWidth="0.8" fill="none" opacity="0.4" /></svg> },
-                    { label: 'Decision', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><rect x="3" y="3" width="8" height="8" rx="1" transform="rotate(45 7 7)" stroke="#FC5D0D" strokeWidth="0.8" fill="none" opacity="0.5" /></svg> },
+                    { label: 'Automation', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="5" stroke="#FC5D0D" strokeWidth="1.2" fill="none" opacity="0.8" /></svg> },
+                    { label: 'AI agent', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="4" fill="#FC5D0D" opacity="0.2" /><circle cx="7" cy="7" r="2" fill="#FC5D0D" opacity="0.7" /></svg> },
+                    { label: 'Human', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="5" r="2.5" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.7" /><path d="M3 12 a4 4 0 018 0" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.6" /></svg> },
+                    { label: 'Decision', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><rect x="3" y="3" width="8" height="8" rx="1" transform="rotate(45 7 7)" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.7" /></svg> },
                   ].map((item, i) => (
-                    <span key={i} className="flex items-center gap-1.5 text-[10px] text-slate-light">
+                    <span key={i} className="flex items-center gap-1.5 text-xs text-slate">
                       {item.svg} {item.label}
                     </span>
                   ))}
@@ -846,10 +846,10 @@ function AgenticStack() {
               className={`w-full text-left bg-dark-elevated/60 border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 2 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-display text-sm font-bold text-light">Core Systems & Data</h3>
-                  <p className="text-[11px] text-slate mt-0.5">Your existing technology investments</p>
+                  <h3 className="font-display text-base font-bold text-light">Core Systems & Data</h3>
+                  <p className="text-xs text-slate mt-0.5">Your existing technology investments</p>
                 </div>
-                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 2 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 2 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate'}`}>
                   {activeLayer === 2 ? 'Close' : 'Explore'}
                   <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 2 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
@@ -857,10 +857,10 @@ function AgenticStack() {
               <div className="flex flex-wrap gap-2.5 justify-center">
                 {bottomTiles.map((t, i) => (
                   <div key={i} className="flex flex-col items-center gap-1 w-14">
-                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/70 flex items-center justify-center text-slate">
                       {t.icon}
                     </div>
-                    <span className="text-[9px] text-slate-light text-center leading-tight">{t.label}</span>
+                    <span className="text-[10px] text-slate text-center leading-tight">{t.label}</span>
                   </div>
                 ))}
               </div>
