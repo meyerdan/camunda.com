@@ -810,16 +810,16 @@ function AgenticStack() {
                 {/* Living network — always visible */}
                 <CamundaNetwork />
 
-                {/* Node legend */}
+                {/* Node legend — matches actual SVG node shapes */}
                 <div className="flex flex-wrap gap-x-5 gap-y-1 justify-center mt-2">
                   {[
-                    { label: 'Automation', icon: '⚙' },
-                    { label: 'AI agent', icon: '✦' },
-                    { label: 'Human', icon: '👤' },
-                    { label: 'Decision', icon: '◆' },
+                    { label: 'Automation', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="5" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.6" /></svg> },
+                    { label: 'AI agent', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="4" fill="#FC5D0D" opacity="0.15" /><circle cx="7" cy="7" r="2" fill="#FC5D0D" opacity="0.5" /></svg> },
+                    { label: 'Human', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="5" r="2.5" stroke="#FC5D0D" strokeWidth="0.8" fill="none" opacity="0.5" /><path d="M3 12 a4 4 0 018 0" stroke="#FC5D0D" strokeWidth="0.8" fill="none" opacity="0.4" /></svg> },
+                    { label: 'Decision', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><rect x="3" y="3" width="8" height="8" rx="1" transform="rotate(45 7 7)" stroke="#FC5D0D" strokeWidth="0.8" fill="none" opacity="0.5" /></svg> },
                   ].map((item, i) => (
-                    <span key={i} className="flex items-center gap-1 text-[10px] text-slate-light">
-                      <span className="text-xs opacity-60">{item.icon}</span> {item.label}
+                    <span key={i} className="flex items-center gap-1.5 text-[10px] text-slate-light">
+                      {item.svg} {item.label}
                     </span>
                   ))}
                 </div>
