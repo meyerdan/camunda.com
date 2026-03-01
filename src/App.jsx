@@ -619,14 +619,14 @@ const StackIcons = {
 function CamundaNetwork() {
   /* Node positions in the network */
   const nodes = [
-    { x: 60, y: 35, type: 'gear' },   { x: 160, y: 25, type: 'brain' },
-    { x: 260, y: 40, type: 'person' }, { x: 360, y: 28, type: 'gear' },
-    { x: 460, y: 38, type: 'diamond' },
-    { x: 110, y: 80, type: 'brain' },  { x: 210, y: 75, type: 'diamond' },
-    { x: 310, y: 82, type: 'person' }, { x: 410, y: 72, type: 'brain' },
-    { x: 60, y: 120, type: 'person' }, { x: 160, y: 125, type: 'gear' },
-    { x: 260, y: 115, type: 'brain' }, { x: 360, y: 128, type: 'gear' },
-    { x: 460, y: 118, type: 'diamond' },
+    { x: 60, y: 22, type: 'gear' },   { x: 160, y: 14, type: 'brain' },
+    { x: 260, y: 26, type: 'person' }, { x: 360, y: 16, type: 'gear' },
+    { x: 460, y: 24, type: 'diamond' },
+    { x: 110, y: 56, type: 'brain' },  { x: 210, y: 52, type: 'diamond' },
+    { x: 310, y: 58, type: 'person' }, { x: 410, y: 50, type: 'brain' },
+    { x: 60, y: 90, type: 'person' }, { x: 160, y: 94, type: 'gear' },
+    { x: 260, y: 88, type: 'brain' }, { x: 360, y: 96, type: 'gear' },
+    { x: 460, y: 90, type: 'diamond' },
   ]
 
   /* Connections: [fromIdx, toIdx, type] — 'solid' or 'glow' */
@@ -651,7 +651,7 @@ function CamundaNetwork() {
   }
 
   return (
-    <svg viewBox="0 0 520 155" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 520 110" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
       <defs>
         <filter id="pulse-glow-f"><feGaussianBlur stdDeviation="2.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
       </defs>
@@ -728,7 +728,7 @@ function AgenticStack() {
   ]
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-24 bg-white">
       <div className="max-w-5xl mx-auto px-6">
         <Reveal>
           <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">The Agentic Enterprise Stack</p>
@@ -739,7 +739,7 @@ function AgenticStack() {
           </h2>
         </Reveal>
         <Reveal delay={2}>
-          <p className="text-lg text-slate max-w-3xl mb-14 leading-relaxed">
+          <p className="text-lg text-slate max-w-3xl mb-10 leading-relaxed">
             Every enterprise already has engagement channels and core systems. What&rsquo;s missing is the intelligent orchestration layer that connects them.
           </p>
         </Reveal>
@@ -750,28 +750,28 @@ function AgenticStack() {
 
             {/* ── Top layer: Engagement Channels ── */}
             <button onClick={() => setActiveLayer(activeLayer === 0 ? null : 0)}
-              className={`w-full text-left bg-cool-surface border rounded-2xl p-6 cursor-pointer transition-all duration-300 ${activeLayer === 0 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
-              <div className="flex items-center justify-between mb-4">
+              className={`w-full text-left bg-cool-surface border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 0 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
+              <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-display text-base font-bold text-light">Agentic Engagement</h3>
-                  <p className="text-xs text-slate mt-0.5">Where employees and customers interact</p>
+                  <h3 className="font-display text-sm font-bold text-light">Agentic Engagement</h3>
+                  <p className="text-[11px] text-slate mt-0.5">Where employees and customers interact</p>
                 </div>
-                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded-full transition-all duration-300 ${activeLayer === 0 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 0 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
                   {activeLayer === 0 ? 'Close' : 'Explore'}
                   <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 0 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
               </div>
-              <div className="flex flex-wrap gap-3 justify-center">
+              <div className="flex flex-wrap gap-2.5 justify-center">
                 {topTiles.map((t, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1.5 w-16">
-                    <div className="w-10 h-10 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
+                  <div key={i} className="flex flex-col items-center gap-1 w-14">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
                       {t.icon}
                     </div>
-                    <span className="text-[10px] text-slate-light text-center leading-tight">{t.label}</span>
+                    <span className="text-[9px] text-slate-light text-center leading-tight">{t.label}</span>
                   </div>
                 ))}
               </div>
-              <div className={`grid transition-all duration-500 ${activeLayer === 0 ? 'grid-rows-[1fr] opacity-100 mt-5' : 'grid-rows-[0fr] opacity-0'}`}>
+              <div className={`grid transition-all duration-500 ${activeLayer === 0 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                 <div className="overflow-hidden">
                   <div className="border-l-2 border-slate-light/40 pl-4 py-1">
                     <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[0]}</p>
@@ -781,27 +781,27 @@ function AgenticStack() {
             </button>
 
             {/* ── Connectors: top → middle ── */}
-            <div className="flex justify-around px-16 py-0.5">
+            <div className="flex justify-around px-16 py-px">
               {[0,1,2,3,4].map(i => (
-                <div key={i} className="w-px h-8 bg-gradient-to-b from-cool-border to-accent/20" />
+                <div key={i} className="w-px h-5 bg-gradient-to-b from-cool-border to-accent/20" />
               ))}
             </div>
 
             {/* ── Middle layer: Camunda (THE HERO) ── */}
             <button onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
-              className={`w-full text-left border-2 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 shadow-[0_0_40px_rgba(252,93,13,0.06)] animate-[layer-pulse_4s_ease-in-out_infinite] ${activeLayer === 1 ? 'border-accent/50' : 'border-accent/30 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(252,93,13,0.10)]'}`}>
-              <div className="bg-gradient-to-br from-accent/[0.06] via-white to-accent/[0.04] p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <div className="w-3 h-3 rounded-sm bg-accent" />
+              className={`w-full text-left border-2 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 shadow-[0_0_40px_rgba(252,93,13,0.06)] animate-[layer-pulse_4s_ease-in-out_infinite] ${activeLayer === 1 ? 'border-accent/50' : 'border-accent/30 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(252,93,13,0.10)]'}`}>
+              <div className="bg-gradient-to-br from-accent/[0.06] via-white to-accent/[0.04] p-4 sm:p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2.5 h-2.5 rounded-sm bg-accent" />
                     </div>
                     <div>
-                      <h3 className="font-display text-base font-bold text-accent">Agentic Orchestration & Automation</h3>
-                      <p className="text-xs text-accent/60 font-mono font-medium mt-0.5">Camunda</p>
+                      <h3 className="font-display text-sm font-bold text-accent">Agentic Orchestration & Automation</h3>
+                      <p className="text-[11px] text-accent/60 font-mono font-medium">Camunda</p>
                     </div>
                   </div>
-                  <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded-full transition-all duration-300 ${activeLayer === 1 ? 'bg-accent/10 text-accent' : 'bg-accent/[0.07] text-accent/60'}`}>
+                  <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 1 ? 'bg-accent/10 text-accent' : 'bg-accent/[0.07] text-accent/60'}`}>
                     {activeLayer === 1 ? 'Close' : 'Explore'}
                     <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 1 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   </span>
@@ -811,7 +811,7 @@ function AgenticStack() {
                 <CamundaNetwork />
 
                 {/* Node legend */}
-                <div className="flex flex-wrap gap-x-5 gap-y-1 justify-center mt-3">
+                <div className="flex flex-wrap gap-x-5 gap-y-1 justify-center mt-2">
                   {[
                     { label: 'Automation', icon: '⚙' },
                     { label: 'AI agent', icon: '✦' },
@@ -824,7 +824,7 @@ function AgenticStack() {
                   ))}
                 </div>
 
-                <div className={`grid transition-all duration-500 ${activeLayer === 1 ? 'grid-rows-[1fr] opacity-100 mt-5' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className={`grid transition-all duration-500 ${activeLayer === 1 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                   <div className="overflow-hidden">
                     <div className="border-l-2 border-accent/30 pl-4 py-1">
                       <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[1]}</p>
@@ -835,36 +835,36 @@ function AgenticStack() {
             </button>
 
             {/* ── Connectors: middle → bottom ── */}
-            <div className="flex justify-around px-16 py-0.5">
+            <div className="flex justify-around px-16 py-px">
               {[0,1,2,3,4].map(i => (
-                <div key={i} className="w-px h-8 bg-gradient-to-b from-accent/20 to-cool-border" />
+                <div key={i} className="w-px h-5 bg-gradient-to-b from-accent/20 to-cool-border" />
               ))}
             </div>
 
             {/* ── Bottom layer: Core Systems ── */}
             <button onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
-              className={`w-full text-left bg-dark-elevated/60 border rounded-2xl p-6 cursor-pointer transition-all duration-300 ${activeLayer === 2 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
-              <div className="flex items-center justify-between mb-4">
+              className={`w-full text-left bg-dark-elevated/60 border rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-300 ${activeLayer === 2 ? 'border-slate-light shadow-[0_2px_12px_rgba(0,0,0,0.06)]' : 'border-cool-border/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-slate-light hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}>
+              <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-display text-base font-bold text-light">Core Systems & Data</h3>
-                  <p className="text-xs text-slate mt-0.5">Your existing technology investments</p>
+                  <h3 className="font-display text-sm font-bold text-light">Core Systems & Data</h3>
+                  <p className="text-[11px] text-slate mt-0.5">Your existing technology investments</p>
                 </div>
-                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded-full transition-all duration-300 ${activeLayer === 2 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
+                <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full transition-all duration-300 ${activeLayer === 2 ? 'bg-slate/10 text-slate' : 'bg-cool-border/40 text-slate-light'}`}>
                   {activeLayer === 2 ? 'Close' : 'Explore'}
                   <svg className={`w-3 h-3 transition-transform duration-300 ${activeLayer === 2 ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
               </div>
-              <div className="flex flex-wrap gap-3 justify-center">
+              <div className="flex flex-wrap gap-2.5 justify-center">
                 {bottomTiles.map((t, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1.5 w-16">
-                    <div className="w-10 h-10 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
+                  <div key={i} className="flex flex-col items-center gap-1 w-14">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/50 flex items-center justify-center text-slate-light">
                       {t.icon}
                     </div>
-                    <span className="text-[10px] text-slate-light text-center leading-tight">{t.label}</span>
+                    <span className="text-[9px] text-slate-light text-center leading-tight">{t.label}</span>
                   </div>
                 ))}
               </div>
-              <div className={`grid transition-all duration-500 ${activeLayer === 2 ? 'grid-rows-[1fr] opacity-100 mt-5' : 'grid-rows-[0fr] opacity-0'}`}>
+              <div className={`grid transition-all duration-500 ${activeLayer === 2 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                 <div className="overflow-hidden">
                   <div className="border-l-2 border-slate-light/40 pl-4 py-1">
                     <p className="text-sm text-slate leading-relaxed max-w-2xl">{layerDetails[2]}</p>
@@ -876,12 +876,12 @@ function AgenticStack() {
         </Reveal>
 
         <Reveal delay={4}>
-          <p className="text-slate text-center mt-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate text-center mt-10 max-w-2xl mx-auto leading-relaxed">
             Because every process execution generates data, the platform learns over time — optimizing routing, surfacing bottlenecks, improving agent performance. <span className="text-light font-semibold">Your orchestration gets smarter the more you use it.</span>
           </p>
         </Reveal>
         <Reveal delay={4}>
-          <p className="font-mono text-sm text-slate-light text-center mt-6 max-w-2xl mx-auto">
+          <p className="font-mono text-sm text-slate-light text-center mt-4 max-w-2xl mx-auto">
             Works with any AI provider, any agent framework, any LLM. Connect via MCP, A2A, REST, or any protocol. No lock-in.
           </p>
         </Reveal>
