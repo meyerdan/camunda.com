@@ -71,15 +71,15 @@
   --theme-bg-base:        #0a0a0f;
   --theme-bg-surface:     #111118;
   --theme-bg-elevated:    #1a1a26;
-  --theme-border-default: #2a2a3d;
-  --theme-border-subtle:  #1f1f2e;
+  --theme-border-default: #333347;
+  --theme-border-subtle:  #252536;
   --theme-text-primary:   #f0f0ff;
-  --theme-text-secondary: #8892a4;
-  --theme-text-tertiary:  #4a5568;
+  --theme-text-secondary: #b4bcd0;
+  --theme-text-tertiary:  #7a8394;
 
   /* Glassmorphism */
-  --theme-glass-bg:       rgba(20, 20, 35, 0.70);
-  --theme-glass-border:   rgba(255,255,255,0.08);
+  --theme-glass-bg:       rgba(20, 20, 35, 0.75);
+  --theme-glass-border:   rgba(255,255,255,0.12);
 
   /* Glows */
   --theme-glow-accent:    rgba(252, 93, 13, 0.20);
@@ -101,10 +101,10 @@
   --theme-hero-to:   #7c3aed;
 
   /* Dot grid */
-  --theme-dot-color: #1a1a2e;
+  --theme-dot-color: #222238;
 
   /* Navbar scrolled */
-  --theme-nav-scrolled: rgba(10,10,15,0.90);
+  --theme-nav-scrolled: rgba(12,12,18,0.92);
 
   /* Marquee fade */
   --theme-marquee-fade: #0a0a0f;
