@@ -642,7 +642,7 @@ function AgenticStack() {
 
   const layerDetails = [
     'Conversational interfaces across every channel — Teams, Slack, web, mobile. Understands intent, takes action, maintains context. One unified experience for employees and customers.',
-    'The coordination engine — from high-volume, low-latency straight-through processing to complex agentic workflows. Orchestrate agents via MCP and A2A with handoff or supervisor patterns. Wait durably for responses across minutes or months. Govern every decision with a complete audit trail.',
+    'Orchestrate AI agents, people, and systems across end-to-end business processes. Build multi-agent workflows with durable execution that waits minutes or months without losing state. Route work between agents and people seamlessly. Govern every decision with a complete audit trail. Connect via MCP, A2A, REST, or any protocol. Model visually with BPMN — so business and IT collaborate on the same platform.',
     'ERPs, CRMs, databases, legacy systems, AI models, third-party agents. Camunda connects to them, orchestrates across them, and maintains a unified view of business state through the Business Object Graph.',
   ]
 
@@ -753,7 +753,7 @@ function AgenticStack() {
 
                 {/* Capability chips */}
                 <div className="flex flex-wrap gap-2 justify-center mt-1">
-                  {['Multi-agent orchestration', 'Human-in-the-loop', 'Durable execution', 'AI decision routing', 'MCP & A2A', 'Visual modeling'].map((cap, i) => (
+                  {['Multi-agent orchestration', 'Durable execution', 'Human-in-the-loop', 'End-to-end governance', 'MCP & A2A', 'Visual modeling'].map((cap, i) => (
                     <span key={i} className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-accent/80 bg-accent/[0.06] border border-accent/[0.12] rounded-full px-3 py-1">
                       <span className="w-1 h-1 rounded-full bg-accent/50" />
                       {cap}
