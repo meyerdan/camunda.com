@@ -248,9 +248,22 @@
 }
 .orch-hub { animation: orch-hub-pulse 2.5s ease-in-out infinite; }
 
-/* ── Enterprise stack: Camunda network layer ── */
-@keyframes stack-net-breathe {
-  0%, 100% { opacity: 0.85; }
-  50% { opacity: 1; }
+/* ── Enterprise stack: flowing particles ── */
+@keyframes stack-flow {
+  0%   { transform: translateY(-8px) scale(0.6); opacity: 0; }
+  6%   { opacity: 0.22; transform: translateY(40px) scale(0.8); }
+  30%  { opacity: 0.30; }
+  46%  { opacity: 0.70; transform: translateY(400px) scale(1); } /* brightest = Camunda zone */
+  56%  { opacity: 0.55; }
+  75%  { opacity: 0.22; }
+  94%  { opacity: 0.08; }
+  100% { transform: translateY(900px) scale(0.6); opacity: 0; }
 }
-.stack-net-node { animation: stack-net-breathe 3s ease-in-out infinite; }
+.stack-particle {
+  position: absolute;
+  top: 0;
+  border-radius: 9999px;
+  animation: stack-flow linear infinite;
+  will-change: transform, opacity;
+  box-shadow: 0 0 6px 1px rgba(252, 93, 13, 0.3);
+}

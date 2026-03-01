@@ -616,228 +616,8 @@ const StackIcons = {
 }
 
 /* Living network SVG for the Camunda middle layer */
-/* ── Network graph data (shared between render + animation) ── */
-const NET_NODES = [
-  { x: 60, y: 22, type: 'gear' },   { x: 160, y: 14, type: 'brain' },
-  { x: 260, y: 26, type: 'person' }, { x: 360, y: 16, type: 'gear' },
-  { x: 460, y: 24, type: 'diamond' },
-  { x: 110, y: 56, type: 'brain' },  { x: 210, y: 52, type: 'diamond' },
-  { x: 310, y: 58, type: 'person' }, { x: 410, y: 50, type: 'brain' },
-  { x: 60, y: 90, type: 'person' }, { x: 160, y: 94, type: 'gear' },
-  { x: 260, y: 88, type: 'brain' }, { x: 360, y: 96, type: 'gear' },
-  { x: 460, y: 90, type: 'diamond' },
-]
-const NET_EDGES = [
-  [0, 1, 'solid'], [1, 2, 'glow'], [2, 3, 'solid'], [3, 4, 'glow'],
-  [0, 5, 'solid'], [1, 6, 'glow'], [2, 7, 'solid'], [3, 8, 'glow'],
-  [5, 6, 'glow'], [6, 7, 'solid'], [7, 8, 'glow'],
-  [5, 9, 'solid'], [6, 10, 'glow'], [7, 11, 'solid'], [8, 13, 'glow'],
-  [9, 10, 'glow'], [10, 11, 'solid'], [11, 12, 'glow'], [12, 13, 'solid'],
-  [6, 11, 'glow'], [1, 7, 'solid'],
-]
-/* Pre-compute adjacency: for each node, list of { to, edgeType } */
-const NET_ADJ = (() => {
-  const adj = NET_NODES.map(() => [])
-  NET_EDGES.forEach(([a, b]) => {
-    adj[a].push(b)
-    adj[b].push(a)
-  })
-  return adj
-})()
-const NET_BRAINS = NET_NODES.map((n, i) => [n, i]).filter(([n]) => n.type === 'brain').map(([, i]) => i)
-
-/* Pre-compute edge lookup for O(1) find */
-const NET_EDGE_LOOKUP = (() => {
-  const m = {}
-  NET_EDGES.forEach(([a, b], i) => { m[`${a}-${b}`] = i; m[`${b}-${a}`] = i })
-  return m
-})()
-
-function CamundaNetwork() {
-  const pulseGroupRef = useRef(null)
-  const edgeRefs = useRef({})
-  const nodeBgRefs = useRef({})
-  const nodeIconRefs = useRef({})
-
-  /* Node icons — no individual opacity; group opacity controls brightness */
-  const nodeIcon = (type, x, y) => {
-    const o = 5
-    switch(type) {
-      case 'gear': return <circle cx={x} cy={y} r={o} stroke="currentColor" strokeWidth="1.2" fill="none" />
-      case 'brain': return <><circle cx={x} cy={y} r={o-1} fill="currentColor" opacity="0.3" /><circle cx={x} cy={y} r={2} fill="currentColor" /></>
-      case 'person': return <><circle cx={x} cy={y-2} r="2.5" stroke="currentColor" strokeWidth="1" fill="none" /><path d={`M${x-4} ${y+4} a4 4 0 018 0`} stroke="currentColor" strokeWidth="1" fill="none" /></>
-      case 'diamond': return <rect x={x-4} y={y-4} width="8" height="8" rx="1" transform={`rotate(45 ${x} ${y})`} stroke="currentColor" strokeWidth="1" fill="none" />
-      default: return null
-    }
-  }
-
-  /* ── Living network animation: edges + nodes activate/deactivate ── */
-  useEffect(() => {
-    const group = pulseGroupRef.current
-    if (!group) return
-    const SVG_NS = 'http://www.w3.org/2000/svg'
-
-    /* Visual state — lerped each frame for smooth transitions */
-    const nodeBgOp = NET_NODES.map(() => 0.02)
-    const nodeIconOp = NET_NODES.map(() => 0.22)
-    const edgeOp = NET_EDGES.map(() => 0.04)
-
-    const pulses = []
-    let nextId = 0
-    let frame
-    let burstTimer
-    const MAX_PULSES = 14
-
-    function spawnPulse(fromIdx) {
-      if (pulses.length >= MAX_PULSES) return
-      const neighbors = NET_ADJ[fromIdx]
-      if (!neighbors.length) return
-      const to = neighbors[Math.floor(Math.random() * neighbors.length)]
-      const el = document.createElementNS(SVG_NS, 'circle')
-      el.setAttribute('r', '3')
-      el.setAttribute('fill', '#FC5D0D')
-      el.setAttribute('opacity', '0')
-      el.setAttribute('filter', 'url(#pulse-glow-f)')
-      group.appendChild(el)
-      pulses.push({
-        id: nextId++, from: fromIdx, to, progress: 0,
-        speed: 0.012 + Math.random() * 0.008,
-        hops: 0, pause: 0, el,
-      })
-    }
-
-    /* Option E — irregular bursts from brain nodes */
-    function spawnBurst() {
-      const brain = NET_BRAINS[Math.floor(Math.random() * NET_BRAINS.length)]
-      const count = 2 + Math.floor(Math.random() * 2)
-      for (let i = 0; i < count; i++) setTimeout(() => spawnPulse(brain), i * 150)
-    }
-    function scheduleBurst() {
-      burstTimer = setTimeout(() => { spawnBurst(); scheduleBurst() }, 2000 + Math.random() * 2000)
-    }
-    spawnBurst()
-    scheduleBurst()
-
-    /* Main animation loop */
-    function tick() {
-      /* ── 1. Move pulses & build active sets ── */
-      const activeNodes = new Set()
-      const activeEdges = new Set()
-      const decidingNodes = new Set()
-
-      for (let i = pulses.length - 1; i >= 0; i--) {
-        const p = pulses[i]
-
-        if (p.pause > 0) {
-          p.pause--
-          activeNodes.add(p.to)
-          if (NET_NODES[p.to].type === 'diamond') decidingNodes.add(p.to)
-          const ei = NET_EDGE_LOOKUP[`${p.from}-${p.to}`]
-          if (ei !== undefined) activeEdges.add(ei)
-          continue
-        }
-
-        p.progress += p.speed
-
-        if (p.progress >= 1) {
-          p.hops++
-          if (p.hops > 4) { p.el.remove(); pulses.splice(i, 1); continue }
-          const destType = NET_NODES[p.to].type
-          const neighbors = NET_ADJ[p.to].filter(n => n !== p.from)
-          if (!neighbors.length) { p.el.remove(); pulses.splice(i, 1); continue }
-          if (destType === 'diamond') { p.pause = 20; decidingNodes.add(p.to) }
-          const next = neighbors[Math.floor(Math.random() * neighbors.length)]
-          p.from = p.to
-          p.to = next
-          p.progress = 0
-        }
-
-        activeNodes.add(p.from)
-        activeNodes.add(p.to)
-        const ei = NET_EDGE_LOOKUP[`${p.from}-${p.to}`]
-        if (ei !== undefined) activeEdges.add(ei)
-
-        /* Interpolate position */
-        const f = NET_NODES[p.from], t = NET_NODES[p.to]
-        p.el.setAttribute('cx', f.x + (t.x - f.x) * p.progress)
-        p.el.setAttribute('cy', f.y + (t.y - f.y) * p.progress)
-        const lifeAlpha = p.hops >= 3 ? 0.4 : 0.85
-        const edgeAlpha = p.progress < 0.15 ? p.progress / 0.15 : p.progress > 0.85 ? (1 - p.progress) / 0.15 : 1
-        p.el.setAttribute('opacity', (edgeAlpha * lifeAlpha).toFixed(2))
-      }
-
-      /* ── 2. Lerp node brightness ── */
-      for (let i = 0; i < NET_NODES.length; i++) {
-        const active = activeNodes.has(i)
-        const deciding = decidingNodes.has(i)
-        const bgTarget = deciding ? 0.28 : active ? 0.16 : 0.02
-        const iconTarget = active ? 1.0 : 0.22
-        const rate = active ? 0.14 : 0.025
-
-        nodeBgOp[i] += (bgTarget - nodeBgOp[i]) * rate
-        nodeIconOp[i] += (iconTarget - nodeIconOp[i]) * rate
-        nodeBgRefs.current[i]?.setAttribute('opacity', nodeBgOp[i].toFixed(3))
-        nodeIconRefs.current[i]?.setAttribute('opacity', nodeIconOp[i].toFixed(3))
-      }
-
-      /* ── 3. Lerp edge brightness ── */
-      for (let i = 0; i < NET_EDGES.length; i++) {
-        const active = activeEdges.has(i)
-        const isGlow = NET_EDGES[i][2] === 'glow'
-        const target = active ? (isGlow ? 0.4 : 0.28) : 0.04
-        const rate = active ? 0.14 : 0.02
-
-        edgeOp[i] += (target - edgeOp[i]) * rate
-        edgeRefs.current[i]?.setAttribute('opacity', edgeOp[i].toFixed(3))
-      }
-
-      frame = requestAnimationFrame(tick)
-    }
-    frame = requestAnimationFrame(tick)
-
-    return () => { cancelAnimationFrame(frame); clearTimeout(burstTimer); pulses.forEach(p => p.el?.remove()) }
-  }, [])
-
-  return (
-    <svg viewBox="0 0 520 110" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <filter id="pulse-glow-f"><feGaussianBlur stdDeviation="2.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
-      </defs>
-
-      {/* Edges — start nearly invisible, brighten when pulses travel them */}
-      {NET_EDGES.map(([a, b, type], i) => {
-        const n1 = NET_NODES[a], n2 = NET_NODES[b]
-        return (
-          <line key={`e-${i}`} x1={n1.x} y1={n1.y} x2={n2.x} y2={n2.y}
-            ref={el => { if (el) edgeRefs.current[i] = el }}
-            stroke={type === 'glow' ? '#FC5D0D' : '#94a3b8'}
-            strokeWidth={type === 'glow' ? '1.2' : '1'}
-            opacity="0.04"
-            strokeDasharray={type === 'glow' ? '4 3' : 'none'}
-          />
-        )
-      })}
-
-      {/* Dynamic pulses */}
-      <g ref={pulseGroupRef} />
-
-      {/* Nodes — start dim, activate when orchestrator routes work through them */}
-      {NET_NODES.map((n, i) => (
-        <g key={`n-${i}`}>
-          <circle cx={n.x} cy={n.y} r="12" fill="#FC5D0D" opacity="0.02"
-            ref={el => { if (el) nodeBgRefs.current[i] = el }} />
-          <g className="text-accent" opacity="0.22"
-            ref={el => { if (el) nodeIconRefs.current[i] = el }}>
-            {nodeIcon(n.type, n.x, n.y)}
-          </g>
-        </g>
-      ))}
-    </svg>
-  )
-}
-
 function AgenticStack() {
-  const [activeLayer, setActiveLayer] = useState(null)
+  const [activeLayer, setActiveLayer] = useState(1)
 
   const topTiles = [
     { icon: StackIcons.chat, label: 'Messaging' },
@@ -856,11 +636,13 @@ function AgenticStack() {
     { icon: StackIcons.legacy, label: 'Legacy' },
     { icon: StackIcons.db, label: 'Data warehouse' },
     { icon: StackIcons.cloud, label: 'Cloud / SaaS' },
+    { icon: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'APIs & Micro\u00ADservices' },
+    { icon: <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M12 2a4 4 0 014 4c0 1.95-1.4 3.58-3.25 3.93L12 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="18" r="3" stroke="currentColor" strokeWidth="1.5"/><circle cx="16" cy="18" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M12 14l-2.5 2M12 14l2.5 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>, label: 'LLMs', ai: true },
   ]
 
   const layerDetails = [
     'Conversational interfaces across every channel — Teams, Slack, web, mobile. Understands intent, takes action, maintains context. One unified experience for employees and customers.',
-    'The coordination engine — and the most powerful multi-agent framework in the market. Build agents that orchestrate other agents via MCP and A2A. Coordinate through handoff or supervisor patterns. Wait durably for agent responses across minutes or months. Govern every decision with a complete audit trail.',
+    'The coordination engine — from high-volume, low-latency straight-through processing to complex agentic workflows. Orchestrate agents via MCP and A2A with handoff or supervisor patterns. Wait durably for responses across minutes or months. Govern every decision with a complete audit trail.',
     'ERPs, CRMs, databases, legacy systems, AI models, third-party agents. Camunda connects to them, orchestrates across them, and maintains a unified view of business state through the Business Object Graph.',
   ]
 
@@ -884,6 +666,27 @@ function AgenticStack() {
         {/* ═══ Three-layer architecture diagram ═══ */}
         <Reveal delay={3}>
           <div className="relative">
+
+            {/* ── Flowing particles: data moving through the stack ── */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-10" aria-hidden="true">
+              {Array.from({ length: 20 }, (_, i) => {
+                const size = [3, 3, 4, 2, 3][i % 5]
+                return (
+                  <div
+                    key={i}
+                    className="stack-particle"
+                    style={{
+                      left: `${6 + ((i * 4.7 + 3) % 86)}%`,
+                      width: size,
+                      height: size,
+                      backgroundColor: '#FC5D0D',
+                      animationDuration: `${4.8 + (i % 6) * 1.0}s`,
+                      animationDelay: `${(i * 0.65) % 6.5}s`,
+                    }}
+                  />
+                )
+              })}
+            </div>
 
             {/* ── Top layer: Engagement Channels ── */}
             <button onClick={() => setActiveLayer(activeLayer === 0 ? null : 0)}
@@ -912,6 +715,10 @@ function AgenticStack() {
                 <div className="overflow-hidden">
                   <div className="border-t border-cool-border/50 pt-3">
                     <p className="text-sm text-slate leading-relaxed">{layerDetails[0]}</p>
+                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 mt-3 transition-colors">
+                      Discover integrations
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -944,19 +751,12 @@ function AgenticStack() {
                   </span>
                 </div>
 
-                {/* Living network — always visible */}
-                <CamundaNetwork />
-
-                {/* Node legend — matches actual SVG node shapes */}
-                <div className="flex flex-wrap gap-x-5 gap-y-1 justify-center mt-2">
-                  {[
-                    { label: 'Automation', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="5" stroke="#FC5D0D" strokeWidth="1.2" fill="none" opacity="0.8" /></svg> },
-                    { label: 'AI agent', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="7" r="4" fill="#FC5D0D" opacity="0.2" /><circle cx="7" cy="7" r="2" fill="#FC5D0D" opacity="0.7" /></svg> },
-                    { label: 'Human', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><circle cx="7" cy="5" r="2.5" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.7" /><path d="M3 12 a4 4 0 018 0" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.6" /></svg> },
-                    { label: 'Decision', svg: <svg viewBox="0 0 14 14" className="w-3.5 h-3.5"><rect x="3" y="3" width="8" height="8" rx="1" transform="rotate(45 7 7)" stroke="#FC5D0D" strokeWidth="1" fill="none" opacity="0.7" /></svg> },
-                  ].map((item, i) => (
-                    <span key={i} className="flex items-center gap-1.5 text-xs text-slate">
-                      {item.svg} {item.label}
+                {/* Capability chips */}
+                <div className="flex flex-wrap gap-2 justify-center mt-1">
+                  {['Multi-agent orchestration', 'Human-in-the-loop', 'Durable execution', 'AI decision routing', 'MCP & A2A', 'Visual modeling'].map((cap, i) => (
+                    <span key={i} className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-accent/80 bg-accent/[0.06] border border-accent/[0.12] rounded-full px-3 py-1">
+                      <span className="w-1 h-1 rounded-full bg-accent/50" />
+                      {cap}
                     </span>
                   ))}
                 </div>
@@ -965,6 +765,10 @@ function AgenticStack() {
                   <div className="overflow-hidden">
                     <div className="border-t border-accent/15 pt-3">
                       <p className="text-sm text-slate leading-relaxed">{layerDetails[1]}</p>
+                      <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 mt-3 transition-colors">
+                        How Camunda works
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -994,10 +798,10 @@ function AgenticStack() {
               <div className="flex flex-wrap gap-2.5 justify-center">
                 {bottomTiles.map((t, i) => (
                   <div key={i} className="flex flex-col items-center gap-1 w-14">
-                    <div className="w-8 h-8 rounded-lg bg-white border border-cool-border/70 flex items-center justify-center text-slate">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${t.ai ? 'bg-purple-50 border border-purple-200/70 text-purple-600' : 'bg-white border border-cool-border/70 text-slate'}`}>
                       {t.icon}
                     </div>
-                    <span className="text-[10px] text-slate text-center leading-tight">{t.label}</span>
+                    <span className={`text-[10px] text-center leading-tight ${t.ai ? 'text-purple-600 font-medium' : 'text-slate'}`}>{t.label}</span>
                   </div>
                 ))}
               </div>
@@ -1005,6 +809,10 @@ function AgenticStack() {
                 <div className="overflow-hidden">
                   <div className="border-t border-cool-border/50 pt-3">
                     <p className="text-sm text-slate leading-relaxed">{layerDetails[2]}</p>
+                    <a href="#" className="relative z-20 inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 mt-3 transition-colors">
+                      Discover integrations
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    </a>
                   </div>
                 </div>
               </div>
