@@ -31,9 +31,9 @@ const THEME_COLORS = {
 function useTheme() {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('camunda-theme') || 'light'
+      return localStorage.getItem('camunda-theme') || 'dark'
     }
-    return 'light'
+    return 'dark'
   })
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
