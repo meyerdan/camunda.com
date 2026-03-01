@@ -367,47 +367,51 @@ function WhyNow() {
           <p className="font-mono text-xs font-medium text-accent uppercase tracking-wider mb-4">Why now</p>
         </Reveal>
         <Reveal delay={1}>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-8">The automation ceiling</h2>
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-10">The automation ceiling</h2>
         </Reveal>
-        <Reveal delay={2}>
-          <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 mb-10 max-w-3xl">
-            <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
-              <span className="font-mono">71%</span> of organizations say they&rsquo;re using AI agents. Only <span className="font-mono">11%</span> of agentic AI use cases reached production last year.
-              <span className="text-sm font-normal text-slate ml-2">— Camunda, State of Agentic Orchestration and Automation 2026</span>
-            </p>
-          </div>
-        </Reveal>
-        <Reveal delay={3}>
-          <div className="max-w-3xl space-y-5 text-slate leading-relaxed">
-            <p>
-              Every enterprise has automated tasks. RPA bots handle data entry. AI agents process documents. But the end-to-end process — the full claims journey, the complete order-to-cash cycle, the patient intake workflow — still depends on manual handoffs, human exception handling, and stitched-together integrations. The savings plateau. The complexity grows. And every new bot or agent adds more fragmentation, not less.
-            </p>
-            <p>
-              This is the automation ceiling. Individual task automation can&rsquo;t scale into operational transformation without something connecting it all together.
-            </p>
-            <p>
-              Meanwhile, enterprises building multi-agent systems face the same problem at a new level: agents that can&rsquo;t coordinate, can&rsquo;t share state, can&rsquo;t recover from failures. When one agent fails, nothing catches it. When ten agents touch the same customer journey, nobody orchestrates them.
-            </p>
-          </div>
-        </Reveal>
-        <Reveal delay={4}>
-          <div className="bg-gradient-to-r from-accent/8 to-transparent border-l-2 border-accent pl-6 py-4 my-10 max-w-3xl">
-            <p className="text-xl sm:text-2xl font-display font-bold leading-snug">
-              <span className="font-mono">88%</span> of IT leaders say AI needs to be orchestrated across business processes to maximize value. Yet <span className="font-mono">85%</span> admit they haven&rsquo;t reached the process maturity to do it.
-              <span className="text-sm font-normal text-slate ml-2">— Camunda, State of Agentic Orchestration and Automation 2026</span>
-            </p>
-          </div>
-        </Reveal>
-        <Reveal delay={5}>
-          <div className="max-w-3xl space-y-5 text-slate leading-relaxed">
-            <p>
-              The enterprises breaking through are doing something different. They&rsquo;re building on an orchestration foundation — where every agent, every process, and every human handoff is coordinated end to end. Where automation compounds instead of fragments.
-            </p>
-            <p className="text-light font-semibold">
-              That foundation is agentic orchestration.
-            </p>
-          </div>
-        </Reveal>
+
+        {/* Two-column layout: narrative left (~60%), stats right (~40%) */}
+        <div className="grid lg:grid-cols-[3fr_2fr] gap-10 lg:gap-14">
+          {/* Narrative — left column on desktop, second on mobile */}
+          <Reveal delay={2}>
+            <div className="space-y-5 text-slate leading-relaxed order-2 lg:order-1">
+              <p>
+                Every enterprise has automated tasks. RPA bots handle data entry. AI agents process documents. But the end-to-end process — the full claims journey, the complete order-to-cash cycle, the patient intake workflow — still depends on manual handoffs, human exception handling, and stitched-together integrations. Results flatten. And each new bot or agent you add increases fragmentation.
+              </p>
+              <p>
+                This is the automation ceiling. Individual task automation can&rsquo;t scale into operational transformation without something connecting it all together.
+              </p>
+              <p>
+                Enterprises building multi-agent systems hit the same wall. Agents that work in isolation can&rsquo;t coordinate across an end-to-end process. Failures cascade. Nobody orchestrates the whole.
+              </p>
+              <p>
+                The enterprises breaking through are doing something different. They&rsquo;re building on an orchestration foundation — where agents, processes, and human handoffs are coordinated end to end.
+              </p>
+              <p className="text-light font-semibold">
+                That foundation is agentic orchestration.
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Stats — right column on desktop, first on mobile */}
+          <Reveal delay={2}>
+            <div className="space-y-6 order-1 lg:order-2">
+              <div className="bg-gradient-to-br from-accent/8 to-accent/[0.02] border-l-[3px] border-accent pl-6 py-5 rounded-r-xl">
+                <p className="text-lg sm:text-xl font-display font-bold leading-snug text-light">
+                  <span className="font-mono text-accent">71%</span> of organizations say they&rsquo;re using AI agents. Only <span className="font-mono text-accent">11%</span> of agentic AI use cases reached production last year.
+                </p>
+                <p className="text-xs text-slate-light mt-3 font-mono">— Camunda, State of Agentic Orchestration and Automation 2026</p>
+              </div>
+              <div className="bg-gradient-to-br from-accent/8 to-accent/[0.02] border-l-[3px] border-accent pl-6 py-5 rounded-r-xl">
+                <p className="text-lg sm:text-xl font-display font-bold leading-snug text-light">
+                  <span className="font-mono text-accent">88%</span> of IT leaders say AI needs to be orchestrated across business processes to maximize value. Yet <span className="font-mono text-accent">85%</span> admit they haven&rsquo;t reached the process maturity to do it.
+                </p>
+                <p className="text-xs text-slate-light mt-3 font-mono">— Camunda, State of Agentic Orchestration and Automation 2026</p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
         <Reveal>
           <CoordinationGraphic />
         </Reveal>
